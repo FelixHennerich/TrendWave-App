@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)
-@Composable
+/*@Composable
 fun App() {
     var count by remember {
         mutableStateOf(0)
@@ -25,6 +25,39 @@ fun App() {
             Text("Count: $count")
         }
     }
-}
+}*/
 
 expect fun getPlatformName(): String
+
+
+@Composable
+fun App() {
+    val currentScreen = remember { mutableStateOf<Screen>(Screen.Home) }
+    when (val screen = currentScreen.value) {
+        is Screen.Home -> HomeScreen { currentScreen.value = Screen.Details }
+        is Screen.Details -> DetailsScreen { currentScreen.value = Screen.Home }
+    }
+}
+
+@Composable
+fun HomeScreen(onNavigateToDetails: () -> Unit) {
+    // Your home screen UI
+    Box(Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+        Button(onClick = onNavigateToDetails) {
+            Text("Go to Details")
+        }
+    }
+}
+
+@Composable
+fun DetailsScreen(onNavigateToHome: () -> Unit) {
+    // Your details screen UI
+    Button(onClick = onNavigateToHome) {
+        Text("Go to Home")
+    }
+}
+
+sealed class Screen {
+    object Home : Screen()
+    object Details : Screen()
+}
