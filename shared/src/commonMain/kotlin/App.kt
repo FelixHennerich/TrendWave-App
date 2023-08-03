@@ -12,21 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalResourceApi::class)
-/*@Composable
-fun App() {
-    var count by remember {
-        mutableStateOf(0)
-    }
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Button(onClick = {
-            count++
-        }){
-            Text("Count: $count")
-        }
-    }
-}*/
-
 expect fun getPlatformName(): String
 
 
@@ -41,7 +26,6 @@ fun App() {
 
 @Composable
 fun HomeScreen(onNavigateToDetails: () -> Unit) {
-    // Your home screen UI
     Box(Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Button(onClick = onNavigateToDetails) {
             Text("Go to Details")
@@ -51,9 +35,18 @@ fun HomeScreen(onNavigateToDetails: () -> Unit) {
 
 @Composable
 fun DetailsScreen(onNavigateToHome: () -> Unit) {
-    // Your details screen UI
     Button(onClick = onNavigateToHome) {
         Text("Go to Home")
+    }
+    var count by remember {
+        mutableStateOf(0)
+    }
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+        Button(onClick = {
+            count++
+        }){
+            Text("Count: $count")
+        }
     }
 }
 
