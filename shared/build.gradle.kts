@@ -33,6 +33,22 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                /**
+                 *
+                 *
+                 * --------------------------------------------------------------
+                 *
+                 *
+                 *
+                 *          NEW DEPENDENCIES WILL BE ADDED HERE!!!!
+                 *
+                 *
+                 *
+                 * --------------------------------------------------------------
+                 *
+                 *
+                 */
             }
         }
         val androidMain by getting {
