@@ -7,14 +7,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 expect fun getPlatformName(): String
 
-
+/**
+ * fun App() is the main function of the "Shared" code
+ * IOS and Android do have different main methods, but those are not needed to edit
+ */
 @Composable
 fun App() {
     val currentScreen = remember { mutableStateOf<Screen>(Screen.Home) }
@@ -24,6 +25,9 @@ fun App() {
     }
 }
 
+/**
+ * Testview 1 (home)
+ */
 @Composable
 fun HomeScreen(onNavigateToDetails: () -> Unit) {
     Box(Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
@@ -33,6 +37,10 @@ fun HomeScreen(onNavigateToDetails: () -> Unit) {
     }
 }
 
+/**
+ * Testview 2 (detail)
+ * counter button
+ */
 @Composable
 fun DetailsScreen(onNavigateToHome: () -> Unit) {
     Button(onClick = onNavigateToHome) {
@@ -50,6 +58,9 @@ fun DetailsScreen(onNavigateToHome: () -> Unit) {
     }
 }
 
+/**
+ * define both screens as object
+ */
 sealed class Screen {
     object Home : Screen()
     object Details : Screen()
