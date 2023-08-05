@@ -18,6 +18,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 
 
 class SettingsView {
@@ -36,7 +38,9 @@ class SettingsView {
                 ), modifier = Modifier.offset(x = 15.dp, y= 55.dp)
             )
 
-
+            KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),
+                null
+            )
 
 
         }
