@@ -34,6 +34,8 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
+
+                implementation("media.kamel:kamel-image:0.7.1")
                 /**
                  *
                  *

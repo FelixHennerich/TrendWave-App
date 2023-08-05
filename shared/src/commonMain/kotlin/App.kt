@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.painter.Painter
 import views.DetailScreen
 import views.SettingsView
 
