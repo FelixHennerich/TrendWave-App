@@ -3,14 +3,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-expect fun getPlatformName(): String
+import androidx.compose.runtime.*
+import views.DetailScreen
+import views.SettingsView
 
 /**
  * fun App() is the main function of the "Shared" code
@@ -18,42 +17,42 @@ expect fun getPlatformName(): String
  */
 @Composable
 fun App() {
-    val currentScreen = remember { mutableStateOf<Screen>(Screen.Home) }
-    when (val screen = currentScreen.value) {
-        is Screen.Home -> HomeScreen { currentScreen.value = Screen.Details }
-        is Screen.Details -> DetailsScreen { currentScreen.value = Screen.Home }
+
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    val detailScreenTT = DetailScreen()
+    val settingsViewTT = SettingsView()
+
+    when (currentScreen) {
+        is Screen.Home -> HomeScreen(
+            onNavigateToDetails = { currentScreen = Screen.Details },
+            onNavigateToSettings = { currentScreen = Screen.Settings }
+        )
+        is Screen.Details -> detailScreenTT.DetailsScreen(
+            onNavigateToHome = { currentScreen = Screen.Home }
+        )
+        is Screen.Settings -> settingsViewTT.SettingsScreen(
+            onNavigateToHome = { currentScreen = Screen.Home }
+        )
+
+        else -> {}
     }
 }
 
 /**
- * Testview 1 (home)
+ * HOME SCREEN
+ *
+ * WILL BE OUTSOURCED AS SOON AS @Caaasperrr has the login screen
  */
 @Composable
-fun HomeScreen(onNavigateToDetails: () -> Unit) {
-    Box(Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit) {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Button(onClick = onNavigateToDetails) {
             Text("Go to Details")
         }
     }
-}
-
-/**
- * Testview 2 (detail)
- * counter button
- */
-@Composable
-fun DetailsScreen(onNavigateToHome: () -> Unit) {
-    Button(onClick = onNavigateToHome) {
-        Text("Go to Home")
-    }
-    var count by remember {
-        mutableStateOf(0)
-    }
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Button(onClick = {
-            count++
-        }){
-            Text("Count: $count")
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
+        Button(onClick = onNavigateToSettings) {
+            Text("Go to Settings")
         }
     }
 }
@@ -64,4 +63,7 @@ fun DetailsScreen(onNavigateToHome: () -> Unit) {
 sealed class Screen {
     object Home : Screen()
     object Details : Screen()
+    object Settings: Screen()
 }
+
+expect fun getPlatformName(): String
