@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.painter.Painter
 import views.DetailScreen
 import views.SettingsView
 
@@ -34,8 +33,6 @@ fun App() {
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
         )
-
-        else -> {}
     }
 }
 
@@ -62,9 +59,9 @@ fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit
  * define both screens as object
  */
 sealed class Screen {
-    object Home : Screen()
-    object Details : Screen()
-    object Settings: Screen()
+    data object Home : Screen()
+    data object Details : Screen()
+    data object Settings: Screen()
 }
 
 expect fun getPlatformName(): String
