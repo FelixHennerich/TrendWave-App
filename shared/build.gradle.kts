@@ -34,8 +34,10 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-                implementation("media.kamel:kamel-image:0.7.1")
-                implementation("io.ktor:ktor-client-core:2.3.3")
+
+                
+                implementation("media.kamel:kamel-image:0.7.1") // Image API
+                implementation("io.ktor:ktor-client-core:2.3.3") // Image API
                 /**
                  *
                  *

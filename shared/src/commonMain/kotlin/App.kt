@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
+import utils.EncryptionManager
 import views.DetailScreen
 import views.SettingsView
 
@@ -17,7 +18,6 @@ import views.SettingsView
  */
 @Composable
 fun App() {
-
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val detailScreenTT = DetailScreen()
     val settingsViewTT = SettingsView()
