@@ -34,7 +34,6 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-
                 implementation("media.kamel:kamel-image:0.7.1")
                 implementation("io.ktor:ktor-client-core:2.3.3")
                 /**
@@ -52,6 +51,20 @@ kotlin {
                  *
                  *
                  */
+
+                /*
+                Icon Packs
+                 */
+                implementation("br.com.devsrsouza.compose.icons:tabler-icons:1.1.0") // Icon Lib
+                implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:simple-icons:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:feather:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:eva-icons:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:octicons:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:linea:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:line-awesome:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:erikflowers-weather-icons:1.1.0")
+                implementation("br.com.devsrsouza.compose.icons:css-gg:1.1.0")
             }
         }
         val androidMain by getting {
