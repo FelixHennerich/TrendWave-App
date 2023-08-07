@@ -51,8 +51,8 @@ internal object EncryptionManager {
     /**
      * Function to decrypt the String
      */
-    fun decryption(s: CharArray): String {
-        val l = s.size
+    fun decryption(s: String): String {
+        val l = s.length
         val b: Int = ceil(sqrt(l.toDouble())).toInt()
         val a: Int = floor(sqrt(l.toDouble())).toInt()
         var decrypted = ""
@@ -63,7 +63,6 @@ internal object EncryptionManager {
             )
         }
         var k = 0
-
         for (j in 0 until b) {
             for (i in 0 until a) {
                 if (k < l) {
@@ -72,13 +71,37 @@ internal object EncryptionManager {
                 k++
             }
         }
-
         for (j in 0 until a) {
             for (i in 0 until b) {
                 decrypted += arr[i][j]
             }
         }
-        return decrypted
+
+        val lst: MutableList<Char> = mutableListOf()
+        for(x in decrypted.indices){
+            lst += decrypted[x]
+        }
+        lst.removeAt(decrypted.length-1)
+        lst.removeAt(decrypted.length-2)
+
+        var decryption = ""
+        for(x in lst){
+            decryption += x
+        }
+        return decryption
+    }
+
+    fun test(){
+        var password: String = "2348u43hffbehf!32§&$/§)"
+        println(password)
+        val cryp = EncryptionManager
+        var newpw = cryp.encryption(password)
+        println(newpw)
+        println(cryp.decryption(newpw))
+
+        if(password == cryp.decryption(newpw)){
+            println("Password successful encrypted and decrypted")
+        }
     }
 
 }
