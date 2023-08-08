@@ -5,16 +5,15 @@ import kotlin.math.floor
 import kotlin.math.min
 import kotlin.math.sqrt
 
-// https://www.geeksforgeeks.org/encryption-and-decryption-of-string-according-to-given-technique/
 
 internal object EncryptionManager {
     /**
-     * Function to encrypt the String
+     * Function to encrypt the String unsing a MATRIXTRANSPOSITION
       */
     fun encryption(s: String): String {
         val l = s.length
-        var b: Int = ceil(sqrt(l.toDouble())).toInt()
-        var a: Int = floor(sqrt(l.toDouble())).toInt()
+        var b: Int = ceil(sqrt(l.toDouble())).toInt() // untere zahl der wurzel
+        var a: Int = floor(sqrt(l.toDouble())).toInt() // obere zahl der wurzel
         var encrypted = ""
         if (b * a < l) {
             if (min(b, a) == b) {
@@ -24,7 +23,7 @@ internal object EncryptionManager {
             }
         }
 
-        val arr = Array(a) {
+        val arr = Array(a) { // 2D Matrix-Char-Array zum speichern der welte a und b in Matrixstruktur
             CharArray(
                 b
             )
