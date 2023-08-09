@@ -75,7 +75,7 @@ class SettingsView {
                 )
                 Button(
                     onClick = {
-                        HTTPManager.postData()
+                        //HTTPManager.postData()
                     }
                 ){
                     Text("test")
