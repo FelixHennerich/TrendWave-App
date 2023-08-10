@@ -34,7 +34,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("media.kamel:kamel-image:0.7.1") // Image API
                 implementation("io.ktor:ktor-client-core:2.3.3") // Image API
                 /**
@@ -74,6 +74,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.9.0")
                 implementation("io.ktor:ktor-client-android:2.3.3")
+                implementation("io.ktor:ktor-client-okhttp:2.3.3")
             }
         }
         val iosX64Main by getting

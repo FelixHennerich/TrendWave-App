@@ -13,6 +13,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -24,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
+import kotlinx.coroutines.launch
 import utils.HTTPManager
 
 
@@ -73,13 +80,14 @@ class SettingsView {
                     contentDescription = "",
                     Modifier.width(100.dp).height(100.dp).offset(y = 100.dp)
                 )
-                Button(
-                    onClick = {
-                        //HTTPManager.postData()
+                val scope = rememberCoroutineScope()
+                var text by remember { mutableStateOf("Loading") }
+                LaunchedEffect(true) {
+                    scope.launch {
+                        text = HTTPManager().get()
                     }
-                ){
-                    Text("test")
                 }
+                Text(text)
 
 
             }

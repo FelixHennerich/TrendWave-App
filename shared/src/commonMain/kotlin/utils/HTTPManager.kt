@@ -7,11 +7,12 @@ import io.ktor.http.*
 
 
 
-internal object HTTPManager {
+class HTTPManager {
     private val url = "https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php";
-    fun post(){
-        val client = HttpClient()
+    private val client = HttpClient()
 
-        //val response = client.get<String>(url)
+    suspend fun get(): String {
+        val response = client.get(url)
+        return response.bodyAsText()
     }
 }
