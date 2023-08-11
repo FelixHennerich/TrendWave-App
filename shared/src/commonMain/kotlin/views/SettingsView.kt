@@ -45,6 +45,8 @@ class SettingsView {
 
      */
 
+    private val url = "https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php";
+
     @Composable
     fun SettingsScreen(onNavigateToHome: () -> Unit) {
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
@@ -84,7 +86,7 @@ class SettingsView {
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
                     scope.launch {
-                        text = HTTPManager().get()
+                        text = HTTPManager().post("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php").toString()
                     }
                 }
                 Text(text)
