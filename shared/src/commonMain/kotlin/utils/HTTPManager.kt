@@ -32,4 +32,20 @@ class HTTPManager {
         }
         return response
     }
+
+    suspend fun postInsert(url: String, table: String, columnarray: String, valuearray: String): HttpResponse {
+        val jsonBody = """
+        {
+            "table": "$table",
+            "column": "$columnarray",
+            "value": $valuearray"
+        }
+        """.trimIndent()
+
+        val response = client.post(url) {
+            contentType(ContentType.Application.Json)
+            setBody(jsonBody)
+        }
+        return response
+    }
 }
