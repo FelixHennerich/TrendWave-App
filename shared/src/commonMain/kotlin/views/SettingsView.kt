@@ -86,7 +86,7 @@ class SettingsView {
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
                     scope.launch {
-                        text = HTTPManager().post("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php").toString()
+                        text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
                     }
                 }
                 Text(text)

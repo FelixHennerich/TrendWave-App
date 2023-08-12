@@ -15,14 +15,14 @@ class HTTPManager {
         return response.bodyAsText()
     }
 
-    suspend fun post(url: String): HttpResponse {
+    suspend fun postUpdate(url: String, table: String, column: String, value: String, where: String, unit: String): HttpResponse {
         val jsonBody = """
         {
-            "table": "newsapplication",
-            "column": "b",
-            "value": 20,
-            "where": "test",
-            "unit": 1
+            "table": "$table",
+            "column": "$column",
+            "value": $value,
+            "where": "$where",
+            "unit": $unit
         }
         """.trimIndent()
 
