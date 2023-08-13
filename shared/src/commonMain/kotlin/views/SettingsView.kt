@@ -1,11 +1,11 @@
 package views
 
+import account.UUID
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -30,8 +30,10 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
+import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.launch
 import utils.HTTPManager
+import utils.MonthCalc
 
 
 class SettingsView {
@@ -82,6 +84,7 @@ class SettingsView {
                     contentDescription = "",
                     Modifier.width(100.dp).height(100.dp).offset(y = 100.dp)
                 )
+
                 val scope = rememberCoroutineScope()
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
@@ -90,12 +93,9 @@ class SettingsView {
                     }
                 }
                 Text(text)
-
-
             }
+
 
         }
     }
-
-
 }

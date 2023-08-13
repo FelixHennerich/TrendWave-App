@@ -7,10 +7,11 @@ plugins {
 
 kotlin {
     androidTarget()
-
+    jvm("desktop")
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    js(IR) { browser() }
 
     cocoapods {
         version = "1.0.0"
@@ -37,6 +38,15 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("media.kamel:kamel-image:0.7.1") // Image API
                 implementation("io.ktor:ktor-client-core:2.3.3") // Image API
+
+                /*
+                DatePicker
+
+                implementation("io.github.epicarchitect:calendar-compose-basis:1.0.4")
+                implementation("io.github.epicarchitect:calendar-compose-ranges:1.0.4") // includes basis
+                implementation("io.github.epicarchitect:calendar-compose-pager:1.0.4") // includes basis
+                implementation("io.github.epicarchitect:calendar-compose-datepicker:1.0.4") // includes pager + ranges
+                */
                 /**
                  *
                  *
@@ -111,4 +121,8 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+
+}
+dependencies {
+    implementation("com.google.android.libraries.places:places:3.2.0")
 }

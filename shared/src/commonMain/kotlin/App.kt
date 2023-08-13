@@ -63,5 +63,3 @@ sealed class Screen {
     data object Details : Screen()
     data object Settings: Screen()
 }
-
-expect fun getPlatformName(): String
