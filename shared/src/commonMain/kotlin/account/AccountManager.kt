@@ -14,15 +14,15 @@ class AccountManager {
      * No wrong Passwords
      * etc.
      */
-    suspend fun createAccount(email: String, password: String, username: String, birthday: String): Int {
-        if(!checkEmail(email))
+    suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): Int {
+        /*if(!checkEmail(email))
             return 100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
         if(email.length < 8)
             return 101 // Password to weak
         if(username.length < 5 || username.length > 32)
             return 102 // Username too short/long
         if(userNameExists(username))
-            return 103 // Username already exists
+            return 103 // Username already exists*/
 
         val role = "Member" // IMPORTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionManager.encryption(password); // Password encryption
@@ -33,8 +33,9 @@ class AccountManager {
             if(HTTPManager().postInsert(
                 "https://cross-cultural-auto.000webhostapp.com/php/connectInsert.php",
                 "newsuser",
-                "uuid, email, password, username, birthday, signup, role",
-                "$uuid,$email,$encryptedPassword,$username,$birthday,${getCurrentDate()},$role"
+                    uuid, email, username,
+                    encryptedPassword, getCurrentDate(), birthday,
+                    role,authcode
             ).toString().contains("200 OK")) {
                 return 1 // Account successfully created
             }else {

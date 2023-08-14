@@ -7,11 +7,9 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm("desktop")
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    js(IR) { browser() }
 
     cocoapods {
         version = "1.0.0"
@@ -122,7 +120,4 @@ android {
         jvmToolchain(17)
     }
 
-}
-dependencies {
-    implementation("com.google.android.libraries.places:places:3.2.0")
 }
