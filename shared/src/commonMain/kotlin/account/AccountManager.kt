@@ -14,7 +14,7 @@ class AccountManager {
      * No wrong Passwords
      * etc.
      */
-    suspend fun createAccount(email: String, password: String, username: String, birthday: String): Int {
+    suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): Int {
         if(!checkEmail(email))
             return 100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
         if(email.length < 8)
@@ -33,8 +33,9 @@ class AccountManager {
             if(HTTPManager().postInsert(
                 "https://cross-cultural-auto.000webhostapp.com/php/connectInsert.php",
                 "newsuser",
-                "uuid, email, password, username, birthday, signup, role",
-                "$uuid,$email,$encryptedPassword,$username,$birthday,${getCurrentDate()},$role"
+                    uuid, email, username,
+                    encryptedPassword, getCurrentDate(), birthday,
+                    role,authcode
             ).toString().contains("200 OK")) {
                 return 1 // Account successfully created
             }else {

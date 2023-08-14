@@ -33,12 +33,18 @@ class HTTPManager {
         return response
     }
 
-    suspend fun postInsert(url: String, table: String, columnarray: String, valuearray: String): HttpResponse {
+    suspend fun postInsert(url: String, table: String, uuid: String,email:String,username:String, password:String, signup:String, birthday:String,role:String, authcode: String): HttpResponse {
         val jsonBody = """
         {
             "table": "$table",
-            "column": "$columnarray",
-            "value": $valuearray"
+            "uuid": "$uuid",
+            "email": "$email",
+            "username": "$username",
+            "password": "$password",
+            "signup": "$signup",
+            "birthday": "$birthday",
+            "role": "$role",
+            "authcodetocheck": "$authcode"
         }
         """.trimIndent()
 

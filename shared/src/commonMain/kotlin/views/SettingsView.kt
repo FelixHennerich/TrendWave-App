@@ -1,5 +1,6 @@
 package views
 
+import account.AccountManager
 import account.UUID
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -85,17 +86,30 @@ class SettingsView {
                     Modifier.width(100.dp).height(100.dp).offset(y = 100.dp)
                 )
 
-                val scope = rememberCoroutineScope()
+                /*val scope = rememberCoroutineScope()
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
                     scope.launch {
                         text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
                     }
                 }
-                Text(text)
+                Text(text)*/
+
+
+
+                val scope = rememberCoroutineScope()
+                var text by remember { mutableStateOf("Loading") }
+                LaunchedEffect(true) {
+                    scope.launch {
+                        val accountManager = AccountManager()
+                        text = accountManager.createAccount("fehennerich@outlook.de", "12345534", "felixhennerich", "01.04.2005","authcode1234jfj")
+                            .toString()
+                    }
+                }
+                Text(text, modifier = Modifier.offset(x = 50.dp, y= 300.dp))
+
+
             }
-
-
         }
     }
 }
