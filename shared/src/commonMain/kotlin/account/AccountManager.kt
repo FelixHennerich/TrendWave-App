@@ -15,14 +15,14 @@ class AccountManager {
      * etc.
      */
     suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): Int {
-        /*if(!checkEmail(email))
+        if(!checkEmail(email))
             return 100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
         if(email.length < 8)
             return 101 // Password to weak
         if(username.length < 5 || username.length > 32)
             return 102 // Username too short/long
         if(userNameExists(username))
-            return 103 // Username already exists*/
+            return 103 // Username already exists
 
         val role = "Member" // IMPORTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionManager.encryption(password); // Password encryption
