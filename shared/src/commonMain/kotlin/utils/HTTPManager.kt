@@ -88,6 +88,15 @@ class HTTPManager {
         return response
     }
 
+    /**
+     * MySQL post request check username validity
+     *
+     * @param url -> Website URL
+     * @param table -> MySQL user table
+     * @param username -> Username to check
+     * @param authcode -> Authentication for MySQL
+     * @return HTTP Body
+     */
     suspend fun usernameCheck(url: String, table: String, username: String, authcode: String): String{
 
         val response = client.get(url) {
