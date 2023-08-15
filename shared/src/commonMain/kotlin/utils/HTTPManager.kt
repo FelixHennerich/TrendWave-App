@@ -54,4 +54,16 @@ class HTTPManager {
         }
         return response
     }
+
+    suspend fun usernameCheck(url: String, table: String, username: String, authcode: String): String{
+
+        val response = client.get(url) {
+            url{
+                parameters.append("table", table)
+                parameters.append("username", username)
+                parameters.append("authcodetocheck", authcode)
+            }
+        }
+        return response.bodyAsText()
+    }
 }
