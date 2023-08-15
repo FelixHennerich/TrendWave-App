@@ -40,6 +40,9 @@ fun App() {
  * HOME SCREEN
  *
  * WILL BE OUTSOURCED AS SOON AS @Caaasperrr has the login screen
+ *
+ * @param onNavigateToDetails -> naviagte to Detail screen
+ * @param onNavigateToSettings -> naviagte to Settings screen
  */
 @Composable
 fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit) {
@@ -57,6 +60,10 @@ fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit
 
 /**
  * define both screens as object
+ *
+ * @Object Home -> Main Screen, gonna be Login
+ * @Object Details -> Detail test screen
+ * @Object Settings -> Settings screen
  */
 sealed class Screen {
     data object Home : Screen()

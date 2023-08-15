@@ -7,8 +7,12 @@ import kotlin.math.sqrt
 
 
 internal object EncryptionManager {
+
     /**
      * Function to encrypt the String unsing a MATRIXTRANSPOSITION
+     *
+     * @param s -> String that is about to get encrypted
+     * @return -> encrypted String
       */
     fun encryption(s: String): String {
         val l = s.length
@@ -52,6 +56,9 @@ internal object EncryptionManager {
 
     /**
      * Function to decrypt the String
+     *
+     * @param s -> Encrypted string that will be decrypted
+     * @return -> decrypted String
      */
     fun decryption(s: String): String {
         val l = s.length

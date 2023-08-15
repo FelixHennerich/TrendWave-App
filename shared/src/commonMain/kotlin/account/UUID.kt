@@ -4,11 +4,22 @@ import kotlin.random.Random
 
 class UUID {
 
+    /**
+     * Function for 128Bit Unique ID
+     *
+     * @return -> 128Bit UUID
+     */
     fun generate128BitUUID(): String {
         val randomBits = generateRandomBits(128)
         return formatBitsAsUUID(randomBits)
     }
 
+    /**
+     * Generating random bits for UUID
+     *
+     * @param bits -> length of UUID
+     * @return -> Array of randomized Bytes
+     */
     fun generateRandomBits(bits: Int): ByteArray {
         val byteArraySize = (bits + 7) / 8
         val random = Random.Default
@@ -21,6 +32,12 @@ class UUID {
         return randomBytes
     }
 
+    /**
+     * Formatting the randomized Bytes to UUID
+     *
+     * @param bits -> Bytearray with randomized Bytes
+     * @return -> finished UUID
+     */
     fun formatBitsAsUUID(bits: ByteArray): String {
         val sb = StringBuilder()
         for (i in bits.indices) {
