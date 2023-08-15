@@ -17,6 +17,7 @@ class DetailScreen {
     /**
      * Testview 2 (detail)
      * counter button
+     * @param onNavigateToHome -> Navigator button
      */
     @Composable
     fun DetailsScreen(onNavigateToHome: () -> Unit) {

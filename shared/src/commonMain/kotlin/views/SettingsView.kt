@@ -50,6 +50,9 @@ class SettingsView {
 
     private val url = "https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php";
 
+    /**
+     * @param onNavigateToHome -> Navigator left top
+     */
     @Composable
     fun SettingsScreen(onNavigateToHome: () -> Unit) {
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {

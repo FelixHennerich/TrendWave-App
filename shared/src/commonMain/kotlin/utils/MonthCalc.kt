@@ -2,6 +2,12 @@ package utils
 
 internal object MonthCalc {
 
+    /**
+     * Month to Number (August to 8)
+     *
+     * @param month -> Written month
+     * @return Number month
+     */
     fun numberOfMonth(month: String): String {
         var num: String = ""
         when(month){
