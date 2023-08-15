@@ -34,10 +34,10 @@ class AccountManager {
             return 101 // Password to weak
         if(username.length < 5 || username.length > 32)
             return 102 // Username too short/long
-        if(userNameExists(username))
+        if(userNameExists(username, authcode))
             return 103 // Username already exists
 
-        val role = "Member" // IMPORTANT nerver create a account with owner permissions by default
+        val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionManager.encryption(password); // Password encryption
         val uuidclass = UUID() // uuid class
         val uuid = uuidclass.generate128BitUUID() // 128Bit uuid generation
@@ -66,8 +66,20 @@ class AccountManager {
      * @param username -> Username to check
      * @return -> Exists = true; No Exists = false
      */
-    fun userNameExists(username: String): Boolean{
-        return false
+    suspend fun userNameExists(username: String, authcode: String): Boolean{
+        try{
+            if(HTTPManager().usernameCheck(
+                    "https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php",
+                    "newsuser",
+                    username,
+                    authcode).contains("Username is free")){
+                return false
+            }
+        } catch (e: Exception){
+            e.printStackTrace()
+            return true
+        }
+        return true
     }
 
     /**

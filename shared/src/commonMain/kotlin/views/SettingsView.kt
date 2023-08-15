@@ -106,10 +106,11 @@ class SettingsView {
                     scope.launch {
                         val accountManager = AccountManager()
                         text = accountManager.createAccount("fehennerich@outlook.de", "12345534", "felixhennerich", "01.04.2005","authcode1234jfj")
+                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj")
                             .toString()
                     }
                 }
-                Text(text, modifier = Modifier.offset(x = 50.dp, y= 300.dp))
+                Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
 
 
             }
