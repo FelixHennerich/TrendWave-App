@@ -1,15 +1,9 @@
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
-import utils.EncryptionManager
 import views.DetailScreen
+import views.HomeScreen
 import views.SettingsView
 
 /**
@@ -21,9 +15,10 @@ fun App() {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val detailScreenTT = DetailScreen()
     val settingsViewTT = SettingsView()
+    val homeScreenTT = HomeScreen()
 
     when (currentScreen) {
-        is Screen.Home -> HomeScreen(
+        is Screen.Home -> homeScreenTT.HomeScreen(
             onNavigateToDetails = { currentScreen = Screen.Details },
             onNavigateToSettings = { currentScreen = Screen.Settings }
         )
@@ -33,28 +28,6 @@ fun App() {
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
         )
-    }
-}
-
-/**
- * HOME SCREEN
- *
- * WILL BE OUTSOURCED AS SOON AS @Caaasperrr has the login screen
- *
- * @param onNavigateToDetails -> naviagte to Detail screen
- * @param onNavigateToSettings -> naviagte to Settings screen
- */
-@Composable
-fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit) {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Button(onClick = onNavigateToDetails) {
-            Text("Go to Details")
-        }
-    }
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
-        Button(onClick = onNavigateToSettings) {
-            Text("Go to Settings")
-        }
     }
 }
 

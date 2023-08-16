@@ -1,4 +1,4 @@
-package account
+package account.utilities
 
 import kotlin.random.Random
 

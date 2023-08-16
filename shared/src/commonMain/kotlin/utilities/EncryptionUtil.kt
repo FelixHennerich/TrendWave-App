@@ -1,4 +1,4 @@
-package utils
+package utilities
 
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -6,7 +6,7 @@ import kotlin.math.min
 import kotlin.math.sqrt
 
 
-internal object EncryptionManager {
+internal object EncryptionUtil {
 
     /**
      * Function to encrypt the String unsing a MATRIXTRANSPOSITION
