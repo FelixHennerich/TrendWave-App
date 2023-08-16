@@ -1,12 +1,13 @@
-package account
+package account.manager
 
-import io.ktor.util.date.GMTDate
-import utils.EncryptionManager
-import utils.HTTPManager
-import utils.MonthCalc
+import account.utilities.UUID
+import utilities.DateUtil
+import utilities.EncryptionUtil
+import managers.HTTPManager
+import managers.exceptions.NException
 
-class AccountManager {
-
+class CreationManager {
+    
     /**
      * Function to check account data and ready up the account creation
      *
@@ -18,46 +19,38 @@ class AccountManager {
      * @param birthday -> Birthday date of User
      * @param authcode -> Authcode in MySQL MUST BE CHANGED AFTER USE
      * @return -> Error/Success-Code -- Following Codes
-     *
-     * @throws 1 -> Account successfully created
-     * @throws 100 -> Email does not contain @ or . -> wrong email
-     * @throws 101 -> password to weak
-     * @throws 102 -> username to short / long
-     * @throws 103 -> username already esists
-     * @throws 400 -> HTTP Error while posting
-     * @throws 401 -> Error while creating account in database
      */
-    suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): Int {
+    suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): NException {
         if(!checkEmail(email))
-            return 100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
+            return NException.Emailwrong100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
         if(email.length < 8)
-            return 101 // Password to weak
+            return NException.PasswordToWeak101 // Password to weak
         if(username.length < 5 || username.length > 32)
-            return 102 // Username too short/long
+            return NException.UsernameLength102 // Username too short/long
         if(userNameExists(username, authcode))
-            return 103 // Username already exists
+            return NException.UsernameExists103 // Username already exists
 
         val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
-        val encryptedPassword = EncryptionManager.encryption(password); // Password encryption
+        val encryptedPassword = EncryptionUtil.encryption(password); // Password encryption
         val uuidclass = UUID() // uuid class
         val uuid = uuidclass.generate128BitUUID() // 128Bit uuid generation
+        val dateUtil = DateUtil() // Current date util
 
         try {
             if(HTTPManager().postInsert(
                 "https://cross-cultural-auto.000webhostapp.com/php/connectInsert.php",
                 "newsuser",
                     uuid, email, username,
-                    encryptedPassword, getCurrentDate(), birthday,
+                    encryptedPassword, dateUtil.getCurrentDate(), birthday,
                     role,authcode
-            ).toString().contains("200 OK")) {
-                return 1 // Account successfully created
-            }else {
-                return 400 // HTTP Error while posting
-            }
+            ).toString().contains("200 OK"))
+                return NException.SUCCESS001 // Account successfully created
+            else
+                return NException.HTTPPosting400 // HTTP Error while posting
         }catch (e: Exception){
             e.printStackTrace()
         }
-        return 401 //Error while creating account in datebase
+        return NException.DatabaseCreation401 //Error while creating account in datebase
     }
 
     /**
@@ -72,9 +65,8 @@ class AccountManager {
                     "https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php",
                     "newsuser",
                     username,
-                    authcode).contains("Username is free")){
+                    authcode).contains("Username is free"))
                 return false
-            }
         } catch (e: Exception){
             e.printStackTrace()
             return true
@@ -92,17 +84,4 @@ class AccountManager {
         return email.contains("@") && email.contains(".")
     }
 
-    /**
-     * Takes the current date of the day
-     *
-     * @return Date of Day
-     * @sample (dd.mm.yyyy)
-     */
-    fun getCurrentDate(): String {
-        val day = GMTDate().dayOfMonth
-        val month = MonthCalc.numberOfMonth(GMTDate().month.toString())
-        val year = GMTDate().year
-        val date = "$day.$month.$year"
-        return date
-    }
 }

@@ -1,4 +1,4 @@
-package utils
+package managers
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*

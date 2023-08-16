@@ -1,7 +1,6 @@
 package views
 
-import account.AccountManager
-import account.UUID
+import account.manager.CreationManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -31,24 +30,11 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
-import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.launch
-import utils.HTTPManager
-import utils.MonthCalc
+import managers.exceptions.ExceptionHandler
 
 
 class SettingsView {
-
-    /*
-    ? Image Example:
-
-            KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),
-                null
-            )
-
-     */
-
-    private val url = "https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php";
 
     /**
      * @param onNavigateToHome -> Navigator left top
@@ -104,10 +90,10 @@ class SettingsView {
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
                     scope.launch {
-                        val accountManager = AccountManager()
-                        text = accountManager.createAccount("fehennerich@outlook.de", "12345534", "felixhennerich", "01.04.2005","authcode1234jfj")
-                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj")
-                            .toString()
+                        val accountManager = CreationManager()
+                        val ExceptionHandler = ExceptionHandler();
+                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("fehennerich@outlook.de", "12345534", "felixhennerich", "01.04.2005","authcode1234jfj"))
+                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
                     }
                 }
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
@@ -117,3 +103,11 @@ class SettingsView {
         }
     }
 }
+
+/*
+    Image Example:
+            KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),
+                null
+            )
+
+     */
