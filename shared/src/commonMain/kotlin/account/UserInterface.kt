@@ -4,13 +4,13 @@ import account.utilities.RoleType
 
 interface UserInterface {
 
-    fun getEmail() : String
-    fun getUsername() : String
-    fun getUUID() : String
-    fun getRole() : RoleType
-    fun getBirthday() : String
-    fun getSignupday() : String
-    fun hasPermissionRole() : Boolean
+    fun getEmail(uuid: String, authcode: String) : String
+    fun getUsername(uuid: String) : String
+    fun getUUID(email: String) : String
+    fun getRole(uuid: String) : RoleType
+    fun getBirthday(uuid: String) : String
+    fun getSignupday(uuid: String) : String
+    fun hasPermissionRole(role: RoleType) : Boolean
 
 
 

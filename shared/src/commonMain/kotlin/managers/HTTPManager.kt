@@ -23,6 +23,26 @@ class HTTPManager {
     }
 
     /**
+     * Return specific value from datebase
+     *
+     * @param url -> Website URL
+     * @param value -> Value that is requested
+     * @param uuid -> Unique ID
+     * @param authcode -> Verification
+     * @return -> requested Valuexx
+     */
+    suspend fun getValue(url: String, value: String, uuid: String, authcode: String): String{
+        val response = client.get(url){
+            url{
+                parameters.append("value", value)
+                parameters.append("uuid", uuid)
+                parameters.append("authcode", authcode)
+            }
+        }
+        return response.bodyAsText()
+    }
+
+    /**
      * Update account data in datebase using HTTP request
      *
      * @param url -> Website URL
