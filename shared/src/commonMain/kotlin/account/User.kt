@@ -13,11 +13,12 @@ import managers.HTTPManager
 class User : UserInterface {
 
     private val url: String
-        get() = "https://cross-cultural-auto.000webhostapp.com/php/connectGet.php"
+        get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val httpManager = HTTPManager()
 
     override fun getEmail(uuid: String, authcode: String): String {
-        text = httpManager.getValue(url, "email", uuid, authcode)
+        //text = httpManager.getValue(url, "email", uuid, authcode)
+        TODO("Not yet implemented")
     }
 
     override fun getUsername(uuid: String): String {

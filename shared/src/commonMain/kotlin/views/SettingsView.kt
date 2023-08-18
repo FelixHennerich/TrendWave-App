@@ -1,5 +1,6 @@
 package views
 
+import account.manager.AuthCodeManager
 import account.manager.CreationManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -91,9 +92,12 @@ class SettingsView {
                 LaunchedEffect(true) {
                     scope.launch {
                         val accountManager = CreationManager()
-                        val ExceptionHandler = ExceptionHandler();
-                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("fehennerich@outlook.de", "12345534", "felixhennerich", "01.04.2005","authcode1234jfj"))
-                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
+                        val ExceptionHandler = ExceptionHandler()
+                        val authcodemanager = AuthCodeManager()
+                        //val code = authcodemanager.getNewAuthcode()
+                        //text = authcodemanager.deactivateAuthcode(code)
+                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("nitroxblu423e1@gmail.com", "thisismypassword123", "Newsa", "01.04.2005"))
+                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
                     }
                 }
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
