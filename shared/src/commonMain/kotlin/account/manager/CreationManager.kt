@@ -1,10 +1,12 @@
 package account.manager
 
 import account.utilities.UUID
+import kotlinx.coroutines.delay
 import utilities.DateUtil
 import utilities.EncryptionUtil
 import managers.HTTPManager
 import managers.exceptions.NException
+import kotlin.native.concurrent.ThreadLocal
 
 class CreationManager {
     
@@ -20,15 +22,27 @@ class CreationManager {
      * @param authcode -> Authcode in MySQL MUST BE CHANGED AFTER USE
      * @return -> Error/Success-Code -- Following Codes
      */
-    suspend fun createAccount(email: String, password: String, username: String, birthday: String, authcode: String): NException {
-        if(!checkEmail(email))
+    suspend fun createAccount(email: String, password: String, username: String, birthday: String): NException {
+        val authcodemanager = AuthCodeManager()
+        val authcode: String = authcodemanager.getNewAuthcode()
+        delay(1000)
+
+        if(!checkEmail(email)) {
+            authcodemanager.deactivateAuthcode(authcode)
             return NException.Emailwrong100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
-        if(email.length < 8)
+        }
+        if(email.length < 8) {
+            authcodemanager.deactivateAuthcode(authcode)
             return NException.PasswordToWeak101 // Password to weak
-        if(username.length < 5 || username.length > 32)
+        }
+        if(username.length < 5 || username.length > 32) {
+            authcodemanager.deactivateAuthcode(authcode)
             return NException.UsernameLength102 // Username too short/long
-        if(userNameExists(username, authcode))
+        }
+        if(userNameExists(username, authcode)) {
+            authcodemanager.deactivateAuthcode(authcode)
             return NException.UsernameExists103 // Username already exists
+        }
 
         val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionUtil.encryption(password); // Password encryption
@@ -38,19 +52,23 @@ class CreationManager {
 
         try {
             if(HTTPManager().postInsert(
-                "https://cross-cultural-auto.000webhostapp.com/php/connectInsert.php",
+                "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectInsert.php",
                 "newsuser",
                     uuid, email, username,
                     encryptedPassword, dateUtil.getCurrentDate(), birthday,
                     role,authcode
-            ).toString().contains("200 OK"))
+            ).toString().contains("200 OK")) {
+                authcodemanager.deactivateAuthcode(authcode)
                 return NException.SUCCESS001 // Account successfully created
-            else
+            }else {
+                authcodemanager.deactivateAuthcode(authcode)
                 return NException.HTTPPosting400 // HTTP Error while posting
+            }
         }catch (e: Exception){
             e.printStackTrace()
         }
-        return NException.DatabaseCreation401 //Error while creating account in datebase
+        authcodemanager.deactivateAuthcode(authcode)
+        return NException.DatabaseCreation401 //Error while creating account in datebase*/
     }
 
     /**
@@ -62,7 +80,7 @@ class CreationManager {
     suspend fun userNameExists(username: String, authcode: String): Boolean{
         try{
             if(HTTPManager().usernameCheck(
-                    "https://cross-cultural-auto.000webhostapp.com/php/checkUsername.php",
+                    "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php",
                     "newsuser",
                     username,
                     authcode).contains("Username is free"))
