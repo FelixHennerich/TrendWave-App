@@ -43,6 +43,10 @@ class CreationManager {
             authcodemanager.deactivateAuthcode(authcode)
             return NException.UsernameExists103 // Username already exists
         }
+        if(emailExists(email, authcode)){
+            authcodemanager.deactivateAuthcode(authcode)
+            return NException.EmailExists104 // Username already exists
+        }
 
         val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionUtil.encryption(password); // Password encryption
@@ -84,6 +88,27 @@ class CreationManager {
                     "newsuser",
                     username,
                     authcode).contains("Username is free"))
+                return false
+        } catch (e: Exception){
+            e.printStackTrace()
+            return true
+        }
+        return true
+    }
+
+    /**
+     * Checks for email whether it already exists
+     *
+     * @param email -> email to check
+     * @return -> Exists = true; No Exists = false
+     */
+    suspend fun emailExists(email: String, authcode: String): Boolean{
+        try{
+            if(HTTPManager().emailCheck(
+                    "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkEmail.php",
+                    "newsuser",
+                    email,
+                    authcode).contains("Email is free"))
                 return false
         } catch (e: Exception){
             e.printStackTrace()
