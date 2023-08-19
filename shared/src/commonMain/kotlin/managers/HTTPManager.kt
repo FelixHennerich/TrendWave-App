@@ -128,4 +128,25 @@ class HTTPManager {
         }
         return response.bodyAsText()
     }
+
+    /**
+     * Check whether a email is already existing in the database
+     *
+     * @param url -> Website URL
+     * @param table -> User data table
+     * @param email -> email to check
+     * @param authcode -> authentication for HTTP
+     * @return -> HTTP Body
+     */
+    suspend fun emailCheck(url: String, table: String, email: String, authcode: String): String{
+
+        val response = client.get(url) {
+            url{
+                parameters.append("table", table)
+                parameters.append("email", email)
+                parameters.append("authcodetocheck", authcode)
+            }
+        }
+        return response.bodyAsText()
+    }
 }

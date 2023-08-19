@@ -12,6 +12,7 @@ enum class NException {
     PasswordToWeak101,
     UsernameLength102,
     UsernameExists103,
+    EmailExists104,
 
     /**
      * 200

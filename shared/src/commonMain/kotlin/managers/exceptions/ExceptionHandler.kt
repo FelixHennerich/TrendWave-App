@@ -44,6 +44,7 @@ class ExceptionHandler {
             NException.PasswordToWeak101    -> message = "Your password must be longer than 8 letters."
             NException.UsernameLength102    -> message = "Your username has an invalid length."
             NException.UsernameExists103    -> message = "Your username is already used."
+            NException.EmailExists104    -> message = "Your Email is already used."
             /**
              * 200
              */
