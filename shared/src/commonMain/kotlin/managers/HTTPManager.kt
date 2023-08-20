@@ -1,5 +1,6 @@
 package managers
 
+import account.manager.AuthCodeManager
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -10,6 +11,7 @@ import io.ktor.http.*
 class HTTPManager {
 
     private val client = HttpClient()
+    val authCodeManager = AuthCodeManager()
 
     /**
      * Return whole HTTP body of given website
@@ -31,15 +33,37 @@ class HTTPManager {
      * @param authcode -> Verification
      * @return -> requested Valuexx
      */
-    suspend fun getValue(url: String, value: String, uuid: String, authcode: String): String{
+    suspend fun getValue(url: String, value: String, uuid: String): String?{
+        val authcode = authCodeManager.getNewAuthcode()
         val response = client.get(url){
             url{
                 parameters.append("value", value)
                 parameters.append("uuid", uuid)
-                parameters.append("authcode", authcode)
+                parameters.append("authcodetocheck", authcode)
             }
         }
-        return response.bodyAsText()
+        authCodeManager.deactivateAuthcode(authcode)
+        val body = response.bodyAsText()
+        if(body.contains("No Authcode found")){
+            return null
+        }
+        if(body.contains("ThisIsYourValue#")){
+            var value = buildString { // Stringbuilder 120x more performance saving than Strings
+                for (i in body.indices) {
+                    if (body[i] == '#') {
+                        for (j in body.indices-i) {
+                            if(body[i+j+1] == '#')
+                                break
+                            else
+                                append(body[i + j+1])
+                        }
+                        break
+                    }
+                }
+            }
+            return value
+        }
+        return "abcd"
     }
 
     /**

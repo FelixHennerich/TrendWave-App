@@ -1,5 +1,6 @@
 package account
 
+import account.manager.AuthCodeManager
 import account.utilities.RoleType
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -8,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import managers.HTTPManager
 
 class User : UserInterface {
@@ -16,9 +18,9 @@ class User : UserInterface {
         get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val httpManager = HTTPManager()
 
-    override fun getEmail(uuid: String, authcode: String): String {
-        //text = httpManager.getValue(url, "email", uuid, authcode)
-        TODO("Not yet implemented")
+    override suspend fun getEmail(uuid: String): String {
+        val email = httpManager.getValue(url, "email", uuid)
+        return email ?: "No Email Found Error"
     }
 
     override fun getUsername(uuid: String): String {

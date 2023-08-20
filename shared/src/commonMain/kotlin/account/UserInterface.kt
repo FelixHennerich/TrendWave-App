@@ -4,7 +4,7 @@ import account.utilities.RoleType
 
 interface UserInterface {
 
-    fun getEmail(uuid: String, authcode: String) : String
+    suspend fun getEmail(uuid: String) : String
     fun getUsername(uuid: String) : String
     fun getUUID(email: String) : String
     fun getRole(uuid: String) : RoleType
