@@ -18,6 +18,11 @@ class User : UserInterface {
         get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val httpManager = HTTPManager()
 
+    /**
+     * get the email of a user
+     * @param uuid -> Unique ID
+     * @return -> email
+     */
     override suspend fun getEmail(uuid: String): String {
         val email = httpManager.getValue(url, "email", uuid)
         return email ?: "No Email Found Error"
