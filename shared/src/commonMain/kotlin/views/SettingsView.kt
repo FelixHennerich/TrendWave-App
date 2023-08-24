@@ -95,12 +95,12 @@ class SettingsView {
                         val accountManager = CreationManager()
                         val ExceptionHandler = ExceptionHandler()
                         val authcodemanager = AuthCodeManager()
+                        val user = User();
                         //val code = authcodemanager.getNewAuthcode()
                         //text = authcodemanager.deactivateAuthcode(code)
-                        //text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("nitroxblu423e1@gmail.com", "thisismypassword123", "Newsa", "01.04.2005"))
+                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("nitroxblu423e1@gmail.com", "thisismypassword123", "Newsa", "01.04.2005"))
                         //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
-                        val user = User();
-                        text = user.getEmail("0059fb5e1eff0fb8abccec0701ee38a7")
+                        //text = user.getEmail("0059fb5e1eff0fb8abccec0701ee38a7")
                     }
                 }
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))

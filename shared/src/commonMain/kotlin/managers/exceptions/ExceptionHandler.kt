@@ -36,15 +36,16 @@ class ExceptionHandler {
     fun fetchErrorMessage(nexception: NException): String{
         var message: String? = null
         when(nexception){
-            NException.SUCCESS001           -> message = "Your action was successful."
+            NException.SUCCESS001             -> message = "Your action was successful."
             /**
              * 100
              */
-            NException.Emailwrong100        -> message = "You've entered an invalid email."
-            NException.PasswordToWeak101    -> message = "Your password must be longer than 8 letters."
-            NException.UsernameLength102    -> message = "Your username has an invalid length."
-            NException.UsernameExists103    -> message = "Your username is already used."
-            NException.EmailExists104    -> message = "Your Email is already used."
+            NException.Emailwrong100          -> message = "You've entered an invalid email."
+            NException.PasswordToWeak101      -> message = "Your password must be longer than 8 letters."
+            NException.UsernameLength102      -> message = "Your username has an invalid length."
+            NException.UsernameExists103      -> message = "Your username is already used."
+            NException.EmailExists104         -> message = "Your Email is already used."
+            NException.UnallowedCharacters105 -> message = "There is a character that isnt allowed"
             /**
              * 200
              */
@@ -54,7 +55,7 @@ class ExceptionHandler {
             /**
              * 400
              */
-            NException.HTTPPosting400    -> message = "Error while posting the HTTP request."
+            NException.HTTPPosting400         -> message = "Error while posting the HTTP request."
             NException.DatabaseCreation401    -> message = "Error while creating user account in database"
             else -> {}
         }
