@@ -13,6 +13,7 @@ enum class NException {
     UsernameLength102,
     UsernameExists103,
     EmailExists104,
+    UnallowedCharacters105,
 
     /**
      * 200

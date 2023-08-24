@@ -1,6 +1,8 @@
 package account.manager
 
 import account.utilities.UUID
+import androidx.compose.ui.text.toLowerCase
+import io.ktor.utils.io.charsets.Charset
 import kotlinx.coroutines.delay
 import utilities.DateUtil
 import utilities.EncryptionUtil
@@ -27,6 +29,10 @@ class CreationManager {
         val authcode: String = authcodemanager.getNewAuthcode()
         delay(1000)
 
+        if(!charChecker(email) || !charChecker(password) || !charChecker(username)){
+            authcodemanager.deactivateAuthcode(authcode)
+            return NException.UnallowedCharacters105 // Unauthorized characters
+        }
         if(!checkEmail(email)) {
             authcodemanager.deactivateAuthcode(authcode)
             return NException.Emailwrong100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
@@ -125,6 +131,26 @@ class CreationManager {
      */
     fun checkEmail(email: String): Boolean{
         return email.contains("@") && email.contains(".")
+    }
+
+    /**
+     * Check whether a character is allowed in this context or not
+     *
+     * @param value -> String that has to be checked
+     * @return -> true = string is ok, false = string isnt ok
+     */
+    fun charChecker(value: String): Boolean{
+        val acceptedCharset = mutableListOf("a","b","c","d","e","f","g","'",">","@","~",
+            "h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","€","ü",
+            "y","z","1","2","3","4","5","6","7","8","9","0","!","§","$","%","&","ä","ö",
+            "/","(",")","=","?","ß","*","+","`","´","-","_",".",":",",",";","<"," ")
+        for(i in value.indices){
+            if(!acceptedCharset.contains(value[i].toString().lowercase())){
+                println(value[i])
+                return false
+            }
+        }
+        return true
     }
 
 }
