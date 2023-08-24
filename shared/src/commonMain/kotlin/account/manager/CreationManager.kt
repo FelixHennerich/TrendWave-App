@@ -26,31 +26,24 @@ class CreationManager {
      */
     suspend fun createAccount(email: String, password: String, username: String, birthday: String): NException {
         val authcodemanager = AuthCodeManager()
-        val authcode: String = authcodemanager.getNewAuthcode()
         delay(1000)
 
         if(!charChecker(email) || !charChecker(password) || !charChecker(username)){
-            authcodemanager.deactivateAuthcode(authcode)
             return NException.UnallowedCharacters105 // Unauthorized characters
         }
         if(!checkEmail(email)) {
-            authcodemanager.deactivateAuthcode(authcode)
             return NException.Emailwrong100 // EMAIL DOES NOT CONTAIN @ OR . -> WRONG EMAIL
         }
         if(email.length < 8) {
-            authcodemanager.deactivateAuthcode(authcode)
             return NException.PasswordToWeak101 // Password to weak
         }
         if(username.length < 5 || username.length > 32) {
-            authcodemanager.deactivateAuthcode(authcode)
             return NException.UsernameLength102 // Username too short/long
         }
-        if(userNameExists(username, authcode)) {
-            authcodemanager.deactivateAuthcode(authcode)
+        if(userNameExists(username)) {
             return NException.UsernameExists103 // Username already exists
         }
-        if(emailExists(email, authcode)){
-            authcodemanager.deactivateAuthcode(authcode)
+        if(emailExists(email)){
             return NException.EmailExists104 // Username already exists
         }
 
@@ -66,18 +59,15 @@ class CreationManager {
                 "newsuser",
                     uuid, email, username,
                     encryptedPassword, dateUtil.getCurrentDate(), birthday,
-                    role,authcode
+                    role
             ).toString().contains("200 OK")) {
-                authcodemanager.deactivateAuthcode(authcode)
                 return NException.SUCCESS001 // Account successfully created
             }else {
-                authcodemanager.deactivateAuthcode(authcode)
                 return NException.HTTPPosting400 // HTTP Error while posting
             }
         }catch (e: Exception){
             e.printStackTrace()
         }
-        authcodemanager.deactivateAuthcode(authcode)
         return NException.DatabaseCreation401 //Error while creating account in datebase*/
     }
 
@@ -87,13 +77,12 @@ class CreationManager {
      * @param username -> Username to check
      * @return -> Exists = true; No Exists = false
      */
-    suspend fun userNameExists(username: String, authcode: String): Boolean{
+    suspend fun userNameExists(username: String): Boolean{
         try{
             if(HTTPManager().usernameCheck(
                     "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php",
                     "newsuser",
-                    username,
-                    authcode).contains("Username is free"))
+                    username).contains("Username is free"))
                 return false
         } catch (e: Exception){
             e.printStackTrace()
@@ -108,13 +97,12 @@ class CreationManager {
      * @param email -> email to check
      * @return -> Exists = true; No Exists = false
      */
-    suspend fun emailExists(email: String, authcode: String): Boolean{
+    suspend fun emailExists(email: String): Boolean{
         try{
             if(HTTPManager().emailCheck(
                     "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkEmail.php",
                     "newsuser",
-                    email,
-                    authcode).contains("Email is free"))
+                    email).contains("Email is free"))
                 return false
         } catch (e: Exception){
             e.printStackTrace()

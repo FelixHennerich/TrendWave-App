@@ -2,9 +2,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
+import event.EventManager
+import event.listeners.HTTPListener
 import views.DetailScreen
 import views.HomeScreen
 import views.SettingsView
+
 
 /**
  * fun App() is the main function of the "Shared" code
@@ -12,6 +15,8 @@ import views.SettingsView
  */
 @Composable
 fun App() {
+    registerListener()
+
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val detailScreenTT = DetailScreen()
     val settingsViewTT = SettingsView()
@@ -29,6 +34,27 @@ fun App() {
             onNavigateToHome = { currentScreen = Screen.Home }
         )
     }
+}
+
+private val eventManager = EventManager()
+
+/**
+ * Get Main EventManager
+ * @return -> eventmanager
+ */
+fun getEventManager(): EventManager{
+    return eventManager
+}
+
+/**
+ * Register all listeners that are used
+ */
+fun registerListener(){
+    //Add every event
+    val httplistener = HTTPListener()
+
+    //Add every event
+    eventManager.addListener(httplistener)
 }
 
 /**
