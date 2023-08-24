@@ -1,6 +1,9 @@
 package managers
 
 import account.manager.AuthCodeManager
+import event.Event
+import event.EventType
+import getEventManager
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -35,6 +38,10 @@ class HTTPManager {
      */
     suspend fun getValue(url: String, value: String, uuid: String): String?{
         val authcode = authCodeManager.getNewAuthcode()
+
+        //HTTP Request
+
+        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url){
             url{
                 parameters.append("value", value)
@@ -42,6 +49,9 @@ class HTTPManager {
                 parameters.append("authcodetocheck", authcode)
             }
         }
+
+        //HTTP Request
+
         authCodeManager.deactivateAuthcode(authcode)
         val body = response.bodyAsText()
         if(body.contains("No Authcode found")){
@@ -110,7 +120,9 @@ class HTTPManager {
      * @param authcode -> Authentication code for MySQL
      * @return HTTPResponse OK/Failed etc.
      */
-    suspend fun postInsert(url: String, table: String, uuid: String,email:String,username:String, password:String, signup:String, birthday:String,role:String, authcode: String): HttpResponse {
+    suspend fun postInsert(url: String, table: String, uuid: String,email:String,username:String, password:String, signup:String, birthday:String,role:String): HttpResponse {
+        val authcode = authCodeManager.getNewAuthcode()
+
         val jsonBody = """
         {
             "table": "$table",
@@ -125,10 +137,17 @@ class HTTPManager {
         }
         """.trimIndent()
 
+        //HTTP Request
+
+        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.post(url) {
             contentType(ContentType.Application.Json)
             setBody(jsonBody)
         }
+
+        //HTTP Request
+
+        authCodeManager.deactivateAuthcode(authcode)
         return response
     }
 
@@ -141,8 +160,12 @@ class HTTPManager {
      * @param authcode -> Authentication for MySQL
      * @return HTTP Body
      */
-    suspend fun usernameCheck(url: String, table: String, username: String, authcode: String): String{
+    suspend fun usernameCheck(url: String, table: String, username: String): String{
+        val authcode = authCodeManager.getNewAuthcode()
 
+        //HTTP Request
+
+        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url) {
             url{
                 parameters.append("table", table)
@@ -150,6 +173,10 @@ class HTTPManager {
                 parameters.append("authcodetocheck", authcode)
             }
         }
+
+        //HTTP Request
+
+        authCodeManager.deactivateAuthcode(authcode)
         return response.bodyAsText()
     }
 
@@ -162,8 +189,12 @@ class HTTPManager {
      * @param authcode -> authentication for HTTP
      * @return -> HTTP Body
      */
-    suspend fun emailCheck(url: String, table: String, email: String, authcode: String): String{
+    suspend fun emailCheck(url: String, table: String, email: String): String{
+        val authcode = authCodeManager.getNewAuthcode()
 
+        //HTTP Request
+
+        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url) {
             url{
                 parameters.append("table", table)
@@ -171,6 +202,10 @@ class HTTPManager {
                 parameters.append("authcodetocheck", authcode)
             }
         }
+
+        //HTTP Request
+
+        authCodeManager.deactivateAuthcode(authcode)
         return response.bodyAsText()
     }
 }
