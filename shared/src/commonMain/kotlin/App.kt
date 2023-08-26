@@ -27,8 +27,7 @@ fun App() {
             onNavigateToDetails = { currentScreen = Screen.Details },
             onNavigateToSettings = { currentScreen = Screen.Settings }
         )
-        is Screen.Details -> detailScreenTT.DetailsScreen(
-            onNavigateToHome = { currentScreen = Screen.Home }
+        is Screen.Details -> detailScreenTT.LoginScreen(
         )
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
