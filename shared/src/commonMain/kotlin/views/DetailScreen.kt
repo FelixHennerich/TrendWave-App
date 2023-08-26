@@ -58,7 +58,7 @@ class DetailScreen {
                 onValueChange = { value = it },
                 colors = textFieldColors,
                 modifier = Modifier.padding(vertical = 20.dp),
-                label = { Text("E-mail") }
+                label = { Text("E-Mail") }
             )
             TextField(
                 value = password,
