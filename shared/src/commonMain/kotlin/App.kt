@@ -4,7 +4,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import event.EventManager
 import event.listeners.HTTPListener
-import views.DetailScreen
+import views.LoginScreen
 import views.HomeScreen
 import views.SettingsView
 
@@ -18,16 +18,16 @@ fun App() {
     registerListener()
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
-    val detailScreenTT = DetailScreen()
+    val loginScreenTT = LoginScreen()
     val settingsViewTT = SettingsView()
     val homeScreenTT = HomeScreen()
 
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
-            onNavigateToDetails = { currentScreen = Screen.Details },
+            onNavigateToLogin = { currentScreen = Screen.Login },
             onNavigateToSettings = { currentScreen = Screen.Settings }
         )
-        is Screen.Details -> detailScreenTT.LoginScreen(
+        is Screen.Login -> loginScreenTT.LoginScreen(
         )
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
@@ -65,6 +65,6 @@ fun registerListener(){
  */
 sealed class Screen {
     data object Home : Screen()
-    data object Details : Screen()
+    data object Login : Screen()
     data object Settings: Screen()
 }
