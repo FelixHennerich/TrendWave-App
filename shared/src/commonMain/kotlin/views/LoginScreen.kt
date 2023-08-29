@@ -72,9 +72,6 @@ class LoginScreen {
                 value = user,
                 onValueChange = { text -> user = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = { user = "" } // Clear the username field
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -117,7 +114,7 @@ class LoginScreen {
             )
 
             TextButton(onClick = {  }) {
-                Text(text = "Forgot your password?")
+                Text(text = "Forgot your password?", color = Color.Blue)
             }
 
             // Button and other UI elements
