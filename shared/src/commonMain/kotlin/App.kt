@@ -6,6 +6,7 @@ import event.EventManager
 import event.listeners.HTTPListener
 import views.LoginScreen
 import views.HomeScreen
+import views.RegisterScreen
 import views.SettingsView
 
 
@@ -21,17 +22,23 @@ fun App() {
     val loginScreenTT = LoginScreen()
     val settingsViewTT = SettingsView()
     val homeScreenTT = HomeScreen()
+    val registerScreenTT = RegisterScreen()
 
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
             onNavigateToLogin = { currentScreen = Screen.Login },
-            onNavigateToSettings = { currentScreen = Screen.Settings }
+            onNavigateToSettings = { currentScreen = Screen.Settings },
+            onNavigateToRegister = {currentScreen = Screen.Register}
         )
         is Screen.Login -> loginScreenTT.LoginScreen(
+        )
+        is Screen.Register -> registerScreenTT.RegisterScreen(
+
         )
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
         )
+
     }
 }
 
@@ -67,4 +74,5 @@ sealed class Screen {
     data object Home : Screen()
     data object Login : Screen()
     data object Settings: Screen()
+    data object Register: Screen()
 }

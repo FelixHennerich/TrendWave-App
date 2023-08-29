@@ -1,11 +1,8 @@
 package views
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,10 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -38,18 +32,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-
-class LoginScreen {
+class RegisterScreen {
 
     @Composable
-    fun LoginScreen() {
-        var user by remember { mutableStateOf("Username / E-mail") }
+    fun RegisterScreen() {
+        var user by remember { mutableStateOf("Username") }
+        var email by remember { mutableStateOf("E-mail") }
         var password by remember { mutableStateOf("Password") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
-
 
         Column(
             Modifier
@@ -59,21 +50,19 @@ class LoginScreen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Logo")
-            Spacer(modifier = Modifier.height(200.dp))
             Text(
-                "LOGIN",
+                "REGISTER",
                 fontSize = 30.sp,
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
                 color = Color.Blue
             )
-            // Textfield for the E-mail / Username
             TextField(
-                value = user,
-                onValueChange = { text -> user = text },
+                value = email,
+                onValueChange = { text -> email = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onDone = { user = "" } // Clear the username field
+                    onDone = { email = "" }
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,43 +104,32 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-
-            TextButton(onClick = {  }) {
-                Text(text = "Forgot your password?")
-            }
-
-            // Button and other UI elements
-            Button(
-                onClick = { /* Handle login logic here */ },
+            TextField(
+                value = user,
+                onValueChange = { text -> user = text },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { user = "" }
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
-                    .padding(start = 65.dp, end = 64.dp, top = 8.dp, bottom = 8.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-                shape = RoundedCornerShape(50)
-            ) {
-                Text(
-                    text = "Login",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 )
-            }
-            Spacer(Modifier.height(20.dp))
-            Text(
-                text = "Don't have an Account yet?",
-                Modifier.padding(top = 8.dp, bottom = 8.dp),
-                fontSize = 14.sp,
-                color = Color.Blue
             )
-            TextButton(onClick = {  }) {
-                Text(
-                    text = "Register",
-                    Modifier.padding(top = 8.dp, bottom = 8.dp),
-                    fontSize = 20.sp,
-                    color = Color.Blue
-                )
-            }
         }
+
     }
+
 }
