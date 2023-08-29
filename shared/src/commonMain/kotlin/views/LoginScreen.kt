@@ -1,118 +1,133 @@
 package views
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Shapes
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextInputForTests
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.ktor.http.ContentType
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+
 
 class LoginScreen {
 
-
+    @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen() {
+        var user by remember { mutableStateOf("Username") }
+        var password by remember { mutableStateOf("Password") }
+        var passwordVisible by rememberSaveable() {
+            mutableStateOf(false)
+        }
+
         Column(
             Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.Bottom),
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //Icon()
-            TextInput(InputType.Name)
-            TextInput(InputType.Password)
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                Text("SIGN IN", Modifier.padding(vertical = 8.dp))
-            }
-            Divider(
-                color = Color.White.copy(alpha = 0.3f),
-                thickness = 1.dp,
-                modifier = Modifier.padding(top = 48.dp)
+            Text(
+                "LOGIN",
+                fontSize = 30.sp,
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Bold,
+                color = Color.Blue
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Don't have an Account?", color = Color.White)
-                TextButton(onClick = {}) {
-                    Text("SIGN UP")
-                }
+            //Textfield for the E-mail / Username
+            TextField(
+                value = user, { text -> user = text },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+            //Textfield for the password
+            TextField(
+                value = user, { text -> password = text },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 65.dp, end = 64.dp, top = 8.dp, bottom = 8.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
+                shape = RoundedCornerShape(50)
+            ) {
+
+                Text(
+                    text = "Login",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
             }
+            Text(
+                text = "Don't have an Account yet? Register",
+                Modifier.padding(top = 8.dp, bottom = 8.dp),
+                fontSize = 14.sp,
+                color = Color.Blue
+            )
         }
-    }
-
-    sealed class InputType(
-        val label: String,
-        val icon: ImageVector,
-        val keyboardOptions: KeyboardOptions,
-        val visualTransformation: VisualTransformation
-    ) {
-        object Name : InputType(
-            label = "Username or E-mail",
-            icon = Icons.Default.Person,
-            KeyboardOptions(imeAction = ImeAction.Next),
-            visualTransformation = VisualTransformation.None
-        )
-
-        object Password : InputType(
-            label = "Password",
-            icon = Icons.Default.Lock,
-            KeyboardOptions(imeAction = ImeAction.Done),
-            visualTransformation = VisualTransformation.None
-        )
-    }
-
-    @Composable
-    fun TextInput(inputType: InputType) {
-
-        var value by remember { mutableStateOf("") }
-
-        TextField(
-            value = value,
-            onValueChange = { value = it },
-            modifier = Modifier
-                .fillMaxWidth(),
-            leadingIcon = { Icon(imageVector = inputType.icon, null) },
-            label = { Text(text = inputType.label) },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.White
-            ),
-            singleLine = true,
-            keyboardOptions = inputType.keyboardOptions,
-            visualTransformation = inputType.visualTransformation
-        )
     }
 }
