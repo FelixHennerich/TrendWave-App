@@ -15,14 +15,14 @@ class HomeScreen {
      *
      * WILL BE OUTSOURCED AS SOON AS @Caaasperrr has the login screen
      *
-     * @param onNavigateToLogin -> naviagte to Detail screen
+     * @param onNavigateToDetails -> naviagte to Detail screen
      * @param onNavigateToSettings -> naviagte to Settings screen
      */
     @Composable
     fun HomeScreen(onNavigateToLogin: () -> Unit, onNavigateToSettings: () -> Unit) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Button(onClick = onNavigateToLogin) {
-                Text("Go to Login")
+                Text("Go to Details")
             }
         }
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
