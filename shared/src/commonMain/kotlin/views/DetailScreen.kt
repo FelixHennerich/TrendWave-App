@@ -32,7 +32,8 @@ class DetailScreen {
      * @param onNavigateToHome -> Navigator button
      */
     @Composable
-    fun LoginScreen() {
+    fun LoginScreen(
+    ) {
         var value by remember { mutableStateOf("") }
         var username by remember{ mutableStateOf("") }
         var password by remember { mutableStateOf("") }
