@@ -7,6 +7,7 @@ import event.listeners.HTTPListener
 import views.DetailScreen
 import views.HomeScreen
 import views.SettingsView
+import views.TestView
 
 
 /**
@@ -21,17 +22,20 @@ fun App() {
     val detailScreenTT = DetailScreen()
     val settingsViewTT = SettingsView()
     val homeScreenTT = HomeScreen()
+    val testScreenTT = TestView()
 
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
             onNavigateToDetails = { currentScreen = Screen.Details },
-            onNavigateToSettings = { currentScreen = Screen.Settings }
+            onNavigateToSettings = { currentScreen = Screen.Settings },
+            onNavigateToTest = {currentScreen = Screen.Test}
         )
         is Screen.Details -> detailScreenTT.LoginScreen(
         )
         is Screen.Settings -> settingsViewTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
         )
+        is Screen.Test ->  testScreenTT.testView()
     }
 }
 
@@ -67,4 +71,5 @@ sealed class Screen {
     data object Home : Screen()
     data object Details : Screen()
     data object Settings: Screen()
+    data object Test: Screen()
 }

@@ -19,7 +19,7 @@ class HomeScreen {
      * @param onNavigateToSettings -> naviagte to Settings screen
      */
     @Composable
-    fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit) {
+    fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit, onNavigateToTest: () -> Unit) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Button(onClick = onNavigateToDetails) {
                 Text("Go to Details")
@@ -28,6 +28,11 @@ class HomeScreen {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
             Button(onClick = onNavigateToSettings) {
                 Text("Go to Settings")
+            }
+        }
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
+            Button(onClick = onNavigateToTest) {
+                Text("Go to Test")
             }
         }
     }
