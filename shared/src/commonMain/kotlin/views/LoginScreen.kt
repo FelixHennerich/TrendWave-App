@@ -5,11 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,14 +42,13 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 class LoginScreen {
 
-    @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen() {
         var user by remember { mutableStateOf("Username") }
         var password by remember { mutableStateOf("Password") }
-        var passwordVisible by rememberSaveable() {
-            mutableStateOf(false)
-        }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+
 
         Column(
             Modifier
@@ -55,6 +57,8 @@ class LoginScreen {
                 .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(text = "Logo")
+            Spacer(modifier = Modifier.height(200.dp))
             Text(
                 "LOGIN",
                 fontSize = 30.sp,
@@ -62,9 +66,14 @@ class LoginScreen {
                 fontWeight = FontWeight.Bold,
                 color = Color.Blue
             )
-            //Textfield for the E-mail / Username
+            // Textfield for the E-mail / Username
             TextField(
-                value = user, { text -> user = text },
+                value = user,
+                onValueChange = { text -> user = text },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { user = "" } // Clear the username field
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -82,9 +91,10 @@ class LoginScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 )
             )
-            //Textfield for the password
+            // Textfield for the password
             TextField(
-                value = user, { text -> password = text },
+                value = password,
+                onValueChange = { text -> password = text },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -104,8 +114,10 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
+
+            // Button and other UI elements
             Button(
-                onClick = { },
+                onClick = { /* Handle login logic here */ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -113,14 +125,12 @@ class LoginScreen {
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
                 shape = RoundedCornerShape(50)
             ) {
-
                 Text(
                     text = "Login",
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
-
             }
             Text(
                 text = "Don't have an Account yet? Register",
