@@ -19,9 +19,9 @@ class HomeScreen {
      * @param onNavigateToSettings -> naviagte to Settings screen
      */
     @Composable
-    fun HomeScreen(onNavigateToDetails: () -> Unit, onNavigateToSettings: () -> Unit) {
+    fun HomeScreen(onNavigateToLogin: () -> Unit, onNavigateToSettings: () -> Unit) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Button(onClick = onNavigateToDetails) {
+            Button(onClick = onNavigateToLogin) {
                 Text("Go to Details")
             }
         }
