@@ -1,17 +1,14 @@
 package views
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -43,12 +40,12 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 class LoginScreen {
 
+    @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen() {
         var user by remember { mutableStateOf("Username / E-mail") }
         var password by remember { mutableStateOf("Password") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
 
 
         Column(
@@ -59,6 +56,7 @@ class LoginScreen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Logo")
+
             Spacer(modifier = Modifier.height(200.dp))
             Text(
                 "LOGIN",
@@ -112,7 +110,7 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-
+            Text(text = "error line", color = Color.Red)
             TextButton(onClick = {  }) {
                 Text(text = "Forgot your password?", color = Color.Blue)
             }

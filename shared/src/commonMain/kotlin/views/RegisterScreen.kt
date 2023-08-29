@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,6 +41,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 
 class RegisterScreen {
 
@@ -62,6 +65,14 @@ class RegisterScreen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Logo")
+            KamelImage(
+                asyncPainterResource(
+                    "",
+                    Modifier.height(20.dp).width(20.dp)
+                ),
+                null
+            )
+            Spacer(Modifier.height(100.dp))
             Text(
                 "REGISTER",
                 fontSize = 30.sp,
@@ -164,6 +175,7 @@ class RegisterScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 )
             )
+            Text(text = "error line", color = Color.Red)
             TextButton(onClick = { }) {
                 Text(
                     text = "already have an account? Login",
@@ -203,7 +215,7 @@ class RegisterScreen {
         ) {
             Spacer(modifier = Modifier.height(700.dp))
 
-            Row() {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = checkedConditionsState.value,
                     onCheckedChange = { checkedConditionsState.value = it },
