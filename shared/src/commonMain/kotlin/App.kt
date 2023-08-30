@@ -7,7 +7,7 @@ import event.listeners.HTTPListener
 import views.LoginScreen
 import views.HomeScreen
 import views.RegisterScreen
-import views.SettingsView
+import views.SettingsScreen
 
 
 /**
@@ -20,7 +20,7 @@ fun App() {
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val loginScreenTT = LoginScreen()
-    val settingsViewTT = SettingsView()
+    val settingsScreenTT = SettingsScreen()
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
 
@@ -35,7 +35,7 @@ fun App() {
         is Screen.Register -> registerScreenTT.RegisterScreen(
 
         )
-        is Screen.Settings -> settingsViewTT.SettingsScreen(
+        is Screen.Settings -> settingsScreenTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home }
         )
 

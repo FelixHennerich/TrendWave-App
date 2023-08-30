@@ -46,6 +46,11 @@ import io.kamel.image.asyncPainterResource
 
 class RegisterScreen {
 
+
+    /**
+     * Register screen for creating new users
+     *
+     */
     @Composable
     fun RegisterScreen() {
         var user by remember { mutableStateOf("Username") }
@@ -64,7 +69,7 @@ class RegisterScreen {
                 .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Logo")
+            Text(text = "Logo") //Todo: Logo
             KamelImage(
                 asyncPainterResource(
                     "",
@@ -175,8 +180,10 @@ class RegisterScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 )
             )
-            Text(text = "error line", color = Color.Red)
-            TextButton(onClick = { }) {
+            Text(text = "error line", color = Color.Red) //TODO add error if there
+            TextButton(onClick = {
+                //Todo navigate to login screen
+            }) {
                 Text(
                     text = "already have an account? Login",
                     Modifier.padding(top = 8.dp, bottom = 8.dp),
@@ -185,7 +192,9 @@ class RegisterScreen {
                 )
             }
             Button(
-                onClick = { /* Handle login logic here */ },
+                onClick = {
+                          //Todo creationmanager handles over here
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)

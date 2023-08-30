@@ -20,6 +20,7 @@ class HomeScreen {
      *
      * @param onNavigateToDetails -> naviagte to Detail screen
      * @param onNavigateToSettings -> naviagte to Settings screen
+     * @param onNavigateToRegister -> navigate to register Screen
      */
     @Composable
     fun HomeScreen(onNavigateToLogin: () -> Unit, onNavigateToSettings: () -> Unit, onNavigateToRegister: () -> Unit) {
