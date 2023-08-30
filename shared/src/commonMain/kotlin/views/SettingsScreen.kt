@@ -5,7 +5,6 @@ import account.manager.AuthCodeManager
 import account.manager.CreationManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -35,10 +34,9 @@ import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
 import kotlinx.coroutines.launch
 import managers.exceptions.ExceptionHandler
-import utilities.presentation.BottomSheet
 
 
-class SettingsView {
+class SettingsScreen {
 
     /**
      * @param onNavigateToHome -> Navigator left top

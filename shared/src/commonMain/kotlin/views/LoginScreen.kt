@@ -40,6 +40,9 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 class LoginScreen {
 
+    /**
+     * Login screen for the app
+     */
     @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen() {
@@ -110,14 +113,18 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Text(text = "error line", color = Color.Red)
-            TextButton(onClick = {  }) {
+            Text(text = "error line", color = Color.Red) //TODO: Import the Error message if available
+            TextButton(onClick = {
+                //TODO: Forgot your password screen
+            }) {
                 Text(text = "Forgot your password?", color = Color.Blue)
             }
 
             // Button and other UI elements
             Button(
-                onClick = { /* Handle login logic here */ },
+                onClick = {
+                          //TODO: LoginManager handles Login here
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -139,7 +146,9 @@ class LoginScreen {
                 fontSize = 14.sp,
                 color = Color.Blue
             )
-            TextButton(onClick = {  }) {
+            TextButton(onClick = {
+                //TODO: Register Button usage -> Link to register screen
+            }) {
                 Text(
                     text = "Register",
                     Modifier.padding(top = 8.dp, bottom = 8.dp),

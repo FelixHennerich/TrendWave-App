@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import utilities.presentation.BottomSheet
 
-class TestView {
+class TestScreen {
 
     @Composable
     fun testView() {
