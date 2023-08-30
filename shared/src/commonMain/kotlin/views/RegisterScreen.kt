@@ -2,16 +2,22 @@ package views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -35,18 +41,21 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 
+class RegisterScreen {
 
-class LoginScreen {
-
-    @OptIn(ExperimentalResourceApi::class)
     @Composable
-    fun LoginScreen() {
-        var user by remember { mutableStateOf("Username / E-mail") }
+    fun RegisterScreen() {
+        var user by remember { mutableStateOf("Username") }
+        var email by remember { mutableStateOf("E-mail") }
         var password by remember { mutableStateOf("Password") }
+        var birthday by remember { mutableStateOf("dd/mm/yyyy") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
+        val checkedConditionsState = remember {
+            mutableStateOf(false)
+        }
 
         Column(
             Modifier
@@ -56,20 +65,28 @@ class LoginScreen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Logo")
-
-            Spacer(modifier = Modifier.height(200.dp))
+            KamelImage(
+                asyncPainterResource(
+                    "",
+                    Modifier.height(20.dp).width(20.dp)
+                ),
+                null
+            )
+            Spacer(Modifier.height(100.dp))
             Text(
-                "LOGIN",
+                "REGISTER",
                 fontSize = 30.sp,
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
                 color = Color.Blue
             )
-            // Textfield for the E-mail / Username
             TextField(
-                value = user,
-                onValueChange = { text -> user = text },
+                value = email,
+                onValueChange = { text -> email = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { email = "" }
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -110,12 +127,63 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
+            TextField(
+                value = user,
+                onValueChange = { text -> user = text },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { user = "" }
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+            TextField(
+                value = birthday,
+                onValueChange = { text -> birthday = text },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { birthday = "" }
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
             Text(text = "error line", color = Color.Red)
-            TextButton(onClick = {  }) {
-                Text(text = "Forgot your password?", color = Color.Blue)
+            TextButton(onClick = { }) {
+                Text(
+                    text = "already have an account? Login",
+                    Modifier.padding(top = 8.dp, bottom = 8.dp),
+                    fontSize = 14.sp,
+                    color = Color.Blue
+                )
             }
-
-            // Button and other UI elements
             Button(
                 onClick = { /* Handle login logic here */ },
                 modifier = Modifier
@@ -126,27 +194,45 @@ class LoginScreen {
                 shape = RoundedCornerShape(50)
             ) {
                 Text(
-                    text = "Login",
+                    text = "Submit",
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-            Spacer(Modifier.height(20.dp))
-            Text(
-                text = "Don't have an Account yet?",
-                Modifier.padding(top = 8.dp, bottom = 8.dp),
-                fontSize = 14.sp,
-                color = Color.Blue
-            )
-            TextButton(onClick = {  }) {
+            Spacer(Modifier.height(100.dp))
+
+        }
+
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .background(color = Color.Transparent),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(700.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = checkedConditionsState.value,
+                    onCheckedChange = { checkedConditionsState.value = it },
+                    modifier = Modifier.padding(5.dp),
+                    colors = CheckboxDefaults.colors(Color.Blue)
+                )
+
                 Text(
-                    text = "Register",
-                    Modifier.padding(top = 8.dp, bottom = 8.dp),
-                    fontSize = 20.sp,
+                    text = "I accept the terms of use",
+                    modifier = Modifier
+                        .fillMaxHeight(),
+                    fontSize = 14.sp,
                     color = Color.Blue
                 )
             }
         }
+
     }
+
 }
