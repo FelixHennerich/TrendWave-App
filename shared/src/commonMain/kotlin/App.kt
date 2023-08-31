@@ -2,8 +2,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
-import event.EventManager
-import event.listeners.HTTPListener
+import dev.icerock.moko.mvvm.compose.getViewModel
+import dev.icerock.moko.mvvm.compose.viewModelFactory
+import event.TrendWaveState
+import event.TrendWaveViewModel
 import views.LoginScreen
 import views.HomeScreen
 import views.RegisterScreen
@@ -16,7 +18,6 @@ import views.SettingsScreen
  */
 @Composable
 fun App() {
-    registerListener()
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val loginScreenTT = LoginScreen()
@@ -24,14 +25,20 @@ fun App() {
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
 
+    val viewModel = getViewModel(
+        key = "main-login-screen",
+        factory = viewModelFactory {
+            TrendWaveViewModel()
+        }
+    )
+
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
             onNavigateToLogin = { currentScreen = Screen.Login },
             onNavigateToSettings = { currentScreen = Screen.Settings },
             onNavigateToRegister = {currentScreen = Screen.Register}
         )
-        is Screen.Login -> loginScreenTT.LoginScreen(
-        )
+        is Screen.Login -> loginScreenTT.LoginScreen(TrendWaveState(), viewModel::onEvent)
         is Screen.Register -> registerScreenTT.RegisterScreen(
 
         )
@@ -40,27 +47,6 @@ fun App() {
         )
 
     }
-}
-
-private val eventManager = EventManager()
-
-/**
- * Get Main EventManager
- * @return -> eventmanager
- */
-fun getEventManager(): EventManager{
-    return eventManager
-}
-
-/**
- * Register all listeners that are used
- */
-fun registerListener(){
-    //Add every event
-    val httplistener = HTTPListener()
-
-    //Add every event
-    eventManager.addListener(httplistener)
 }
 
 /**

@@ -35,17 +35,25 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import event.TrendWaveEvent
+import event.TrendWaveState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import utilities.CommonLogger
 
 
 class LoginScreen {
 
     /**
      * Login screen for the app
+     *
+     * @param state -> StateManager
      */
     @OptIn(ExperimentalResourceApi::class)
     @Composable
-    fun LoginScreen() {
+    fun LoginScreen(
+        state: TrendWaveState = TrendWaveState(),
+        onEvent: (TrendWaveEvent) -> Unit
+    ) {
         var user by remember { mutableStateOf("Username / E-mail") }
         var password by remember { mutableStateOf("Password") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
@@ -113,8 +121,14 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Text(text = "error line", color = Color.Red) //TODO: Import the Error message if available
+            Text(text = state.LoginErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {
+                val commonLogger = CommonLogger()
+                commonLogger.log("test")
+
+                onEvent(TrendWaveEvent.ChangeLoginErrorMessage)
+
+                commonLogger.log("State Value:" + state.LoginErrorMessage)
                 //TODO: Forgot your password screen
             }) {
                 Text(text = "Forgot your password?", color = Color.Blue)

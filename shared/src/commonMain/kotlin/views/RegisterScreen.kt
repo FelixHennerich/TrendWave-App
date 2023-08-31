@@ -2,7 +2,6 @@ package views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import event.TrendWaveState
 
 class RegisterScreen {
 
@@ -50,9 +50,12 @@ class RegisterScreen {
     /**
      * Register screen for creating new users
      *
+     * @param state -> StateManager
      */
     @Composable
-    fun RegisterScreen() {
+    fun RegisterScreen(
+        state: TrendWaveState = TrendWaveState()
+    ) {
         var user by remember { mutableStateOf("Username") }
         var email by remember { mutableStateOf("E-mail") }
         var password by remember { mutableStateOf("Password") }
@@ -180,7 +183,7 @@ class RegisterScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 )
             )
-            Text(text = "error line", color = Color.Red) //TODO add error if there
+            Text(text = state.RegisterErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {
                 //Todo navigate to login screen
             }) {
