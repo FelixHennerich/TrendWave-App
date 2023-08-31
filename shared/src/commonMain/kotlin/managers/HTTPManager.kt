@@ -1,9 +1,6 @@
 package managers
 
 import account.manager.AuthCodeManager
-import event.Event
-import event.EventType
-import getEventManager
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -41,7 +38,6 @@ class HTTPManager {
 
         //HTTP Request
 
-        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url){
             url{
                 parameters.append("value", value)
@@ -139,7 +135,6 @@ class HTTPManager {
 
         //HTTP Request
 
-        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.post(url) {
             contentType(ContentType.Application.Json)
             setBody(jsonBody)
@@ -165,7 +160,6 @@ class HTTPManager {
 
         //HTTP Request
 
-        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url) {
             url{
                 parameters.append("table", table)
@@ -194,7 +188,6 @@ class HTTPManager {
 
         //HTTP Request
 
-        getEventManager().dispatchEvent(Event(EventType.HTTPListener, null))
         val response = client.get(url) {
             url{
                 parameters.append("table", table)
