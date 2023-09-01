@@ -40,9 +40,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import event.TrendWaveEvent
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import event.TrendWaveState
+import utilities.CommonLogger
 
 class RegisterScreen {
 
@@ -51,10 +53,14 @@ class RegisterScreen {
      * Register screen for creating new users
      *
      * @param state -> StateManager
+     * @param onEvent -> EventManager
+     * @param onNavigateLogin -> Navigate to Login screen
      */
     @Composable
     fun RegisterScreen(
-        state: TrendWaveState = TrendWaveState()
+        state: TrendWaveState,
+        onEvent: (TrendWaveEvent) -> Unit,
+        onNavigateLogin: () -> Unit
     ) {
         var user by remember { mutableStateOf("Username") }
         var email by remember { mutableStateOf("E-mail") }
@@ -185,10 +191,10 @@ class RegisterScreen {
             )
             Text(text = state.RegisterErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {
-                //Todo navigate to login screen
+                onNavigateLogin()
             }) {
                 Text(
-                    text = "already have an account? Login",
+                    text = "Already have an account? Login",
                     Modifier.padding(top = 8.dp, bottom = 8.dp),
                     fontSize = 14.sp,
                     color = Color.Blue
