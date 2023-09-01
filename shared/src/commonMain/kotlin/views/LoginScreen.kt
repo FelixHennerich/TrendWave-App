@@ -47,12 +47,15 @@ class LoginScreen {
      * Login screen for the app
      *
      * @param state -> StateManager
+     * @param onEvent -> EventManager
+     * @param onNavigateRegister -> Navigate to Register  screen
      */
     @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen(
-        state: TrendWaveState = TrendWaveState(),
-        onEvent: (TrendWaveEvent) -> Unit
+        state: TrendWaveState,
+        onEvent: (TrendWaveEvent) -> Unit,
+        onNavigateRegister: () -> Unit
     ) {
         var user by remember { mutableStateOf("Username / E-mail") }
         var password by remember { mutableStateOf("Password") }
@@ -123,12 +126,6 @@ class LoginScreen {
             )
             Text(text = state.LoginErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {
-                val commonLogger = CommonLogger()
-                commonLogger.log("test")
-
-                onEvent(TrendWaveEvent.ChangeLoginErrorMessage)
-
-                commonLogger.log("State Value:" + state.LoginErrorMessage)
                 //TODO: Forgot your password screen
             }) {
                 Text(text = "Forgot your password?", color = Color.Blue)
@@ -154,19 +151,13 @@ class LoginScreen {
                 )
             }
             Spacer(Modifier.height(20.dp))
-            Text(
-                text = "Don't have an Account yet?",
-                Modifier.padding(top = 8.dp, bottom = 8.dp),
-                fontSize = 14.sp,
-                color = Color.Blue
-            )
             TextButton(onClick = {
-                //TODO: Register Button usage -> Link to register screen
-            }) {
+                onNavigateRegister()
+            }){
                 Text(
-                    text = "Register",
+                    text = "Don't have an Account yet?",
                     Modifier.padding(top = 8.dp, bottom = 8.dp),
-                    fontSize = 20.sp,
+                    fontSize = 14.sp,
                     color = Color.Blue
                 )
             }
