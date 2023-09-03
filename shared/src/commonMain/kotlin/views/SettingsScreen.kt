@@ -1,8 +1,5 @@
 package views
 
-import account.User
-import account.manager.AuthCodeManager
-import account.manager.CreationManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -15,12 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -32,17 +23,18 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
-import kotlinx.coroutines.launch
-import managers.exceptions.ExceptionHandler
+import event.TrendWaveEvent
 
 
-class SettingsScreen {
-
+class SettingsScreen{
     /**
      * @param onNavigateToHome -> Navigator left top
      */
     @Composable
-    fun SettingsScreen(onNavigateToHome: () -> Unit) {
+    fun SettingsScreen(
+        onNavigateToHome: () -> Unit,
+    ) {
+
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
             IconButton(onClick = onNavigateToHome, Modifier.offset(x = 0.dp, y = 0.dp)) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "")
@@ -87,7 +79,7 @@ class SettingsScreen {
                 Text(text)*/
 
 
-
+                /*
                 val scope = rememberCoroutineScope()
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
@@ -104,7 +96,7 @@ class SettingsScreen {
                     }
                 }
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
-
+                */
 
 
             }
