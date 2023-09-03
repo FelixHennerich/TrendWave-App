@@ -2,20 +2,13 @@ package event
 
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import event.TrendWaveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
-import event.TrendWaveState
-import io.ktor.util.logging.Logger
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import utilities.CommonLogger
 
-class TrendWaveViewModel(
-
-): ViewModel() {
+class TrendWaveViewModel : ViewModel() {
     private val _state = MutableStateFlow(TrendWaveState())
 
     val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), TrendWaveState())
@@ -36,7 +29,6 @@ class TrendWaveViewModel(
                     LoginErrorMessage = "Error while logging in"
                 )
                 }
-
             }
             else -> {}
         }
