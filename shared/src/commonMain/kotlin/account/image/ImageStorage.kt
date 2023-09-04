@@ -7,4 +7,6 @@ expect class ImageStorage {
     suspend fun getImage(fileName: String): ByteArray?
 
     suspend fun deleteImage(fileName: String)
+
+    suspend fun downloadImage(url: String): ByteArray?
 }

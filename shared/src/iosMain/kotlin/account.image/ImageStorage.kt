@@ -72,4 +72,8 @@ actual class ImageStorage {
         }
     }
 
+    actual suspend fun downloadImage(url: String): ByteArray?{
+        //TODO IMPLEMENT HERE
+    }
+
 }
