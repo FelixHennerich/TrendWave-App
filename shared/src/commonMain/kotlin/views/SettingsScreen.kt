@@ -114,11 +114,15 @@ class SettingsScreen{
                 var loading by remember { mutableStateOf(true) }
 
                 val scope = rememberCoroutineScope()
+                val logger = CommonLogger()
 
                 if (loading) {
                     LaunchedEffect(loading) {
-                        val loadedImage = imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
-                        imageBytes = loadedImage?.let { imageDataSource.getImage(it) }
+                        /*val loadedImage = imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
+                        if (loadedImage != null) {
+                            logger.log(loadedImage)
+                        }*/
+                        imageBytes = imageDataSource.getImage("00c54022-85d9-487f-ba44-5bfe52544f65.jpg")
                         loading = false
                     }
                 }

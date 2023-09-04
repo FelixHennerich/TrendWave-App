@@ -28,9 +28,6 @@ class TrendWaveViewModel(
                 }
             }
             is TrendWaveEvent.ChangeLoginErrorMessage -> {
-                val logger = CommonLogger()
-                logger.log("ViewModel 1")
-
                 _state.update {it.copy(
                     LoginErrorMessage = "Error while logging in"
                 )
