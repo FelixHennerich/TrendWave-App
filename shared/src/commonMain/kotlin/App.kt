@@ -4,6 +4,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
+import di.AppModule
 import event.TrendWaveViewModel
 import views.LoginScreen
 import views.HomeScreen
@@ -16,7 +17,9 @@ import views.SettingsScreen
  * IOS and Android do have different main methods, but those are not needed to edit
  */
 @Composable
-fun App(){
+fun App(
+    appModule: AppModule
+){
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val loginScreenTT = LoginScreen()
@@ -28,7 +31,7 @@ fun App(){
     val viewModel = getViewModel(
         key = "main-login-screen",
         factory = viewModelFactory {
-            TrendWaveViewModel()
+            TrendWaveViewModel(appModule.imageDataSource)
         }
     )
 
@@ -51,7 +54,8 @@ fun App(){
             onNavigateLogin = {currentScreen = Screen.Login}
         )
         is Screen.Settings -> settingsScreenTT.SettingsScreen(
-            onNavigateToHome = { currentScreen = Screen.Home }
+            onNavigateToHome = { currentScreen = Screen.Home },
+            imageDataSource = appModule.imageDataSource
         )
 
     }

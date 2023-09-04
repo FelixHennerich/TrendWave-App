@@ -1,5 +1,7 @@
 package views
 
+import account.image.ImageDataSource
+import account.image.Photo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -12,6 +14,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -24,6 +32,8 @@ import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
 import event.TrendWaveEvent
+import kotlinx.coroutines.launch
+import utilities.CommonLogger
 
 
 class SettingsScreen{
@@ -33,6 +43,7 @@ class SettingsScreen{
     @Composable
     fun SettingsScreen(
         onNavigateToHome: () -> Unit,
+        imageDataSource: ImageDataSource
     ) {
 
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
@@ -98,6 +109,27 @@ class SettingsScreen{
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
                 */
 
+
+                var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
+                var loading by remember { mutableStateOf(true) }
+
+                val scope = rememberCoroutineScope()
+
+                if (loading) {
+                    LaunchedEffect(loading) {
+                        val loadedImage = imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
+                        imageBytes = loadedImage?.let { imageDataSource.getImage(it) }
+                        loading = false
+                    }
+                }
+
+                imageBytes?.let {
+                    Photo(
+                        width = 200.dp,
+                        height = 200.dp,
+                        photoBytes = imageBytes
+                    )
+                }
 
             }
         }
