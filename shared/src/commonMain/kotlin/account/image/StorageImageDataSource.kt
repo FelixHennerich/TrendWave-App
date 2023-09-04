@@ -22,7 +22,9 @@ class StorageImageDataSource(
                 fileName = imageStorage.saveImage(bytes)
             }
         }
-        delay(5000L)
+        while(fileName == null){
+            delay(1)
+        }
         return fileName
     }
 
