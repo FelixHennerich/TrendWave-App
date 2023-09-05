@@ -17,6 +17,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * ButtomSheet that will be animated from below
+ *
+ * @param visible -> Change the visibility
+ * @param modifier -> Edit the Sheet
+ * @param backgroundcolor -> Color of the Sheet
+ * @param content -> What will displayed on the Sheet
+ */
 @Composable
 fun BottomSheet(
     visible: Boolean,

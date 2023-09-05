@@ -19,6 +19,11 @@ class TrendWaveViewModel(
 
     val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), TrendWaveState())
 
+    /**
+     * Will watch every event
+     *
+     * @param event -> Eventlist of TrendWaveEvent
+     */
     fun onEvent(event: TrendWaveEvent){
         when(event){
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
