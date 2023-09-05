@@ -38,7 +38,10 @@ import utilities.CommonLogger
 
 class SettingsScreen{
     /**
+     * Settings UI Screen
+     *
      * @param onNavigateToHome -> Navigator left top
+     * @param imageDataSource -> Datasource to display images
      */
     @Composable
     fun SettingsScreen(
@@ -118,11 +121,15 @@ class SettingsScreen{
 
                 if (loading) {
                     LaunchedEffect(loading) {
-                        /*val loadedImage = imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
-                        if (loadedImage != null) {
-                            logger.log(loadedImage)
-                        }*/
-                        imageBytes = imageDataSource.getImage("00c54022-85d9-487f-ba44-5bfe52544f65.jpg")
+                        if(imageDataSource.getImage("4c90db46-e395-40c5-abd4-21298fb9321a.jpg") == null) {
+                            val loadedImage =
+                                imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
+                            if (loadedImage != null) {
+                                logger.log(loadedImage)
+                            }
+                        }
+                        imageBytes = imageDataSource.getImage("4c90db46-e395-40c5-abd4-21298fb9321a.jpg")
+                        //imageBytes = loadedImage?.let { imageDataSource.getImage(loadedImage) }
                         loading = false
                     }
                 }

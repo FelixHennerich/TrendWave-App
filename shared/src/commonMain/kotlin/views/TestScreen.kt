@@ -14,6 +14,9 @@ import utilities.presentation.BottomSheet
 
 class TestScreen {
 
+    /**
+     * Test screen
+     */
     @Composable
     fun testView() {
         BottomSheet(

@@ -27,13 +27,10 @@ import androidx.compose.ui.unit.sp
 class DetailScreen {
 
     /**
-     * Testview 2 (detail)
-     * counter button
-     * @param onNavigateToHome -> Navigator button
+     * Login View
      */
     @Composable
-    fun LoginScreen(
-    ) {
+    fun LoginScreen() {
         var value by remember { mutableStateOf("") }
         var username by remember{ mutableStateOf("") }
         var password by remember { mutableStateOf("") }

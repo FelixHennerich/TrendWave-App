@@ -1,3 +1,4 @@
+import account.image.ImageDownloader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -6,6 +7,9 @@ import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import di.AppModule
 import event.TrendWaveViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import views.LoginScreen
 import views.HomeScreen
 import views.RegisterScreen
@@ -15,11 +19,14 @@ import views.SettingsScreen
 /**
  * fun App() is the main function of the "Shared" code
  * IOS and Android do have different main methods, but those are not needed to edit
+ *
+ * @param appModule -> iOS or Android AppMoudle for ImageDataSources
  */
 @Composable
 fun App(
     appModule: AppModule
 ){
+
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     val loginScreenTT = LoginScreen()

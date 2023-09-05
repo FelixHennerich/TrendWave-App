@@ -7,6 +7,12 @@ import androidx.compose.ui.graphics.asComposeImageBitmap
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Image
 
+/**
+ * Convert ByteArray to Bitmap
+ *
+ * @param bytes -> ByteArray of an image
+ * @return -> ImageBitmap to display image
+ */
 @Composable
 actual fun rememberBitmapFromBytes(bytes: ByteArray?): ImageBitmap? {
     return remember (bytes) {

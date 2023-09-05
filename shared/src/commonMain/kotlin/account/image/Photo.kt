@@ -11,7 +11,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import utilities.presentation.rememberBitmapFromBytes
 
-
+/**
+ * Display a photo from bytes
+ *
+ * @param width -> width of image
+ * @param height -> height of image
+ * @param photoBytes -> ByteArray of iamge
+ */
 @Composable
 fun Photo(
     width: Dp,
