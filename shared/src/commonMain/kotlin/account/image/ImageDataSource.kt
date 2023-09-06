@@ -7,4 +7,6 @@ interface ImageDataSource {
     suspend fun downloadImage(url: String, fileName: String)
     suspend fun insertImage(bytes: ByteArray?): String?
     suspend fun deleteImage(filePath: String)
+
+    fun getUrlByFileName(fileName: String): String?
 }
