@@ -121,15 +121,9 @@ class SettingsScreen{
 
                 if (loading) {
                     LaunchedEffect(loading) {
-                        if(imageDataSource.getImage("4c90db46-e395-40c5-abd4-21298fb9321a.jpg") == null) {
-                            val loadedImage =
-                                imageDataSource.downloadImage("https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png")
-                            if (loadedImage != null) {
-                                logger.log(loadedImage)
-                            }
-                        }
-                        imageBytes = imageDataSource.getImage("4c90db46-e395-40c5-abd4-21298fb9321a.jpg")
-                        //imageBytes = loadedImage?.let { imageDataSource.getImage(loadedImage) }
+                        logger.log("Test State 1")
+                        imageBytes = imageDataSource.getImage("Logo.jpg")
+                        logger.log("Test succeeded")
                         loading = false
                     }
                 }
