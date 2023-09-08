@@ -18,7 +18,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +30,7 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
-import event.TrendWaveEvent
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import utilities.CommonLogger
 
 
@@ -116,14 +114,10 @@ class SettingsScreen{
                 var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
                 var loading by remember { mutableStateOf(true) }
 
-                val scope = rememberCoroutineScope()
-                val logger = CommonLogger()
 
                 if (loading) {
                     LaunchedEffect(loading) {
-                        logger.log("Test State 1")
                         imageBytes = imageDataSource.getImage("Logo.jpg")
-                        logger.log("Test succeeded")
                         loading = false
                     }
                 }

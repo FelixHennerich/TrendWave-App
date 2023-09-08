@@ -17,22 +17,14 @@ class StorageImageDataSource(
      * @return -> ByteArray of Image
      */
     override suspend fun getImage(fileName: String): ByteArray? {
-        val logger = CommonLogger()
-        logger.log("Test State 2")
         if(imageStorage.getImage(fileName) == null){
-            logger.log("Test State 3")
             getUrlByFileName(fileName)?.let {
-                logger.log("Test State 4")
                 downloadImage(it,fileName)
-                logger.log("Test State 5")
             }
-            logger.log("Test State 6")
             while(imageStorage.getImage(fileName) == null){
-                logger.log("Test State 7")
                 delay(1)
             }
         }
-        logger.log("Test State 8")
         return imageStorage.getImage(fileName)
     }
 

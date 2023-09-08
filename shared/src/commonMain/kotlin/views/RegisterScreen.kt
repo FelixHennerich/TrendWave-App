@@ -44,7 +44,6 @@ import event.TrendWaveEvent
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import event.TrendWaveState
-import utilities.CommonLogger
 
 class RegisterScreen {
 
