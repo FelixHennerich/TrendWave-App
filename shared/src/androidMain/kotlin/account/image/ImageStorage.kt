@@ -50,6 +50,7 @@ actual class ImageStorage(
      * @return ByteArray of the given image
      */
     actual suspend fun getImage(fileName: String): ByteArray?{
+        println("test")
         try{
             return withContext(Dispatchers.IO) {
                 context.openFileInput(fileName).use { inputStream ->

@@ -31,6 +31,7 @@ import io.ktor.client.statement.*
 import io.ktor.util.InternalAPI
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.readBytes
+import utilities.CommonLogger
 
 actual class ImageStorage {
 
@@ -104,7 +105,7 @@ actual class ImageStorage {
     actual suspend fun getImage(fileName: String): ByteArray? {
         return withContext(Dispatchers.Default) {
             memScoped {
-                NSData.dataWithContentsOfFile(fileName)?.let { bytes ->
+                NSData.dataWithContentsOfFile(documentDirectory.stringByAppendingPathComponent(fileName))?.let { bytes ->
                     val array = ByteArray(bytes.length.toInt())
                     bytes.getBytes(array.refTo(0).getPointer(this), bytes.length)
                     return@withContext array

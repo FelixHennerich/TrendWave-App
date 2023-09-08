@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import utilities.CommonLogger
 
 
 class LoginScreen {
