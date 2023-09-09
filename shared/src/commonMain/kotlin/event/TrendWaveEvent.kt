@@ -2,5 +2,5 @@ package event
 
 sealed interface TrendWaveEvent {
     object ChangeLoginErrorMessage: TrendWaveEvent
-    object ChangeRegisterErrorMessage: TrendWaveEvent
+    class ChangeRegisterErrorMessage(val message: String): TrendWaveEvent
 }

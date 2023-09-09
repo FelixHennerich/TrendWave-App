@@ -2,6 +2,7 @@ package views
 
 import account.image.ImageDataSource
 import account.image.Photo
+import account.manager.CreationManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,11 @@ import event.TrendWaveEvent
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import event.TrendWaveState
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import managers.exceptions.ExceptionHandler
+import managers.exceptions.NException
 
 class RegisterScreen {
 
@@ -58,12 +64,16 @@ class RegisterScreen {
      * @param state -> StateManager
      * @param onEvent -> EventManager
      * @param onNavigateLogin -> Navigate to Login screen
+     * @param onNavigateHome -> Navigate to Home screen
+     * @param imageDataSource -> ImageAPI
      */
+    @OptIn(DelicateCoroutinesApi::class)
     @Composable
     fun RegisterScreen(
         state: TrendWaveState,
         onEvent: (TrendWaveEvent) -> Unit,
         onNavigateLogin: () -> Unit,
+        onNavigateHome: () -> Unit,
         imageDataSource: ImageDataSource
     ) {
         var user by remember { mutableStateOf("") }
@@ -205,7 +215,7 @@ class RegisterScreen {
                 value = birthday,
                 placeholder = {
                     Text(
-                        text = "Birthday dd/mm/yyyy",
+                        text = "Birthday dd.mm.yyyy",
                         modifier = Modifier.offset(y = (-3).dp),
                     )
                 },
@@ -244,7 +254,28 @@ class RegisterScreen {
             }
             Button(
                 onClick = {
-                          //Todo creationmanager handles over here
+                    if(checkedConditionsState.value) {
+                        GlobalScope.launch {
+                            val creationManager = CreationManager()
+                            val exceptionHandler = ExceptionHandler()
+                            val message = exceptionHandler.fetchErrorMessage(
+                                creationManager.createAccount(
+                                    email,
+                                    password,
+                                    user,
+                                    birthday
+                                )
+                            )
+
+                            onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
+
+                            if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                                onNavigateHome()
+                            }
+                        }
+                    }else {
+                        onEvent(TrendWaveEvent.ChangeRegisterErrorMessage("Check the terms of use below"))
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -279,7 +310,7 @@ class RegisterScreen {
                 Checkbox(
                     checked = checkedConditionsState.value,
                     onCheckedChange = { checkedConditionsState.value = it },
-                    modifier = Modifier.padding(5.dp),
+                    modifier = Modifier.padding(5.dp).offset(y = -(18).dp),
                     colors = CheckboxDefaults.colors(Color.Blue)
                 )
 
