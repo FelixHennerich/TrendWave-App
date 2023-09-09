@@ -93,6 +93,7 @@ class StorageImageDataSource(
     override fun getUrlByFileName(fileName: String): String? {
         return when(fileName){
             "Logo.jpg"                  -> "https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Logo/256x256.png"
+            "LogoTransparent.jpg"       -> "https://raw.githubusercontent.com/FelixHennerich/TrendWave-App/main/TrendWave%20Logo/Transparent/256x256%20trans.png"
             else                        -> null
         }
     }

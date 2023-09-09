@@ -1,5 +1,7 @@
 package views
 
+import account.image.ImageDataSource
+import account.image.Photo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -7,16 +9,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,16 +53,18 @@ class LoginScreen {
      * @param state -> StateManager
      * @param onEvent -> EventManager
      * @param onNavigateRegister -> Navigate to Register  screen
+     * @param imageDataSource -> ImageAPI
      */
     @OptIn(ExperimentalResourceApi::class)
     @Composable
     fun LoginScreen(
         state: TrendWaveState,
         onEvent: (TrendWaveEvent) -> Unit,
-        onNavigateRegister: () -> Unit
+        onNavigateRegister: () -> Unit,
+        imageDataSource: ImageDataSource
     ) {
-        var user by remember { mutableStateOf("Username / E-mail") }
-        var password by remember { mutableStateOf("Password") }
+        var user by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
 
@@ -68,9 +75,29 @@ class LoginScreen {
                 .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Logo")
+            // Logo of the APP
+            var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
+            var loading by remember { mutableStateOf(true) }
 
-            Spacer(modifier = Modifier.height(200.dp))
+
+            if (loading) {
+                LaunchedEffect(loading) {
+                    imageBytes = imageDataSource.getImage("LogoTransparent.jpg")
+                    loading = false
+                }
+            }
+
+            imageBytes?.let {
+                Photo(
+                    width = 250.dp,
+                    height = 250.dp,
+                    photoBytes = imageBytes
+                )
+            }
+            // -----------------
+
+
+            Spacer(modifier = Modifier.height(40.dp))
             Text(
                 "LOGIN",
                 fontSize = 30.sp,
@@ -81,7 +108,13 @@ class LoginScreen {
             // Textfield for the E-mail / Username
             TextField(
                 value = user,
-                onValueChange = { text -> user = text },
+                placeholder = {
+                    Text(
+                        text = "Email",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
+                onValueChange = { text -> user = text},
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,7 +123,7 @@ class LoginScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),
@@ -103,6 +136,12 @@ class LoginScreen {
             // Textfield for the password
             TextField(
                 value = password,
+                placeholder = {
+                    Text(
+                        text = "Password",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
                 onValueChange = { text -> password = text },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,7 +150,7 @@ class LoginScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),

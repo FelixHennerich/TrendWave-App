@@ -1,5 +1,7 @@
 package views
 
+import account.image.ImageDataSource
+import account.image.Photo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +25,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,12 +63,13 @@ class RegisterScreen {
     fun RegisterScreen(
         state: TrendWaveState,
         onEvent: (TrendWaveEvent) -> Unit,
-        onNavigateLogin: () -> Unit
+        onNavigateLogin: () -> Unit,
+        imageDataSource: ImageDataSource
     ) {
-        var user by remember { mutableStateOf("Username") }
-        var email by remember { mutableStateOf("E-mail") }
-        var password by remember { mutableStateOf("Password") }
-        var birthday by remember { mutableStateOf("dd/mm/yyyy") }
+        var user by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        var birthday by remember { mutableStateOf("") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
         val checkedConditionsState = remember {
             mutableStateOf(false)
@@ -77,15 +82,29 @@ class RegisterScreen {
                 .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Logo") //Todo: Logo
-            KamelImage(
-                asyncPainterResource(
-                    "",
-                    Modifier.height(20.dp).width(20.dp)
-                ),
-                null
-            )
-            Spacer(Modifier.height(100.dp))
+            // Logo of the APP
+            var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
+            var loading by remember { mutableStateOf(true) }
+
+
+            if (loading) {
+                LaunchedEffect(loading) {
+                    imageBytes = imageDataSource.getImage("LogoTransparent.jpg")
+                    loading = false
+                }
+            }
+
+            imageBytes?.let {
+                Photo(
+                    width = 150.dp,
+                    height = 150.dp,
+                    photoBytes = imageBytes
+                )
+            }
+            // -----------------
+
+
+            Spacer(modifier = Modifier.height(40.dp))
             Text(
                 "REGISTER",
                 fontSize = 30.sp,
@@ -95,6 +114,12 @@ class RegisterScreen {
             )
             TextField(
                 value = email,
+                placeholder = {
+                    Text(
+                        text = "E-Mail",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
                 onValueChange = { text -> email = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -107,7 +132,7 @@ class RegisterScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),
@@ -120,6 +145,12 @@ class RegisterScreen {
             // Textfield for the password
             TextField(
                 value = password,
+                placeholder = {
+                    Text(
+                        text = "Password",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
                 onValueChange = { text -> password = text },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,7 +159,7 @@ class RegisterScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),
@@ -142,6 +173,12 @@ class RegisterScreen {
             )
             TextField(
                 value = user,
+                placeholder = {
+                    Text(
+                        text = "Username",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
                 onValueChange = { text -> user = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -154,7 +191,7 @@ class RegisterScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),
@@ -166,6 +203,12 @@ class RegisterScreen {
             )
             TextField(
                 value = birthday,
+                placeholder = {
+                    Text(
+                        text = "Birthday dd/mm/yyyy",
+                        modifier = Modifier.offset(y = (-3).dp),
+                    )
+                },
                 onValueChange = { text -> birthday = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -178,7 +221,7 @@ class RegisterScreen {
                     .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Left,
                     color = Color.Blue,
                     fontSize = 14.sp
                 ),
