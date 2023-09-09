@@ -51,14 +51,16 @@ fun App(
             onNavigateToRegister = {currentScreen = Screen.Register}
         )
         is Screen.Login -> loginScreenTT.LoginScreen(
-            state,
-            viewModel::onEvent,
-            onNavigateRegister = {currentScreen = Screen.Register}
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigateRegister = {currentScreen = Screen.Register},
+            imageDataSource = appModule.imageDataSource
         )
         is Screen.Register -> registerScreenTT.RegisterScreen(
-            state,
-            viewModel::onEvent,
-            onNavigateLogin = {currentScreen = Screen.Login}
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigateLogin = {currentScreen = Screen.Login},
+            imageDataSource = appModule.imageDataSource
         )
         is Screen.Settings -> settingsScreenTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home },
