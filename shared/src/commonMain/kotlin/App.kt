@@ -60,6 +60,7 @@ fun App(
             state = state,
             onEvent = viewModel::onEvent,
             onNavigateLogin = {currentScreen = Screen.Login},
+            onNavigateHome = {currentScreen = Screen.Home},
             imageDataSource = appModule.imageDataSource
         )
         is Screen.Settings -> settingsScreenTT.SettingsScreen(

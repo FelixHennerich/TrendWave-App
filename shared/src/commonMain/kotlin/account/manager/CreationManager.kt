@@ -25,7 +25,6 @@ class CreationManager {
      * @return -> Error/Success-Code -- Following Codes
      */
     suspend fun createAccount(email: String, password: String, username: String, birthday: String): NException {
-        val authcodemanager = AuthCodeManager()
         delay(1000)
 
         if(!charChecker(email) || !charChecker(password) || !charChecker(username)){
@@ -45,6 +44,9 @@ class CreationManager {
         }
         if(emailExists(email)){
             return NException.EmailExists104 // Username already exists
+        }
+        if(!birhtdayChecker(birthday)){
+            return NException.BirthdayWrong106 // Birthday wrong dd.mm.yyyy
         }
 
         val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
@@ -118,7 +120,25 @@ class CreationManager {
      * @return -> Contains = true; Not = false
      */
     fun checkEmail(email: String): Boolean{
-        return email.contains("@") && email.contains(".")
+        val emailRegex = Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")
+        if(emailRegex.matches(email)) {
+            return true
+        }
+        return true
+    }
+
+    /**
+     * Check for validity of email
+     *
+     * @param birthday -> Birthday to check
+     * @return true or false
+     */
+    fun birhtdayChecker(birthday: String): Boolean{
+        val regex = Regex("\\d{2}.\\d{2}.\\d{4}")
+        if(regex.matches(birthday)){
+            return true
+        }
+        return false
     }
 
     /**

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import utilities.CommonLogger
 
 class TrendWaveViewModel(
     private val imageDataSource: ImageDataSource
@@ -24,7 +25,7 @@ class TrendWaveViewModel(
         when(event){
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
                 _state.update {it.copy(
-                    RegisterErrorMessage = "Error while creating account"
+                    RegisterErrorMessage = event.message
                 )
                 }
             }
