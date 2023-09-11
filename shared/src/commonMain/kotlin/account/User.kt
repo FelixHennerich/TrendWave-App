@@ -28,8 +28,14 @@ class User : UserInterface {
         return email ?: "No Email Found Error"
     }
 
-    override fun getUsername(uuid: String): String {
-        TODO("Not yet implemented")
+    /**
+     * get the username of a user
+     * @param uuid -> Unique ID
+     * @return -> username
+     */
+    override suspend fun getUsername(uuid: String): String {
+        val username = httpManager.getValue(url, "username", uuid)
+        return username ?: "No Email Found Error"
     }
 
     override fun getUUID(email: String): String {
