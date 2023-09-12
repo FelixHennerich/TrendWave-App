@@ -2,6 +2,7 @@ package views
 
 import account.image.ImageDataSource
 import account.image.Photo
+import account.manager.LoginManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -172,7 +173,8 @@ class LoginScreen {
             // Button and other UI elements
             Button(
                 onClick = {
-                          //TODO: LoginManager handles Login here
+                    val loginManager = LoginManager()
+                    loginManager.login(email = user ,password = password)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
