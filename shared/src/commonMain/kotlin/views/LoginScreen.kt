@@ -1,5 +1,6 @@
 package views
 
+import account.User
 import account.image.ImageDataSource
 import account.image.Photo
 import account.manager.LoginManager
@@ -16,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -61,6 +61,7 @@ class LoginScreen {
      * @param onNavigateRegister -> Navigate to Register  screen
      * @param onNavigateHome -> Navigate to Home  screen
      * @param imageDataSource -> ImageAPI
+     * @param localDataManager -> Use the local data managment
      */
     @OptIn(ExperimentalResourceApi::class)
     @Composable
@@ -72,6 +73,24 @@ class LoginScreen {
         imageDataSource: ImageDataSource,
         localDataManager: DataStorageManager
     ) {
+        if(localDataManager.readString("email") != null &&
+            localDataManager.readString("password") != null &&
+            localDataManager.readString("username") != null) {
+            GlobalScope.launch {
+                val loginManager = LoginManager()
+                val exceptionHandler = ExceptionHandler()
+                val message = exceptionHandler.fetchErrorMessage(
+                    loginManager.login(
+                        email = localDataManager.readString("email")!!,
+                        password = localDataManager.readString("password")!!
+                    )
+                )
+
+                if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                    onNavigateHome()
+                }
+            }
+        }
         var user by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
@@ -123,7 +142,7 @@ class LoginScreen {
                         modifier = Modifier.offset(y = (-3).dp),
                     )
                 },
-                onValueChange = { text -> user = text},
+                onValueChange = { text -> user = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,6 +203,7 @@ class LoginScreen {
                     GlobalScope.launch {
                         val loginManager = LoginManager()
                         val exceptionHandler = ExceptionHandler()
+                        val userClass = User()
                         val message = exceptionHandler.fetchErrorMessage(
                             loginManager.login(
                                 email = user,
@@ -194,6 +214,11 @@ class LoginScreen {
                         onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
 
                         if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                            val username = userClass.getUsername(userClass.getUUID(user))
+
+                            localDataManager.saveString("email", user)
+                            localDataManager.saveString("password", password)
+                            localDataManager.saveString("username", username)
                             onNavigateHome()
                         }
                     }
@@ -215,7 +240,7 @@ class LoginScreen {
             Spacer(Modifier.height(20.dp))
             TextButton(onClick = {
                 onNavigateRegister()
-            }){
+            }) {
                 Text(
                     text = "Don't have an Account yet?",
                     Modifier.padding(top = 8.dp, bottom = 8.dp),

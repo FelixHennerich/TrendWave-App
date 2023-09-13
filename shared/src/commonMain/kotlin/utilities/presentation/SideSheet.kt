@@ -2,7 +2,9 @@ package utilities.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
- * ButtomSheet that will be animated from below
+ * SideSheet that will be animated from below
  *
  * @param visible -> Change the visibility
  * @param modifier -> Edit the Sheet
@@ -25,7 +27,7 @@ import androidx.compose.ui.unit.dp
  * @param content -> What will displayed on the Sheet
  */
 @Composable
-fun BottomSheet(
+fun SideSheet(
     visible: Boolean,
     modifier: Modifier,
     backgroundcolor: Color,
@@ -33,13 +35,13 @@ fun BottomSheet(
 ) {
     AnimatedVisibility(
         visible = visible,
-        enter = slideInVertically(
+        enter = slideInHorizontally (
             animationSpec = tween(durationMillis = 300),
-            initialOffsetY = { it }
+            initialOffsetX = { it }
         ),
-        exit = slideOutVertically (
+        exit = slideOutHorizontally (
             animationSpec = tween(durationMillis = 300),
-            targetOffsetY = { it }
+            targetOffsetX = { it }
         ),
     ){
         Column (

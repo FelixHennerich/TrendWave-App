@@ -40,3 +40,5 @@ Afterwords you go to the **docs** site in the same grid and search for the Icon.
 | [css.gg](https://css.gg/) | 2.0.0 | `css-gg` | [docs](https://github.com/DevSrSouza/compose-icons/blob/master/css-gg/DOCUMENTATION.md) |
 
 
+## [Custom Colors](https://www.w3schools.com/colors/colors_picker.asp)
+

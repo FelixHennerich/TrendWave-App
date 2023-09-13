@@ -1,4 +1,4 @@
-package views
+package views.sheet
 
 import account.User
 import account.image.ImageDataSource
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -33,29 +32,36 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
-import kotlinx.coroutines.delay
+import event.TrendWaveEvent
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
-import utilities.CommonLogger
+import utilities.presentation.SideSheet
 
-
-class SettingsScreen{
-    /**
-     * Settings UI Screen
-     *
-     * @param onNavigateToHome -> Navigator left top
-     * @param imageDataSource -> Datasource to display images
-     * @param localDataSource -> Datasource to display data
-     */
-    @Composable
-    fun SettingsScreen(
-        onNavigateToHome: () -> Unit,
-        imageDataSource: ImageDataSource,
-        localDataSource: DataStorageManager
+/**
+ * Settings UI Screen
+ *
+ * @param isOpen -> Is Settings Shown
+ * @param imageDataSource -> Datasource to display images
+ * @param localDataSource -> Datasource to display data
+ * @param onEvent -> EventHandeling
+ */
+@Composable
+fun SettingsSheet(
+    isOpen: Boolean,
+    imageDataSource: ImageDataSource,
+    localDataSource: DataStorageManager,
+    onEvent: (TrendWaveEvent) -> Unit
+) {
+    SideSheet(
+        visible = isOpen,
+        modifier = Modifier.fillMaxSize(),
+        backgroundcolor = Color.White
     ) {
-
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
-            IconButton(onClick = onNavigateToHome, Modifier.offset(x = 0.dp, y = 0.dp)) {
+            IconButton(
+                onClick = { onEvent(TrendWaveEvent.ClickCloseSettingsScreen) },
+                modifier = Modifier.offset(x = 0.dp, y = 0.dp)
+            ) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "")
             }
             Text(
@@ -89,14 +95,13 @@ class SettingsScreen{
                 )
 
                 /*val scope = rememberCoroutineScope()
-                var text by remember { mutableStateOf("Loading") }
-                LaunchedEffect(true) {
-                    scope.launch {
-                        text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
-                    }
+            var text by remember { mutableStateOf("Loading") }
+            LaunchedEffect(true) {
+                scope.launch {
+                    text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
                 }
-                Text(text)*/
-
+            }
+            Text(text)*/
 
 
                 val scope = rememberCoroutineScope()
@@ -107,8 +112,7 @@ class SettingsScreen{
                         text = user.getUUID("fehennerich@outlook.de")
                     }
                 }
-                Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
-
+                Text(text, modifier = Modifier.offset(x = 0.dp, y = 300.dp))
 
 
                 var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
@@ -140,14 +144,14 @@ class SettingsScreen{
                 localDataSource.readString("email")?.let {
                     Text(
                         text = it,
-                        modifier = Modifier.offset(x = 0.dp, y= 310.dp)
+                        modifier = Modifier.offset(x = 0.dp, y = 310.dp)
                     )
                 }
 
                 localDataSource.readString("password")?.let {
                     Text(
                         text = it,
-                        modifier = Modifier.offset(x = 0.dp, y= 320.dp)
+                        modifier = Modifier.offset(x = 0.dp, y = 320.dp)
                     )
                 }
 
@@ -156,7 +160,6 @@ class SettingsScreen{
         }
     }
 }
-
 /*
     Image Example:
             KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),
