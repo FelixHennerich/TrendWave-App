@@ -45,6 +45,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import managers.DataStorageManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -68,7 +69,8 @@ class LoginScreen {
         onEvent: (TrendWaveEvent) -> Unit,
         onNavigateRegister: () -> Unit,
         onNavigateHome: () -> Unit,
-        imageDataSource: ImageDataSource
+        imageDataSource: ImageDataSource,
+        localDataManager: DataStorageManager
     ) {
         var user by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }

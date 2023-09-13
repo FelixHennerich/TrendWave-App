@@ -35,6 +35,7 @@ import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import managers.DataStorageManager
 import utilities.CommonLogger
 
 
@@ -44,11 +45,13 @@ class SettingsScreen{
      *
      * @param onNavigateToHome -> Navigator left top
      * @param imageDataSource -> Datasource to display images
+     * @param localDataSource -> Datasource to display data
      */
     @Composable
     fun SettingsScreen(
         onNavigateToHome: () -> Unit,
-        imageDataSource: ImageDataSource
+        imageDataSource: ImageDataSource,
+        localDataSource: DataStorageManager
     ) {
 
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
@@ -126,6 +129,28 @@ class SettingsScreen{
                         photoBytes = imageBytes
                     )
                 }
+
+
+
+                localDataSource.saveString("email", "fehennerich@outlook.de")
+                localDataSource.saveString("password", "fe123lix")
+
+
+
+                localDataSource.readString("email")?.let {
+                    Text(
+                        text = it,
+                        modifier = Modifier.offset(x = 0.dp, y= 310.dp)
+                    )
+                }
+
+                localDataSource.readString("password")?.let {
+                    Text(
+                        text = it,
+                        modifier = Modifier.offset(x = 0.dp, y= 320.dp)
+                    )
+                }
+
 
             }
         }
