@@ -43,6 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import managers.exceptions.ExceptionHandler
+import managers.exceptions.NException
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 
@@ -54,6 +58,7 @@ class LoginScreen {
      * @param state -> StateManager
      * @param onEvent -> EventManager
      * @param onNavigateRegister -> Navigate to Register  screen
+     * @param onNavigateHome -> Navigate to Home  screen
      * @param imageDataSource -> ImageAPI
      */
     @OptIn(ExperimentalResourceApi::class)
@@ -62,6 +67,7 @@ class LoginScreen {
         state: TrendWaveState,
         onEvent: (TrendWaveEvent) -> Unit,
         onNavigateRegister: () -> Unit,
+        onNavigateHome: () -> Unit,
         imageDataSource: ImageDataSource
     ) {
         var user by remember { mutableStateOf("") }
@@ -173,8 +179,22 @@ class LoginScreen {
             // Button and other UI elements
             Button(
                 onClick = {
-                    val loginManager = LoginManager()
-                    loginManager.login(email = user ,password = password)
+                    GlobalScope.launch {
+                        val loginManager = LoginManager()
+                        val exceptionHandler = ExceptionHandler()
+                        val message = exceptionHandler.fetchErrorMessage(
+                            loginManager.login(
+                                email = user,
+                                password = password
+                            )
+                        )
+
+                        onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
+
+                        if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                            onNavigateHome()
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

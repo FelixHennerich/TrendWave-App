@@ -1,11 +1,13 @@
 package views
 
+import account.User
 import account.image.ImageDataSource
 import account.image.Photo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -18,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +34,7 @@ import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import utilities.CommonLogger
 
 
@@ -91,24 +95,17 @@ class SettingsScreen{
                 Text(text)*/
 
 
-                /*
+
                 val scope = rememberCoroutineScope()
                 var text by remember { mutableStateOf("Loading") }
                 LaunchedEffect(true) {
                     scope.launch {
-                        val accountManager = CreationManager()
-                        val ExceptionHandler = ExceptionHandler()
-                        val authcodemanager = AuthCodeManager()
-                        val user = User();
-                        //val code = authcodemanager.getNewAuthcode()
-                        //text = authcodemanager.deactivateAuthcode(code)
-                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("nitroxblue1@gmail.com", "password123", "1BlueNitrox", "01.04.2005"))
-                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
-                        //text = user.getEmail("0059fb5e1eff0fb8abccec0701ee38a7")
+                        val user = User()
+                        text = user.getUUID("fehennerich@outlook.de")
                     }
                 }
                 Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
-                */
+
 
 
                 var imageBytes by remember { mutableStateOf<ByteArray?>(null) }

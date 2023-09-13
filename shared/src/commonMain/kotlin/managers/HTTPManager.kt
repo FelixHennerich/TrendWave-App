@@ -30,10 +30,11 @@ class HTTPManager {
      * @param url -> Website URL
      * @param value -> Value that is requested
      * @param uuid -> Unique ID
+     * @param email -> Unique email
      * @param authcode -> Verification
      * @return -> requested Valuexx
      */
-    suspend fun getValue(url: String, value: String, uuid: String): String?{
+    suspend fun getValue(url: String, value: String, uuid: String?, email: String?): String?{
         val authcode = authCodeManager.getNewAuthcode()
 
         //HTTP Request
@@ -41,7 +42,12 @@ class HTTPManager {
         val response = client.get(url){
             url{
                 parameters.append("value", value)
-                parameters.append("uuid", uuid)
+                uuid?.let {
+                    parameters.append("uuid", uuid)
+                }
+                email?.let {
+                    parameters.append("email", email)
+                }
                 parameters.append("authcodetocheck", authcode)
             }
         }

@@ -1,6 +1,9 @@
 package account.manager
 
+import account.User
+import managers.HTTPManager
 import managers.exceptions.NException
+import utilities.EncryptionUtil
 
 class LoginManager {
 
@@ -11,9 +14,21 @@ class LoginManager {
      * @param password -> not encrypted
      * @return -> Error Handeling
      */
-    fun login(email: String, password: String): NException{
+    suspend fun login(email: String, password: String): NException{
+        val httpManager = HTTPManager()
 
-        return NException.SUCCESS001
+        val encryptedPassword = EncryptionUtil.encryption(password)
+        val passwordDB = httpManager.getValue(
+            "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php",
+            "password",
+            null,
+            email
+        )
+        if(encryptedPassword == passwordDB) {
+            return NException.SUCCESS001
+        }else {
+            return NException.WrongPassword107
+        }
     }
 
 }

@@ -54,6 +54,7 @@ fun App(
             state = state,
             onEvent = viewModel::onEvent,
             onNavigateRegister = {currentScreen = Screen.Register},
+            onNavigateHome = {currentScreen = Screen.Home},
             imageDataSource = appModule.imageDataSource
         )
         is Screen.Register -> registerScreenTT.RegisterScreen(
