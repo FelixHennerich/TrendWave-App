@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import utilities.CommonLogger
 
 class TrendWaveViewModel(
     private val imageDataSource: ImageDataSource
@@ -32,6 +31,30 @@ class TrendWaveViewModel(
             is TrendWaveEvent.ChangeLoginErrorMessage -> {
                 _state.update {it.copy(
                     LoginErrorMessage = event.message
+                )
+                }
+            }
+            is TrendWaveEvent.ClickPostButton -> {
+                _state.update { it.copy(
+                    isAddPostSheetOpen = true
+                )
+                }
+            }
+            is TrendWaveEvent.ClickClosePostButton -> {
+                _state.update { it.copy(
+                    isAddPostSheetOpen = false
+                )
+                }
+            }
+            is TrendWaveEvent.ClickSettingsScreen -> {
+                _state.update { it.copy(
+                    isSettingsSheetOpen = true
+                )
+                }
+            }
+            is TrendWaveEvent.ClickCloseSettingsScreen -> {
+                _state.update { it.copy(
+                    isSettingsSheetOpen = false
                 )
                 }
             }
