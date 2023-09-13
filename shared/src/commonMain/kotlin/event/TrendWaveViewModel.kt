@@ -31,7 +31,7 @@ class TrendWaveViewModel(
             }
             is TrendWaveEvent.ChangeLoginErrorMessage -> {
                 _state.update {it.copy(
-                    LoginErrorMessage = "Error while logging in"
+                    LoginErrorMessage = event.message
                 )
                 }
             }

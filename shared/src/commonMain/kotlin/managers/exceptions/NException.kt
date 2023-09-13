@@ -15,6 +15,7 @@ enum class NException {
     EmailExists104,
     UnallowedCharacters105,
     BirthdayWrong106,
+    WrongPassword107,
 
     /**
      * 200
