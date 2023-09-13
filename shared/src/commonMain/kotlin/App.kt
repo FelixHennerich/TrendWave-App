@@ -28,7 +28,7 @@ fun App(
 ){
 
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
     val loginScreenTT = LoginScreen()
     val settingsScreenTT = SettingsScreen()
     val homeScreenTT = HomeScreen()
@@ -46,16 +46,15 @@ fun App(
 
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
-            onNavigateToLogin = { currentScreen = Screen.Login },
-            onNavigateToSettings = { currentScreen = Screen.Settings },
-            onNavigateToRegister = {currentScreen = Screen.Register}
+            onNavigateToSettings = { currentScreen = Screen.Settings }
         )
         is Screen.Login -> loginScreenTT.LoginScreen(
             state = state,
             onEvent = viewModel::onEvent,
             onNavigateRegister = {currentScreen = Screen.Register},
             onNavigateHome = {currentScreen = Screen.Home},
-            imageDataSource = appModule.imageDataSource
+            imageDataSource = appModule.imageDataSource,
+            localDataManager = appModule.localDataSource
         )
         is Screen.Register -> registerScreenTT.RegisterScreen(
             state = state,
@@ -66,7 +65,8 @@ fun App(
         )
         is Screen.Settings -> settingsScreenTT.SettingsScreen(
             onNavigateToHome = { currentScreen = Screen.Home },
-            imageDataSource = appModule.imageDataSource
+            imageDataSource = appModule.imageDataSource,
+            localDataSource = appModule.localDataSource
         )
 
     }
