@@ -5,15 +5,21 @@ import account.image.ImageDataSource
 import account.image.Photo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBox
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -58,11 +64,12 @@ fun SettingsSheet(
         backgroundcolor = Color.White
     ) {
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
-            IconButton(
-                onClick = { onEvent(TrendWaveEvent.ClickCloseSettingsScreen) },
-                modifier = Modifier.offset(x = 0.dp, y = 0.dp)
-            ) {
-                Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "")
+            IconButton(onClick = {onEvent(TrendWaveEvent.ClickCloseSettingsScreen)}, Modifier.offset(x = 0.dp, y = 0.dp)) {
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = "",
+                    Modifier.padding(top = 20.dp)
+                )
             }
             Text(
                 "Settings",
@@ -70,92 +77,43 @@ fun SettingsSheet(
                     Color.Black,
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 35.sp
-                ), modifier = Modifier.offset(x = 15.dp, y = 55.dp)
+                ), modifier = Modifier.offset(x = 15.dp, y = 55.dp).padding(top = 20.dp)
             )
 
             Box(Modifier.offset(x = 20.dp, y = 130.dp)) {
                 Icon(
-                    imageVector = Icons.Rounded.AccountBox,
+                    imageVector = Icons.Rounded.AccountCircle,
                     contentDescription = "",
-                    Modifier.scale(1.3f)
+                    Modifier.scale(1.3f).padding(top = 20.dp)
                 )
                 Text(
                     "Account",
-                    Modifier.offset(x = 40.dp, y = (-3).dp),
+                    Modifier.offset(x = 40.dp, y = (-3).dp).padding(top = 20.dp),
                     style = TextStyle(
                         Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp
                     )
                 )
-                Icon(
-                    imageVector = LineaIcons.Music.Bell,
-                    contentDescription = "",
-                    Modifier.width(100.dp).height(100.dp).offset(y = 100.dp)
+
+                Divider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier.fillMaxWidth().padding(top = 70.dp)
                 )
 
-                /*val scope = rememberCoroutineScope()
-            var text by remember { mutableStateOf("Loading") }
-            LaunchedEffect(true) {
-                scope.launch {
-                    text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
-                }
-            }
-            Text(text)*/
-
-
-                val scope = rememberCoroutineScope()
-                var text by remember { mutableStateOf("Loading") }
-                LaunchedEffect(true) {
-                    scope.launch {
-                        val user = User()
-                        text = user.getUUID("fehennerich@outlook.de")
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    TextButton(onClick = { }, modifier = Modifier.padding(top = 70.dp)) {
+                        Text("Edit Profile", color = Color.Gray, fontSize = 15.sp)
+                    }
+                    IconButton(onClick = {  }, Modifier.offset(x = 330.dp, y = 0.dp).padding(top = 61.dp)) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowForward,
+                            contentDescription = "",
+                            Modifier.padding(top = 20.dp)
+                        )
                     }
                 }
-                Text(text, modifier = Modifier.offset(x = 0.dp, y = 300.dp))
-
-
-                var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
-                var loading by remember { mutableStateOf(true) }
-
-
-                if (loading) {
-                    LaunchedEffect(loading) {
-                        imageBytes = imageDataSource.getImage("Logo.jpg")
-                        loading = false
-                    }
-                }
-
-                imageBytes?.let {
-                    Photo(
-                        width = 200.dp,
-                        height = 200.dp,
-                        photoBytes = imageBytes
-                    )
-                }
-
-
-
-                localDataSource.saveString("email", "fehennerich@outlook.de")
-                localDataSource.saveString("password", "fe123lix")
-
-
-
-                localDataSource.readString("email")?.let {
-                    Text(
-                        text = it,
-                        modifier = Modifier.offset(x = 0.dp, y = 310.dp)
-                    )
-                }
-
-                localDataSource.readString("password")?.let {
-                    Text(
-                        text = it,
-                        modifier = Modifier.offset(x = 0.dp, y = 320.dp)
-                    )
-                }
-
-
             }
         }
     }
