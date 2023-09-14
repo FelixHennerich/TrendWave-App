@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -92,8 +95,17 @@ class SettingsScreen {
                     modifier = Modifier.fillMaxWidth().padding(top = 70.dp)
                 )
 
-                TextButton(onClick = { }, modifier = Modifier.padding(top = 70.dp)) {
-                    Text("Edit Profile", color = Color.Gray, fontSize = 15.sp)
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    TextButton(onClick = { }, modifier = Modifier.padding(top = 70.dp)) {
+                        Text("Edit Profile", color = Color.Gray, fontSize = 15.sp)
+                    }
+                    IconButton(onClick = {  }, Modifier.offset(x = 330.dp, y = 0.dp).padding(top = 61.dp)) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowForward,
+                            contentDescription = "",
+                            Modifier.padding(top = 20.dp)
+                        )
+                    }
                 }
 
                 /*val scope = rememberCoroutineScope()
