@@ -1,9 +1,9 @@
-package views
+package views.sheet
 
+import account.User
 import account.image.ImageDataSource
 import account.image.Photo
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,13 +25,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,25 +38,33 @@ import androidx.compose.ui.unit.sp
 import compose.icons.LineaIcons
 import compose.icons.lineaicons.Music
 import compose.icons.lineaicons.music.Bell
-import kotlinx.coroutines.delay
-import utilities.CommonLogger
+import event.TrendWaveEvent
+import kotlinx.coroutines.launch
+import managers.DataStorageManager
+import utilities.presentation.SideSheet
 
-
-class SettingsScreen {
-    /**
-     * Settings UI Screen
-     *
-     * @param onNavigateToHome -> Navigator left top
-     * @param imageDataSource -> Datasource to display images
-     */
-    @Composable
-    fun SettingsScreen(
-        onNavigateToHome: () -> Unit,
-        imageDataSource: ImageDataSource
+/**
+ * Settings UI Screen
+ *
+ * @param isOpen -> Is Settings Shown
+ * @param imageDataSource -> Datasource to display images
+ * @param localDataSource -> Datasource to display data
+ * @param onEvent -> EventHandeling
+ */
+@Composable
+fun SettingsSheet(
+    isOpen: Boolean,
+    imageDataSource: ImageDataSource,
+    localDataSource: DataStorageManager,
+    onEvent: (TrendWaveEvent) -> Unit
+) {
+    SideSheet(
+        visible = isOpen,
+        modifier = Modifier.fillMaxSize(),
+        backgroundcolor = Color.White
     ) {
-
         Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
-            IconButton(onClick = onNavigateToHome, Modifier.offset(x = 0.dp, y = 0.dp)) {
+            IconButton(onClick = {onEvent(TrendWaveEvent.ClickCloseSettingsScreen)}, Modifier.offset(x = 0.dp, y = 0.dp)) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = "",
@@ -107,41 +114,10 @@ class SettingsScreen {
                         )
                     }
                 }
-
-                /*val scope = rememberCoroutineScope()
-                var text by remember { mutableStateOf("Loading") }
-                LaunchedEffect(true) {
-                    scope.launch {
-                        text = HTTPManager().postUpdate("https://cross-cultural-auto.000webhostapp.com/php/connectUpdate.php", "newsapplication", "b", "100", "test", "1").toString()
-                    }
-                }
-                Text(text)*/
-
-
-                /*
-                val scope = rememberCoroutineScope()
-                var text by remember { mutableStateOf("Loading") }
-                LaunchedEffect(true) {
-                    scope.launch {
-                        val accountManager = CreationManager()
-                        val ExceptionHandler = ExceptionHandler()
-                        val authcodemanager = AuthCodeManager()
-                        val user = User();
-                        //val code = authcodemanager.getNewAuthcode()
-                        //text = authcodemanager.deactivateAuthcode(code)
-                        text = "" + ExceptionHandler.fetchErrorMessage(accountManager.createAccount("nitroxblue1@gmail.com", "password123", "1BlueNitrox", "01.04.2005"))
-                        //text = HTTPManager().usernameCheck("https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php", "newsuser","felixhenneric1h", "authcode1234jfj"
-                        //text = user.getEmail("0059fb5e1eff0fb8abccec0701ee38a7")
-                    }
-                }
-                Text(text, modifier = Modifier.offset(x = 0.dp, y= 300.dp))
-                */
-
             }
         }
     }
 }
-
 /*
     Image Example:
             KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),

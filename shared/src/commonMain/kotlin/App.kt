@@ -1,4 +1,3 @@
-import account.image.ImageDownloader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -7,13 +6,9 @@ import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import di.AppModule
 import event.TrendWaveViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import views.LoginScreen
 import views.HomeScreen
 import views.RegisterScreen
-import views.SettingsScreen
 
 
 /**
@@ -28,9 +23,8 @@ fun App(
 ){
 
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
     val loginScreenTT = LoginScreen()
-    val settingsScreenTT = SettingsScreen()
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
 
@@ -46,26 +40,26 @@ fun App(
 
     when (currentScreen) {
         is Screen.Home -> homeScreenTT.HomeScreen(
-            onNavigateToLogin = { currentScreen = Screen.Login },
-            onNavigateToSettings = { currentScreen = Screen.Settings },
-            onNavigateToRegister = {currentScreen = Screen.Register}
+            onEvent = viewModel::onEvent,
+            state = state,
+            localDataSource = appModule.localDataSource,
+            imageDataSource = appModule.imageDataSource
         )
         is Screen.Login -> loginScreenTT.LoginScreen(
             state = state,
             onEvent = viewModel::onEvent,
             onNavigateRegister = {currentScreen = Screen.Register},
-            imageDataSource = appModule.imageDataSource
+            onNavigateHome = {currentScreen = Screen.Home},
+            imageDataSource = appModule.imageDataSource,
+            localDataManager = appModule.localDataSource
         )
         is Screen.Register -> registerScreenTT.RegisterScreen(
             state = state,
             onEvent = viewModel::onEvent,
             onNavigateLogin = {currentScreen = Screen.Login},
             onNavigateHome = {currentScreen = Screen.Home},
-            imageDataSource = appModule.imageDataSource
-        )
-        is Screen.Settings -> settingsScreenTT.SettingsScreen(
-            onNavigateToHome = { currentScreen = Screen.Home },
-            imageDataSource = appModule.imageDataSource
+            imageDataSource = appModule.imageDataSource,
+            localDataManager = appModule.localDataSource
         )
 
     }
@@ -77,11 +71,9 @@ fun App(
  * @Object Home -> Main Screen, gonna be Login
  * @Object Login -> Login Screen
  * @Object Details -> Detail test screen
- * @Object Settings -> Settings screen
  */
 sealed class Screen {
     data object Home : Screen()
     data object Login : Screen()
-    data object Settings: Screen()
     data object Register: Screen()
 }

@@ -47,6 +47,7 @@ class ExceptionHandler {
             NException.EmailExists104         -> message = "Your Email is already used."
             NException.UnallowedCharacters105 -> message = "There is a character that isnt allowed"
             NException.BirthdayWrong106       -> message = "Enter your birthday like that: dd.mm.yyyy"
+            NException.WrongPassword107       -> message = "You've entered a wrong password"
             /**
              * 200
              */
