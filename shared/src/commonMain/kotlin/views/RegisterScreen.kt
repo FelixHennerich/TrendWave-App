@@ -52,6 +52,7 @@ import event.TrendWaveState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import managers.DataStorageManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 
@@ -66,6 +67,7 @@ class RegisterScreen {
      * @param onNavigateLogin -> Navigate to Login screen
      * @param onNavigateHome -> Navigate to Home screen
      * @param imageDataSource -> ImageAPI
+     * @param localDataManager -> LocalDataManager
      */
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
@@ -74,7 +76,8 @@ class RegisterScreen {
         onEvent: (TrendWaveEvent) -> Unit,
         onNavigateLogin: () -> Unit,
         onNavigateHome: () -> Unit,
-        imageDataSource: ImageDataSource
+        imageDataSource: ImageDataSource,
+        localDataManager: DataStorageManager
     ) {
         var user by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
@@ -270,6 +273,9 @@ class RegisterScreen {
                             onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
 
                             if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                                localDataManager.saveString("email", email)
+                                localDataManager.saveString("password", password)
+                                localDataManager.saveString("username", user)
                                 onNavigateHome()
                             }
                         }
