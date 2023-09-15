@@ -1,5 +1,6 @@
 package views
 
+import account.User
 import account.image.ImageDataSource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -30,8 +35,12 @@ import compose.icons.tablericons.Message
 import compose.icons.tablericons.Settings
 import event.TrendWaveEvent
 import event.TrendWaveState
+import io.ktor.util.date.getTimeMillis
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.Post
+import post.PostLoader
 import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
@@ -54,12 +63,13 @@ class HomeScreen {
         localDataSource: DataStorageManager,
         imageDataSource: ImageDataSource
     ) {
-        state.posts += Post("uuid here", "username","01.04.2012", "This is a post texth hallo was geht lol w nur ich braichhe hier mehr worte bla bla la")
-        state.posts += Post("uuid here", "username","01.04.2012", "This is a pos312t text")
-        state.posts += Post("uuid here", "username","01.04.2012", "This is a po3231st text")
-        state.posts += Post("uuid here", "username","01.04.2012", "6 is a 44post text")
-        state.posts += Post("uuid here", "username","01.04.2012", "6 is a post text")
-        state.posts += Post("uuid here", "username","01.04.2012", "This7 is a pos8t text")
+        GlobalScope.launch {
+            val user = User()
+            localDataSource.readString("email")
+                ?.let { user.getUUID(it) }
+                ?.let { TrendWaveEvent.HomeScreen(it) }
+                ?.let { onEvent(it) }
+        }
 
         Scaffold(
             Modifier.offset(y = 25.dp)
@@ -127,7 +137,7 @@ class HomeScreen {
 
                     Text(
                         text = "Recent activity",
-                        modifier = Modifier.offset(x = 20.dp, y= 90.dp),
+                        modifier = Modifier.offset(x = 20.dp, y = 90.dp),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -135,6 +145,25 @@ class HomeScreen {
                 item {
                     Spacer(Modifier.height(100.dp))
                 }
+
+                item {
+                    var lastClickTime by remember { mutableStateOf(0L) }
+                    val delayMillis = 10000L
+
+                    if (state.posts.isEmpty()) {
+                        val currentTime = getTimeMillis()
+                        if (currentTime - lastClickTime >= delayMillis) {
+                            GlobalScope.launch {
+                                val postloader = PostLoader()
+                                onEvent(TrendWaveEvent.UpdatePostList(postloader.loadPost()))
+                            }
+
+                            lastClickTime = currentTime
+                        }
+                    }
+                }
+
+
                 items(state.posts) { post ->
                     PostDisplay(
                         modifier = Modifier,
@@ -148,14 +177,15 @@ class HomeScreen {
                     )
                     Spacer(Modifier.height(6.dp))
                 }
-                item{
+                item {
                     Spacer(Modifier.height(100.dp))
                 }
             }
         }
         addPostSheet(
             isOpen = state.isAddPostSheetOpen,
-            onEvent = onEvent
+            onEvent = onEvent,
+            state = state
         )
         SettingsSheet(
             isOpen = state.isSettingsSheetOpen,
