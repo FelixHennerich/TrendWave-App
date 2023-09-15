@@ -62,6 +62,21 @@ class TrendWaveViewModel(
                     posts = event.posts
                 ) }
             }
+            is TrendWaveEvent.PostDeletionButton -> {
+                _state.update { it.copy(
+                    posts = event.posts - event.post
+                ) }
+            }
+            is TrendWaveEvent.ProfileHomeButton -> {
+                _state.update { it.copy(
+                    isProfileSheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.UserPostLoading -> {
+                _state.update { it.copy(
+                    userposts = event.posts
+                ) }
+            }
             else -> {}
         }
     }
