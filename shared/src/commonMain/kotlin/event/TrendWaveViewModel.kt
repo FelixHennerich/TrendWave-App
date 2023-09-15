@@ -25,38 +25,42 @@ class TrendWaveViewModel(
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
                 _state.update {it.copy(
                     RegisterErrorMessage = event.message
-                )
-                }
+                ) }
             }
             is TrendWaveEvent.ChangeLoginErrorMessage -> {
                 _state.update {it.copy(
                     LoginErrorMessage = event.message
-                )
-                }
+                ) }
             }
             is TrendWaveEvent.ClickPostButton -> {
                 _state.update { it.copy(
                     isAddPostSheetOpen = true
-                )
-                }
+                ) }
             }
             is TrendWaveEvent.ClickClosePostButton -> {
                 _state.update { it.copy(
                     isAddPostSheetOpen = false
-                )
-                }
+                ) }
             }
             is TrendWaveEvent.ClickSettingsScreen -> {
                 _state.update { it.copy(
                     isSettingsSheetOpen = true
-                )
-                }
+                ) }
             }
             is TrendWaveEvent.ClickCloseSettingsScreen -> {
                 _state.update { it.copy(
                     isSettingsSheetOpen = false
-                )
-                }
+                ) }
+            }
+            is TrendWaveEvent.HomeScreen -> {
+                _state.update { it.copy(
+                    uuid = event.uuid
+                ) }
+            }
+            is TrendWaveEvent.UpdatePostList -> {
+                _state.update {it.copy(
+                    posts = event.posts
+                ) }
             }
             else -> {}
         }
