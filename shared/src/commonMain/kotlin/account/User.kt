@@ -35,16 +35,17 @@ class User : UserInterface {
      */
     override suspend fun getUsername(uuid: String): String {
         val username = httpManager.getValue(url, "username", uuid, null)
-        return username ?: "No Email Found Error"
+        return username ?: "No Username Found Error"
     }
 
     override suspend fun getUUID(email: String): String {
         val uuid = httpManager.getValue(url, "uuid", null, email)
-        return uuid ?: "No Email Found Error"
+        return uuid ?: "No UUID Found Error"
     }
 
-    override fun getRole(uuid: String): RoleType {
-        TODO("Not yet implemented")
+    override suspend fun getRole(uuid: String): String {
+        val role = httpManager.getValue(url, "role", uuid, null)
+        return role ?: "No Role Found Error"
     }
 
     override fun getBirthday(uuid: String): String {

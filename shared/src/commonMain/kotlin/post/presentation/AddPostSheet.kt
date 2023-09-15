@@ -95,22 +95,24 @@ fun addPostSheet(
         ) {
             Button(
                 onClick = {
-                    val currentTime = getTimeMillis()
-                    if (currentTime - lastClickTime >= delayMillis) {
-                        onEvent(TrendWaveEvent.ClickClosePostButton)
+                    post?.let {
+                        val currentTime = getTimeMillis()
+                        if (currentTime - lastClickTime >= delayMillis) {
+                            onEvent(TrendWaveEvent.ClickClosePostButton)
 
-                        GlobalScope.launch {
-                            val postloader = PostLoader()
-                            state.uuid?.let {
-                                postloader.uploadPost(
-                                    uuid = it,
-                                    text = post
-                                )
+                            GlobalScope.launch {
+                                val postloader = PostLoader()
+                                state.uuid?.let {
+                                    postloader.uploadPost(
+                                        uuid = it,
+                                        text = post
+                                    )
+                                }
+
+                                postloader.loadPost()
                             }
-
-                            postloader.loadPost()
+                            lastClickTime = currentTime
                         }
-                        lastClickTime = currentTime
                     }
                 },
             ) {
