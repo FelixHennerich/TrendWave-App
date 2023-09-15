@@ -1,10 +1,7 @@
 package post.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -26,18 +21,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import compose.icons.TablerIcons
-import compose.icons.tablericons.ArrowBack
-import compose.icons.tablericons.Settings
 import event.TrendWaveEvent
+import event.TrendWaveState
+import io.ktor.util.date.getTimeMillis
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import post.PostLoader
 import utilities.presentation.BottomSheet
 
 /**
@@ -49,7 +44,8 @@ import utilities.presentation.BottomSheet
 @Composable
 fun addPostSheet(
     isOpen: Boolean,
-    onEvent: (TrendWaveEvent) -> Unit
+    onEvent: (TrendWaveEvent) -> Unit,
+    state: TrendWaveState
 ) {
     BottomSheet(
         visible = isOpen,
@@ -90,12 +86,33 @@ fun addPostSheet(
             )
         )
 
+        var lastClickTime by remember { mutableStateOf(0L) }
+        val delayMillis = 5000L
+
         Box(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { onEvent(TrendWaveEvent.ClickClosePostButton) },
+                onClick = {
+                    val currentTime = getTimeMillis()
+                    if (currentTime - lastClickTime >= delayMillis) {
+                        onEvent(TrendWaveEvent.ClickClosePostButton)
+
+                        GlobalScope.launch {
+                            val postloader = PostLoader()
+                            state.uuid?.let {
+                                postloader.uploadPost(
+                                    uuid = it,
+                                    text = post
+                                )
+                            }
+
+                            postloader.loadPost()
+                        }
+                        lastClickTime = currentTime
+                    }
+                },
             ) {
                 Text("Submit")
             }

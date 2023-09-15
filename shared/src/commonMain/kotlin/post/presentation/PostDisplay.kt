@@ -69,7 +69,7 @@ fun PostDisplay(
             }
             Text(
                 text = "@$postuser",
-                modifier = Modifier.offset(y = 4.dp, x = 6.dp),
+                modifier = Modifier.offset(y = 2.dp, x = 6.dp),
                 color = Color.DarkGray,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 12.sp
