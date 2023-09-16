@@ -73,24 +73,6 @@ class LoginScreen {
         imageDataSource: ImageDataSource,
         localDataManager: DataStorageManager
     ) {
-        if(localDataManager.readString("email") != null &&
-            localDataManager.readString("password") != null &&
-            localDataManager.readString("username") != null) {
-            GlobalScope.launch {
-                val loginManager = LoginManager()
-                val exceptionHandler = ExceptionHandler()
-                val message = exceptionHandler.fetchErrorMessage(
-                    loginManager.login(
-                        email = localDataManager.readString("email")!!,
-                        password = localDataManager.readString("password")!!
-                    )
-                )
-
-                if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
-                    onNavigateHome()
-                }
-            }
-        }
         var user by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
@@ -214,11 +196,15 @@ class LoginScreen {
                         onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
 
                         if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
-                            val username = userClass.getUsername(userClass.getUUID(user))
+                            val uuid = userClass.getUUID(user)
+                            val username = userClass.getUsername(uuid)
+                            val role = userClass.getRole(uuid)
 
                             localDataManager.saveString("email", user)
                             localDataManager.saveString("password", password)
                             localDataManager.saveString("username", username)
+                            localDataManager.saveString("role", role)
+                            localDataManager.saveString("uuid", uuid)
                             onNavigateHome()
                         }
                     }

@@ -2,6 +2,7 @@ package views
 
 import account.User
 import account.image.ImageDataSource
+import account.presentation.ProfileSheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +39,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.Post
@@ -45,6 +48,7 @@ import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
 import post.presentation.addPostSheet
+import utilities.CommonLogger
 
 class HomeScreen {
 
@@ -65,10 +69,18 @@ class HomeScreen {
     ) {
         GlobalScope.launch {
             val user = User()
+            val postLoader = PostLoader()
             localDataSource.readString("email")
                 ?.let { user.getUUID(it) }
                 ?.let { TrendWaveEvent.HomeScreen(it) }
                 ?.let { onEvent(it) }
+            while(state.uuid == null){
+                delay(1)
+            }
+            if(state.userposts == null){
+                val lst = postLoader.loadUserPosts(state.uuid!!)
+                onEvent(TrendWaveEvent.UserPostLoading(lst, state.uuid!!))
+            }
         }
 
         Scaffold(
@@ -131,7 +143,7 @@ class HomeScreen {
                             buttontext = "Profile",
                             imageVector = FeatherIcons.User,
                             onEvent = onEvent,
-                            event = TrendWaveEvent.TestHomeButton
+                            event = TrendWaveEvent.ProfileHomeButton
                         )
                     }
 
@@ -169,11 +181,12 @@ class HomeScreen {
                         modifier = Modifier,
                         posttext = post.text,
                         postuser = post.username,
+                        postuuid = post.uuid,
                         postdate = post.date,
-                        topEnd = 10.dp,
-                        topStart = 10.dp,
-                        bottomEnd = 10.dp,
-                        bottomStart = 10.dp
+                        postid = post.id,
+                        localDataStorageManager = localDataSource,
+                        onEvent = onEvent,
+                        state = state
                     )
                     Spacer(Modifier.height(6.dp))
                 }
@@ -193,6 +206,17 @@ class HomeScreen {
             localDataSource = localDataSource,
             onEvent = onEvent
         )
+        state.userposts?.let {
+            ProfileSheet(
+                isOpen = state.isProfileSheetOpen,
+                onEvent = onEvent,
+                state = state,
+                localDataSource = localDataSource,
+                posts = state.userposts!!,
+                follower = state.follower!!,
+                following = state.following!!
+            )
+        }
     }
 
 }

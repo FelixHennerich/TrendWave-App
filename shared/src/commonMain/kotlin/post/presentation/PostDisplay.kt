@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -27,32 +28,58 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.icons.FeatherIcons
+import compose.icons.LineaIcons
+import compose.icons.SimpleIcons
+import compose.icons.TablerIcons
 import compose.icons.feathericons.User
+import compose.icons.tablericons.Trash
+import event.TrendWaveEvent
+import event.TrendWaveState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import managers.DataStorageManager
+import post.Post
+import post.PostLoader
 
+/**
+ * Display lingle posts
+ *
+ * @param modifier -> Modifications that will be available
+ * @param posttext -> content of post
+ * @param postuser -> Username of creator
+ * @param postdate -> Date of creation
+ * @param postuuid -> UUID of creator
+ * @param postid -> ID of Post
+ * @param localDataStorageManager -> Local Storage manager
+ * @param onEvent -> Event handling
+ * @param state -> State & Data manager
+ */
 @Composable
 fun PostDisplay(
     modifier: Modifier,
     posttext: String,
     postuser: String,
     postdate: String,
-    topStart: Dp,
-    bottomStart: Dp,
-    topEnd: Dp,
-    bottomEnd: Dp,
+    postuuid: String,
+    postid: String,
+    localDataStorageManager: DataStorageManager,
+    onEvent: (TrendWaveEvent) -> Unit,
+    state: TrendWaveState
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
             .background(Color(242, 242, 242), RoundedCornerShape(
-                topStart = topStart,
-                topEnd = topEnd,
-                bottomStart = bottomStart,
-                bottomEnd = bottomEnd
+                topStart = 10.dp,
+                topEnd = 10.dp,
+                bottomStart = 10.dp,
+                bottomEnd = 10.dp
             ))
     ) {
         Row(
             modifier = Modifier.offset(x = 8.dp, y = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
@@ -69,11 +96,30 @@ fun PostDisplay(
             }
             Text(
                 text = "@$postuser",
-                modifier = Modifier.offset(y = 2.dp, x = 6.dp),
+                modifier = Modifier.offset(x = 6.dp, y = -(8).dp),
                 color = Color.DarkGray,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 12.sp
             )
+            if(localDataStorageManager.readString("username") == postuser ||
+                localDataStorageManager.readString("role") == "Admin"){
+                IconButton(
+                    onClick = {
+                        GlobalScope.launch {
+                            val postloader = PostLoader()
+                            postloader.deletePost(postid)
+
+                            onEvent(TrendWaveEvent.PostDeletionButton(Post(postid, postuuid, postuser, postdate, posttext), state.posts))
+                        }
+                    },
+                    modifier = Modifier.offset(y = -(3).dp, x = 200.dp)
+                ){
+                    Icon(
+                        imageVector = TablerIcons.Trash,
+                        contentDescription = "",
+                    )
+                }
+            }
         }
         Text(
             text = "Posted: $postdate",

@@ -1,10 +1,12 @@
 package views
 
+import account.User
 import account.image.ImageDataSource
 import account.image.Photo
 import account.manager.CreationManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -261,6 +263,7 @@ class RegisterScreen {
                         GlobalScope.launch {
                             val creationManager = CreationManager()
                             val exceptionHandler = ExceptionHandler()
+                            val userClass = User()
                             val message = exceptionHandler.fetchErrorMessage(
                                 creationManager.createAccount(
                                     email,
@@ -273,9 +276,15 @@ class RegisterScreen {
                             onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
 
                             if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
-                                localDataManager.saveString("email", email)
+                                val uuid = userClass.getUUID(user)
+                                val username = userClass.getUsername(uuid)
+                                val role = userClass.getRole(uuid)
+
+                                localDataManager.saveString("email", user)
                                 localDataManager.saveString("password", password)
-                                localDataManager.saveString("username", user)
+                                localDataManager.saveString("username", username)
+                                localDataManager.saveString("role", role)
+                                localDataManager.saveString("uuid", uuid)
                                 onNavigateHome()
                             }
                         }
@@ -312,18 +321,18 @@ class RegisterScreen {
         ) {
             Spacer(modifier = Modifier.height(700.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Checkbox(
                     checked = checkedConditionsState.value,
                     onCheckedChange = { checkedConditionsState.value = it },
-                    modifier = Modifier.padding(5.dp).offset(y = -(18).dp),
                     colors = CheckboxDefaults.colors(Color.Blue)
                 )
 
                 Text(
                     text = "I accept the terms of use",
-                    modifier = Modifier
-                        .fillMaxHeight(),
                     fontSize = 14.sp,
                     color = Color.Blue
                 )

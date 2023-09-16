@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -29,6 +30,7 @@ fun BottomSheet(
     visible: Boolean,
     modifier: Modifier,
     backgroundcolor: Color,
+    padding: Dp,
     content: @Composable () -> Unit
 ) {
     AnimatedVisibility(
@@ -51,7 +53,7 @@ fun BottomSheet(
                     )
                 )
                 .background(backgroundcolor)
-                .padding(16.dp)
+                .padding(padding)
                 .verticalScroll(rememberScrollState())
         ){
             content()

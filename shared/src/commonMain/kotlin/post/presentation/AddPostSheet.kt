@@ -53,7 +53,8 @@ fun addPostSheet(
             topEnd = 30.dp,
             topStart = 30.dp
         )),
-        backgroundcolor = Color.White
+        backgroundcolor = Color.White,
+        padding = 16.dp
     ) {
 
         var post by remember { mutableStateOf("") }
@@ -95,22 +96,24 @@ fun addPostSheet(
         ) {
             Button(
                 onClick = {
-                    val currentTime = getTimeMillis()
-                    if (currentTime - lastClickTime >= delayMillis) {
-                        onEvent(TrendWaveEvent.ClickClosePostButton)
+                    if(post.length > 3) {
+                        val currentTime = getTimeMillis()
+                        if (currentTime - lastClickTime >= delayMillis) {
+                            onEvent(TrendWaveEvent.ClickClosePostButton)
 
-                        GlobalScope.launch {
-                            val postloader = PostLoader()
-                            state.uuid?.let {
-                                postloader.uploadPost(
-                                    uuid = it,
-                                    text = post
-                                )
+                            GlobalScope.launch {
+                                val postloader = PostLoader()
+                                state.uuid?.let {
+                                    postloader.uploadPost(
+                                        uuid = it,
+                                        text = post
+                                    )
+                                }
+
+                                postloader.loadPost()
                             }
-
-                            postloader.loadPost()
+                            lastClickTime = currentTime
                         }
-                        lastClickTime = currentTime
                     }
                 },
             ) {
