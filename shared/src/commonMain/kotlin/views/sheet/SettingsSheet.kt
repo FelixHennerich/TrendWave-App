@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Slider
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
@@ -63,13 +65,14 @@ fun SettingsSheet(
         modifier = Modifier.fillMaxSize(),
         backgroundcolor = Color.White
     ) {
-        Box(Modifier.offset(y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
+        Box(Modifier.offset(x = (-10).dp, y = 10.dp).fillMaxSize(), contentAlignment = Alignment.TopStart) {
             IconButton(onClick = {onEvent(TrendWaveEvent.ClickCloseSettingsScreen)}, Modifier.offset(x = 0.dp, y = 0.dp)) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = "",
                     Modifier.padding(top = 20.dp)
                 )
+                Switch(checked = true, onCheckedChange = {  })
             }
             Text(
                 "Settings",
@@ -99,14 +102,14 @@ fun SettingsSheet(
                 Divider(
                     color = Color.Gray,
                     thickness = 1.dp,
-                    modifier = Modifier.fillMaxWidth().padding(top = 70.dp)
+                    modifier = Modifier.fillMaxWidth().padding(top = 70.dp, end = 20.dp)
                 )
 
                 Box(modifier = Modifier.fillMaxWidth()) {
                     TextButton(onClick = { }, modifier = Modifier.padding(top = 70.dp)) {
-                        Text("Edit Profile", color = Color.Gray, fontSize = 15.sp)
+                        Text("Edit Account", color = Color.Gray, fontSize = 15.sp)
                     }
-                    IconButton(onClick = {  }, Modifier.offset(x = 330.dp, y = 0.dp).padding(top = 61.dp)) {
+                    IconButton(onClick = {  }, Modifier.offset(x = 310.dp, y = 0.dp).padding(top = 61.dp)) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowForward,
                             contentDescription = "",
@@ -114,7 +117,18 @@ fun SettingsSheet(
                         )
                     }
                 }
-
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    TextButton(onClick = { }, modifier = Modifier.padding(top = 110.dp)) {
+                        Text("Change Status", color = Color.Gray, fontSize = 15.sp)
+                    }
+                    IconButton(onClick = {  }, Modifier.offset(x = 310.dp, y = 0.dp).padding(top = 101.dp)) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowForward,
+                            contentDescription = "",
+                            Modifier.padding(top = 20.dp)
+                        )
+                    }
+                }
             }
         }
     }
