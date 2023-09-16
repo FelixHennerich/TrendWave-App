@@ -9,6 +9,7 @@ sealed interface TrendWaveEvent {
     class PostDeletionButton(val post: Post, val posts: List<Post>): TrendWaveEvent
     class HomeScreen(val uuid: String): TrendWaveEvent
     class UserPostLoading(val posts: List<Post>, val uuid: String): TrendWaveEvent
+    class LocalPostCreation(val post: Post): TrendWaveEvent
     object ClickPostButton: TrendWaveEvent
     object ClickSettingsScreen: TrendWaveEvent
     object TestHomeButton: TrendWaveEvent

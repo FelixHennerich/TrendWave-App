@@ -133,14 +133,17 @@ class PostLoader {
      *
      * @param uuid -> player unique id
      * @param text -> content of the post
+     * @return post
      */
-    suspend fun uploadPost(uuid: String, text: String){
+    suspend fun uploadPost(uuid: String, text: String): Post{
         val authcode = authCodeManager.getNewAuthcode()
         val url = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/postInsert.php"
         val dateUtil = DateUtil()
         val postidmanager = UUID()
         val id = postidmanager.generate128BitUUID()
         val date = dateUtil.getCurrentDate()
+        val user = User();
+        val username = user.getUsername(uuid)
 
         client.get(url) {
             url {
@@ -153,6 +156,8 @@ class PostLoader {
         }
 
         authCodeManager.deactivateAuthcode(authcode)
+
+        return Post(id, uuid, username, date, text)
     }
 
     /**

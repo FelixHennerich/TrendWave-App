@@ -114,14 +114,8 @@ fun SettingsSheet(
                         )
                     }
                 }
+
             }
         }
     }
 }
-/*
-    Image Example:
-            KamelImage(asyncPainterResource("https://github.com/FelixHennerich/DiscordWebhook/blob/main/Bildschirm%C2%ADfoto%202023-08-05%20um%2012.01.40.png?raw=true"),
-                null
-            )
-
-     */

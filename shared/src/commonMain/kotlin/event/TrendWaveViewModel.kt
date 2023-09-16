@@ -36,15 +36,27 @@ class TrendWaveViewModel(
                     LoginErrorMessage = event.message
                 ) }
             }
+            is TrendWaveEvent.LocalPostCreation ->{
+                _state.update { it.copy(
+                    creationpost = event.post
+                ) }
+            }
             is TrendWaveEvent.ClickPostButton -> {
                 _state.update { it.copy(
                     isAddPostSheetOpen = true
                 ) }
             }
             is TrendWaveEvent.ClickClosePostButton -> {
-                _state.update { it.copy(
-                    isAddPostSheetOpen = false
-                ) }
+                state.value.userposts?.let {
+                    state.value.creationpost?.let {
+                        _state.update {
+                            it.copy(
+                                isAddPostSheetOpen = false,
+                                userposts = state.value.userposts?.plus(state.value.creationpost!!)
+                            )
+                        }
+                    }
+                }
             }
             is TrendWaveEvent.ClickSettingsScreen -> {
                 _state.update { it.copy(
@@ -70,6 +82,15 @@ class TrendWaveViewModel(
                 _state.update { it.copy(
                     posts = event.posts - event.post
                 ) }
+                state.value.userposts?.let {
+                    if (state.value.userposts!!.contains(event.post)) {
+                        _state.update {
+                            it.copy(
+                                userposts = state.value.userposts?.minus((event.post))
+                            )
+                        }
+                    }
+                }
             }
             is TrendWaveEvent.ProfileHomeButton -> {
                 _state.update { it.copy(
