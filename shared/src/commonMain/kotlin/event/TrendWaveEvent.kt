@@ -7,8 +7,7 @@ sealed interface TrendWaveEvent {
     class ChangeRegisterErrorMessage(val message: String): TrendWaveEvent
     class UpdatePostList(val posts: List<Post>): TrendWaveEvent
     class PostDeletionButton(val post: Post, val posts: List<Post>): TrendWaveEvent
-    class HomeScreen(val uuid: String): TrendWaveEvent
-    class UserPostLoading(val posts: List<Post>, val uuid: String): TrendWaveEvent
+    class UserPostLoading(val posts: List<Post>,val userposts: List<Post>, val uuid: String): TrendWaveEvent
     class LocalPostCreation(val post: Post): TrendWaveEvent
     object ClickPostButton: TrendWaveEvent
     object ClickSettingsScreen: TrendWaveEvent

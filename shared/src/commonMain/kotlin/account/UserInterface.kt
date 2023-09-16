@@ -11,7 +11,6 @@ interface UserInterface {
     fun getBirthday(uuid: String) : String
     fun getSignupday(uuid: String) : String
     fun hasPermissionRole(role: RoleType) : Boolean
-
     suspend fun getFollower(uuid: String): String
     suspend fun getFollowing(uuid: String): String
 

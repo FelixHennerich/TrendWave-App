@@ -38,7 +38,7 @@ class TrendWaveViewModel(
             }
             is TrendWaveEvent.LocalPostCreation ->{
                 _state.update { it.copy(
-                    creationpost = event.post
+                    userposts = state.value.userposts?.plus(event.post)
                 ) }
             }
             is TrendWaveEvent.ClickPostButton -> {
@@ -47,15 +47,10 @@ class TrendWaveViewModel(
                 ) }
             }
             is TrendWaveEvent.ClickClosePostButton -> {
-                state.value.userposts?.let {
-                    state.value.creationpost?.let {
-                        _state.update {
-                            it.copy(
-                                isAddPostSheetOpen = false,
-                                userposts = state.value.userposts?.plus(state.value.creationpost!!)
-                            )
-                        }
-                    }
+                _state.update {
+                    it.copy(
+                        isAddPostSheetOpen = false,
+                    )
                 }
             }
             is TrendWaveEvent.ClickSettingsScreen -> {
@@ -66,11 +61,6 @@ class TrendWaveViewModel(
             is TrendWaveEvent.ClickCloseSettingsScreen -> {
                 _state.update { it.copy(
                     isSettingsSheetOpen = false
-                ) }
-            }
-            is TrendWaveEvent.HomeScreen -> {
-                _state.update { it.copy(
-                    uuid = event.uuid
                 ) }
             }
             is TrendWaveEvent.UpdatePostList -> {
@@ -101,7 +91,8 @@ class TrendWaveViewModel(
                 GlobalScope.launch {
                     _state.update {
                         it.copy(
-                            userposts = event.posts,
+                            posts = event.posts,
+                            userposts = event.userposts,
                             following = user.getFollowing(event.uuid),
                             follower = user.getFollower(event.uuid)
                         )
