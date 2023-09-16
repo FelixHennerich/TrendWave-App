@@ -1,6 +1,5 @@
 package views
 
-import account.User
 import account.image.ImageDataSource
 import account.presentation.ProfileSheet
 import androidx.compose.foundation.background
@@ -18,7 +17,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,16 +37,13 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
-import post.Post
-import post.PostLoader
+import post.RESTfulPostManager
 import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
 import post.presentation.addPostSheet
-import utilities.CommonLogger
 
 class HomeScreen {
 
@@ -67,22 +62,6 @@ class HomeScreen {
         localDataSource: DataStorageManager,
         imageDataSource: ImageDataSource
     ) {
-        GlobalScope.launch {
-            val user = User()
-            val postLoader = PostLoader()
-            localDataSource.readString("email")
-                ?.let { user.getUUID(it) }
-                ?.let { TrendWaveEvent.HomeScreen(it) }
-                ?.let { onEvent(it) }
-            while(state.uuid == null){
-                delay(1)
-            }
-            if(state.userposts == null){
-                val lst = postLoader.loadUserPosts(state.uuid!!)
-                onEvent(TrendWaveEvent.UserPostLoading(lst, state.uuid!!))
-            }
-        }
-
         Scaffold(
             Modifier.offset(y = 25.dp)
         ) {
@@ -166,8 +145,8 @@ class HomeScreen {
                         val currentTime = getTimeMillis()
                         if (currentTime - lastClickTime >= delayMillis) {
                             GlobalScope.launch {
-                                val postloader = PostLoader()
-                                onEvent(TrendWaveEvent.UpdatePostList(postloader.loadPost()))
+                                val restapi = RESTfulPostManager()
+                                onEvent(TrendWaveEvent.UpdatePostList(restapi.getRandomPosts()))
                             }
 
                             lastClickTime = currentTime
@@ -198,7 +177,7 @@ class HomeScreen {
         addPostSheet(
             isOpen = state.isAddPostSheetOpen,
             onEvent = onEvent,
-            state = state
+            localDataSource = localDataSource
         )
         SettingsSheet(
             isOpen = state.isSettingsSheetOpen,

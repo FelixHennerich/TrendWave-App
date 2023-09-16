@@ -6,9 +6,13 @@ import androidx.compose.runtime.*
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import di.AppModule
+import event.TrendWaveEvent
 import event.TrendWaveViewModel
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import post.RESTfulPostManager
+import post.Post
 import utilities.CommonLogger
 import views.LoginScreen
 import views.HomeScreen
@@ -29,6 +33,9 @@ fun App(
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
     var firstLogin by remember { mutableStateOf(true) }
+    var loggedin by remember { mutableStateOf(false) }
+    var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
+    var lst1 by remember { mutableStateOf<List<Post>>(emptyList()) }
     val loginScreenTT = LoginScreen()
     val loadingScreenTT = LoadingScreen()
     val homeScreenTT = HomeScreen()
@@ -42,10 +49,30 @@ fun App(
             TrendWaveViewModel(appModule.imageDataSource)
         }
     )
+    val state by viewModel.state.collectAsState()
 
     GlobalScope.launch {
         if(loginManager.isLoggedIn(appModule.localDataSource)){
-            currentScreen = Screen.Home
+            if(!loggedin) {
+                loggedin = true
+                if (appModule.localDataSource.readString("uuid") != null) {
+                    val uuid = appModule.localDataSource.readString("uuid").toString()
+                    val restAPI = RESTfulPostManager()
+                    val commonLogger = CommonLogger()
+
+                    lst = restAPI.getUserPosts(uuid)
+                    lst1 = restAPI.getRandomPosts()
+
+                    while(lst1.isEmpty() && lst.isEmpty()){
+                        delay(1)
+                    }
+                    viewModel.onEvent(TrendWaveEvent.UserPostLoading(lst1, lst, uuid))
+                    while (state.posts.isEmpty()) {
+                        delay(1)
+                    }
+                    currentScreen = Screen.Home
+                }
+            }
         }else {
             if(firstLogin) {
                 firstLogin = false
@@ -54,11 +81,10 @@ fun App(
         }
     }
 
-    val state by viewModel.state.collectAsState()
-
     when (currentScreen) {
         is Screen.Loading -> loadingScreenTT.LoadingScreen(
-            imageDataSource = appModule.imageDataSource
+            imageDataSource = appModule.imageDataSource,
+            localDataSource = appModule.localDataSource
         )
         is Screen.Home -> homeScreenTT.HomeScreen(
             onEvent = viewModel::onEvent,
