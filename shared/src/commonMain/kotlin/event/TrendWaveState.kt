@@ -10,5 +10,7 @@ data class TrendWaveState(
     var isProfileSheetOpen: Boolean = false,
     var posts: List<Post> = emptyList(),
     var userposts: List<Post>? = null,
-    var uuid: String? = null
+    var uuid: String? = null,
+    var follower: String? = null,
+    var following: String? = null,
 )

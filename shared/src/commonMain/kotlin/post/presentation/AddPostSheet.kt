@@ -53,7 +53,8 @@ fun addPostSheet(
             topEnd = 30.dp,
             topStart = 30.dp
         )),
-        backgroundcolor = Color.White
+        backgroundcolor = Color.White,
+        padding = 16.dp
     ) {
 
         var post by remember { mutableStateOf("") }
@@ -95,7 +96,7 @@ fun addPostSheet(
         ) {
             Button(
                 onClick = {
-                    post?.let {
+                    if(post.length > 3) {
                         val currentTime = getTimeMillis()
                         if (currentTime - lastClickTime >= delayMillis) {
                             onEvent(TrendWaveEvent.ClickClosePostButton)

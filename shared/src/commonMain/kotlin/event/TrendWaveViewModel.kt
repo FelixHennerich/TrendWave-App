@@ -1,12 +1,15 @@
 package event
 
 
+import account.User
 import account.image.ImageDataSource
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class TrendWaveViewModel(
     private val imageDataSource: ImageDataSource
@@ -15,6 +18,7 @@ class TrendWaveViewModel(
 
     val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), TrendWaveState())
 
+    val user = User()
     /**
      * Will watch every event
      *
@@ -73,9 +77,22 @@ class TrendWaveViewModel(
                 ) }
             }
             is TrendWaveEvent.UserPostLoading -> {
-                _state.update { it.copy(
-                    userposts = event.posts
-                ) }
+                GlobalScope.launch {
+                    _state.update {
+                        it.copy(
+                            userposts = event.posts,
+                            following = user.getFollowing(event.uuid),
+                            follower = user.getFollower(event.uuid)
+                        )
+                    }
+                }
+            }
+            is TrendWaveEvent.ClickCloseProfileScreen -> {
+                _state.update {
+                    it.copy(
+                        isProfileSheetOpen = false
+                    )
+                }
             }
             else -> {}
         }
