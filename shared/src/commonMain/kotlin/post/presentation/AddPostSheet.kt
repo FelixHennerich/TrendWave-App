@@ -31,6 +31,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import post.PostLoader
 import utilities.presentation.BottomSheet
@@ -88,7 +89,7 @@ fun addPostSheet(
         )
 
         var lastClickTime by remember { mutableStateOf(0L) }
-        val delayMillis = 5000L
+        val delayMillis = 10000L
 
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -99,20 +100,27 @@ fun addPostSheet(
                     if(post.length > 3) {
                         val currentTime = getTimeMillis()
                         if (currentTime - lastClickTime >= delayMillis) {
-                            onEvent(TrendWaveEvent.ClickClosePostButton)
 
                             GlobalScope.launch {
                                 val postloader = PostLoader()
                                 state.uuid?.let {
-                                    postloader.uploadPost(
+                                    val post = postloader.uploadPost(
                                         uuid = it,
                                         text = post
                                     )
+                                    onEvent(TrendWaveEvent.LocalPostCreation(post))
                                 }
 
                                 postloader.loadPost()
+
+                                while(state.creationpost == null){
+                                    delay(1)
+                                }
+
+                                onEvent(TrendWaveEvent.ClickClosePostButton)
                             }
                             lastClickTime = currentTime
+
                         }
                     }
                 },
