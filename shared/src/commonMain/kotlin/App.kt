@@ -9,6 +9,7 @@ import di.AppModule
 import event.TrendWaveViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import utilities.CommonLogger
 import views.LoginScreen
 import views.HomeScreen
 import views.LoadingScreen
@@ -27,19 +28,13 @@ fun App(
 ){
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
+    var firstLogin by remember { mutableStateOf(true) }
     val loginScreenTT = LoginScreen()
     val loadingScreenTT = LoadingScreen()
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
     val loginManager = LoginManager()
 
-    GlobalScope.launch {
-        if(loginManager.isLoggedIn(appModule.localDataSource)){
-            currentScreen = Screen.Home
-        }else {
-            currentScreen = Screen.Login
-        }
-    }
 
     val viewModel = getViewModel(
         key = "main-login-screen",
@@ -47,6 +42,17 @@ fun App(
             TrendWaveViewModel(appModule.imageDataSource)
         }
     )
+
+    GlobalScope.launch {
+        if(loginManager.isLoggedIn(appModule.localDataSource)){
+            currentScreen = Screen.Home
+        }else {
+            if(firstLogin) {
+                firstLogin = false
+                currentScreen = Screen.Login
+            }
+        }
+    }
 
     val state by viewModel.state.collectAsState()
 

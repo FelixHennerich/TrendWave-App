@@ -7,6 +7,7 @@ import managers.DataStorageManager
 import managers.HTTPManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
+import utilities.CommonLogger
 import utilities.EncryptionUtil
 
 class LoginManager {
@@ -44,7 +45,9 @@ class LoginManager {
     suspend fun isLoggedIn(localDataManager: DataStorageManager): Boolean{
         if(localDataManager.readString("email") != null &&
             localDataManager.readString("password") != null &&
-            localDataManager.readString("username") != null) {
+            localDataManager.readString("username") != null &&
+            localDataManager.readString("uuid") != null &&
+            localDataManager.readString("role") != null) {
             val loginManager = LoginManager()
             val exceptionHandler = ExceptionHandler()
             val message = exceptionHandler.fetchErrorMessage(

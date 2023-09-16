@@ -60,4 +60,14 @@ class User : UserInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getFollower(uuid: String): String {
+        val follower = httpManager.getValue(url, "follower", uuid, null)
+        return follower ?: "No follower Found Error"
+    }
+
+    override suspend fun getFollowing(uuid: String): String {
+        val following = httpManager.getValue(url, "following", uuid, null)
+        return following ?: "No following Found Error"
+    }
+
 }

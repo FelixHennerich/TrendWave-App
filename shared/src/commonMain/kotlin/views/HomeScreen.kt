@@ -79,7 +79,7 @@ class HomeScreen {
             }
             if(state.userposts == null){
                 val lst = postLoader.loadUserPosts(state.uuid!!)
-                onEvent(TrendWaveEvent.UserPostLoading(lst))
+                onEvent(TrendWaveEvent.UserPostLoading(lst, state.uuid!!))
             }
         }
 
@@ -212,7 +212,9 @@ class HomeScreen {
                 onEvent = onEvent,
                 state = state,
                 localDataSource = localDataSource,
-                posts = state.userposts!!
+                posts = state.userposts!!,
+                follower = state.follower!!,
+                following = state.following!!
             )
         }
     }

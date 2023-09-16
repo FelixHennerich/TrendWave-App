@@ -5,7 +5,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-
+import utilities.CommonLogger
 
 
 class HTTPManager {
@@ -56,6 +56,7 @@ class HTTPManager {
 
         authCodeManager.deactivateAuthcode(authcode)
         val body = response.bodyAsText()
+
         if(body.contains("No Authcode found")){
             return null
         }
@@ -75,7 +76,7 @@ class HTTPManager {
             }
             return value
         }
-        return "abcd"
+        return "Error"
     }
 
     /**
