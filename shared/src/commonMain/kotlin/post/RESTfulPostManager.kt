@@ -1,6 +1,6 @@
 package post
 
-import account.User
+import account.AppUser
 import account.utilities.UUID
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -103,7 +103,7 @@ class RESTfulPostManager {
             }
         }
 
-        val user = User();
+        val user = AppUser()
         val username = user.getUsername(uuid)
 
         return Post(id,uuid,username,date,text)
@@ -117,7 +117,7 @@ class RESTfulPostManager {
      */
     suspend fun jsonStringToEntryLists(jsonString: String): List<Post> {
         val entryLists = mutableListOf<Post>()
-        val user = User()
+        val user = AppUser()
         val cleanedJsonString = jsonString.trim().removePrefix("[").removeSuffix("]")
         val jsonObjects = cleanedJsonString.split("{")
 

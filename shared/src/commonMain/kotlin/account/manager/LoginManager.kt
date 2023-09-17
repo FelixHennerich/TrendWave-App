@@ -1,10 +1,8 @@
 package account.manager
 
-import account.User
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import account.AppUser
+import account.RESTfulUserManager
 import managers.DataStorageManager
-import managers.HTTPManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 import utilities.CommonLogger
@@ -20,15 +18,14 @@ class LoginManager {
      * @return -> Error Handeling
      */
     suspend fun login(email: String, password: String): NException{
-        val httpManager = HTTPManager()
-
+        val user = AppUser()
+        val commonLogger = CommonLogger()
         val encryptedPassword = EncryptionUtil.encryption(password)
-        val passwordDB = httpManager.getValue(
-            "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php",
-            "password",
-            null,
-            email
-        )
+        val passwordDB = user.getPassword(user.getUUID(email))
+
+        commonLogger.log(encryptedPassword)
+        commonLogger.log(passwordDB)
+
         if(encryptedPassword == passwordDB) {
             return NException.SUCCESS001
         }else {

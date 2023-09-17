@@ -1,7 +1,7 @@
 package event
 
 
-import account.User
+import account.AppUser
 import account.image.ImageDataSource
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.GlobalScope
@@ -18,7 +18,7 @@ class TrendWaveViewModel(
 
     val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), TrendWaveState())
 
-    val user = User()
+    val user = AppUser()
     /**
      * Will watch every event
      *

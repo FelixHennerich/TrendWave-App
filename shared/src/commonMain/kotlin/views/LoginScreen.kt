@@ -1,6 +1,6 @@
 package views
 
-import account.User
+import account.AppUser
 import account.image.ImageDataSource
 import account.image.Photo
 import account.manager.LoginManager
@@ -185,7 +185,7 @@ class LoginScreen {
                     GlobalScope.launch {
                         val loginManager = LoginManager()
                         val exceptionHandler = ExceptionHandler()
-                        val userClass = User()
+                        val userClass = AppUser()
                         val message = exceptionHandler.fetchErrorMessage(
                             loginManager.login(
                                 email = user,
