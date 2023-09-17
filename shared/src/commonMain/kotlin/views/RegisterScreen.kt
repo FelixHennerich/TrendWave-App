@@ -1,6 +1,6 @@
 package views
 
-import account.User
+import account.AppUser
 import account.image.ImageDataSource
 import account.image.Photo
 import account.manager.CreationManager
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -48,8 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import event.TrendWaveState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -263,7 +260,7 @@ class RegisterScreen {
                         GlobalScope.launch {
                             val creationManager = CreationManager()
                             val exceptionHandler = ExceptionHandler()
-                            val userClass = User()
+                            val userClass = AppUser()
                             val message = exceptionHandler.fetchErrorMessage(
                                 creationManager.createAccount(
                                     email,

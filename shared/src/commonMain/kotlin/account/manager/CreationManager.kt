@@ -1,17 +1,16 @@
 package account.manager
 
+import account.RESTfulUserManager
 import account.utilities.UUID
-import androidx.compose.ui.text.toLowerCase
-import io.ktor.utils.io.charsets.Charset
 import kotlinx.coroutines.delay
 import utilities.DateUtil
 import utilities.EncryptionUtil
-import managers.HTTPManager
 import managers.exceptions.NException
-import kotlin.native.concurrent.ThreadLocal
 
 class CreationManager {
-    
+
+    val restAPI = RESTfulUserManager()
+
     /**
      * Function to check account data and ready up the account creation
      *
@@ -39,10 +38,10 @@ class CreationManager {
         if(username.length < 5 || username.length > 32) {
             return NException.UsernameLength102 // Username too short/long
         }
-        if(userNameExists(username)) {
+        if(!userNameExists(username)) {
             return NException.UsernameExists103 // Username already exists
         }
-        if(emailExists(email)){
+        if(!emailExists(email)){
             return NException.EmailExists104 // Username already exists
         }
         if(!birhtdayChecker(birthday)){
@@ -56,17 +55,8 @@ class CreationManager {
         val dateUtil = DateUtil() // Current date util
 
         try {
-            if(HTTPManager().postInsert(
-                "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectInsert.php",
-                "newsuser",
-                    uuid, email, username,
-                    encryptedPassword, dateUtil.getCurrentDate(), birthday,
-                    role
-            ).toString().contains("200 OK")) {
-                return NException.SUCCESS001 // Account successfully created
-            }else {
-                return NException.HTTPPosting400 // HTTP Error while posting
-            }
+            restAPI.uploadUser(uuid,email, username, encryptedPassword, dateUtil.getCurrentDate(), birthday, role)
+            return NException.SUCCESS001
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -80,37 +70,17 @@ class CreationManager {
      * @return -> Exists = true; No Exists = false
      */
     suspend fun userNameExists(username: String): Boolean{
-        try{
-            if(HTTPManager().usernameCheck(
-                    "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkUsername.php",
-                    "newsuser",
-                    username).contains("Username is free"))
-                return false
-        } catch (e: Exception){
-            e.printStackTrace()
-            return true
-        }
-        return true
+        return restAPI.usernameCheck(username)
     }
 
     /**
      * Checks for email whether it already exists
      *
      * @param email -> email to check
-     * @return -> Exists = true; No Exists = false
+     * @return -> Exists = false; No Exists = true
      */
     suspend fun emailExists(email: String): Boolean{
-        try{
-            if(HTTPManager().emailCheck(
-                    "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/checkEmail.php",
-                    "newsuser",
-                    email).contains("Email is free"))
-                return false
-        } catch (e: Exception){
-            e.printStackTrace()
-            return true
-        }
-        return true
+        return restAPI.emailCheck(email)
     }
 
     /**
