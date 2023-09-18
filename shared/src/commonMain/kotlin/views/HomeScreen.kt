@@ -145,7 +145,7 @@ class HomeScreen {
                         val currentTime = getTimeMillis()
                         if (currentTime - lastClickTime >= delayMillis) {
                             GlobalScope.launch {
-                                val restapi = RESTfulPostManager()
+                                val restapi = RESTfulPostManager(state)
                                 onEvent(TrendWaveEvent.UpdatePostList(restapi.getRandomPosts()))
                             }
 
@@ -177,7 +177,8 @@ class HomeScreen {
         addPostSheet(
             isOpen = state.isAddPostSheetOpen,
             onEvent = onEvent,
-            localDataSource = localDataSource
+            localDataSource = localDataSource,
+            state = state
         )
         SettingsSheet(
             isOpen = state.isSettingsSheetOpen,
@@ -191,9 +192,16 @@ class HomeScreen {
                 onEvent = onEvent,
                 state = state,
                 localDataSource = localDataSource,
-                posts = state.userposts!!,
-                follower = state.follower!!,
-                following = state.following!!
+                pageOwner = state.user!!
+            )
+        }
+        state.watchUserProfile?.let{
+            ProfileSheet(
+                isOpen = state.isProfileUserSheetOpen,
+                onEvent = onEvent,
+                state = state,
+                localDataSource = localDataSource,
+                pageOwner = state.watchUserProfile!!
             )
         }
     }

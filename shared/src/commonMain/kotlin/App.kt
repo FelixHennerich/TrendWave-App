@@ -1,3 +1,4 @@
+import account.AppUser
 import account.manager.LoginManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import post.RESTfulPostManager
 import post.Post
-import utilities.CommonLogger
 import views.LoginScreen
 import views.HomeScreen
 import views.LoadingScreen
@@ -31,7 +31,7 @@ fun App(
     appModule: AppModule
 ){
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
     var firstLogin by remember { mutableStateOf(true) }
     var loggedin by remember { mutableStateOf(false) }
     var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
@@ -40,7 +40,6 @@ fun App(
     val loadingScreenTT = LoadingScreen()
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
-    val loginManager = LoginManager()
 
 
     val viewModel = getViewModel(
@@ -50,15 +49,19 @@ fun App(
         }
     )
     val state by viewModel.state.collectAsState()
+    val loginManager = LoginManager(state)
 
-    GlobalScope.launch {
+    /*GlobalScope.launch {
         if(loginManager.isLoggedIn(appModule.localDataSource)){
             if(!loggedin) {
                 loggedin = true
                 if (appModule.localDataSource.readString("uuid") != null) {
                     val uuid = appModule.localDataSource.readString("uuid").toString()
-                    val restAPI = RESTfulPostManager()
-                    val commonLogger = CommonLogger()
+                    if(state.user == null){
+                        val user = AppUser(state)
+                        viewModel.onEvent(TrendWaveEvent.LoadUserToLocal(user.getUser(uuid)))
+                    }
+                    val restAPI = RESTfulPostManager(state)
 
                     lst = restAPI.getUserPosts(uuid)
                     lst1 = restAPI.getRandomPosts()
@@ -66,7 +69,8 @@ fun App(
                     while(lst1.isEmpty() && lst.isEmpty()){
                         delay(1)
                     }
-                    viewModel.onEvent(TrendWaveEvent.UserPostLoading(lst1, lst, uuid))
+                    state.user?.let { TrendWaveEvent.UserPostLoading(lst1, lst, uuid, it.follower, state.user!!.following) }
+                        ?.let { viewModel.onEvent(it) }
                     while (state.posts.isEmpty()) {
                         delay(1)
                     }
@@ -79,12 +83,13 @@ fun App(
                 currentScreen = Screen.Login
             }
         }
-    }
+    }*/
 
     when (currentScreen) {
         is Screen.Loading -> loadingScreenTT.LoadingScreen(
             imageDataSource = appModule.imageDataSource,
-            localDataSource = appModule.localDataSource
+            localDataSource = appModule.localDataSource,
+            state = state
         )
         is Screen.Home -> homeScreenTT.HomeScreen(
             onEvent = viewModel::onEvent,

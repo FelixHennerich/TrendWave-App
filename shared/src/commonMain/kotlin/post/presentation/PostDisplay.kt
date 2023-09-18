@@ -1,5 +1,6 @@
 package post.presentation
 
+import account.AppUser
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
@@ -85,25 +87,40 @@ fun PostDisplay(
                     modifier = Modifier.scale(1.3f),
                 )
             }
-            Text(
-                text = "@$postuser",
-                modifier = Modifier.offset(x = 6.dp, y = -(8).dp),
-                color = Color.DarkGray,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 12.sp
-            )
+            TextButton(
+                onClick = {
+                    GlobalScope.launch {
+                        val user = AppUser(state)
+                        onEvent(
+                            TrendWaveEvent.ClickUserProfileViewButton(
+                                user.getUserByUsername(
+                                    postuser
+                                )
+                            )
+                        )
+                    }
+                }
+            ) {
+                Text(
+                    text = "@$postuser",
+                    modifier = Modifier.offset(y = -(8).dp, x = -(4).dp),
+                    color = Color.DarkGray,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp
+                )
+            }
             if(localDataStorageManager.readString("username") == postuser ||
                 localDataStorageManager.readString("role") == "Admin"){
                 IconButton(
                     onClick = {
                         GlobalScope.launch {
-                            val restAPI = RESTfulPostManager()
+                            val restAPI = RESTfulPostManager(state)
                             restAPI.deletePost(postid)
 
                             onEvent(TrendWaveEvent.PostDeletionButton(Post(postid, postuuid, postuser, postdate, posttext), state.posts))
                         }
                     },
-                    modifier = Modifier.offset(y = -(3).dp, x = 200.dp)
+                    modifier = Modifier.offset(y = -(3).dp, x = 190.dp)
                 ){
                     Icon(
                         imageVector = TablerIcons.Trash,

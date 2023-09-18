@@ -50,6 +50,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import managers.exceptions.ExceptionHandler
@@ -260,7 +261,7 @@ class RegisterScreen {
                         GlobalScope.launch {
                             val creationManager = CreationManager()
                             val exceptionHandler = ExceptionHandler()
-                            val userClass = AppUser()
+                            val userClass = AppUser(state)
                             val message = exceptionHandler.fetchErrorMessage(
                                 creationManager.createAccount(
                                     email,
@@ -271,6 +272,7 @@ class RegisterScreen {
                             )
 
                             onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
+                            delay(1000)
 
                             if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
                                 val uuid = userClass.getUUID(user)

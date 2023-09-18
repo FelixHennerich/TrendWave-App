@@ -183,9 +183,9 @@ class LoginScreen {
             Button(
                 onClick = {
                     GlobalScope.launch {
-                        val loginManager = LoginManager()
+                        val loginManager = LoginManager(state)
                         val exceptionHandler = ExceptionHandler()
-                        val userClass = AppUser()
+                        val userClass = AppUser(state)
                         val message = exceptionHandler.fetchErrorMessage(
                             loginManager.login(
                                 email = user,

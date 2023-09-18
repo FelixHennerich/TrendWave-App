@@ -51,6 +51,8 @@ class ExceptionHandler {
             /**
              * 200
              */
+            NException.IsAlreadyFollowing200  -> message = "You're already following."
+            NException.IsNotFollowing201      -> message = "You're not following."
             /**
              * 300
              */

@@ -2,6 +2,7 @@ package post
 
 import account.AppUser
 import account.utilities.UUID
+import event.TrendWaveState
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -9,10 +10,12 @@ import io.ktor.client.statement.bodyAsText
 import utilities.CommonLogger
 import utilities.DateUtil
 
-class RESTfulPostManager {
+class RESTfulPostManager(
+    private val state: TrendWaveState
+) {
 
     private val client = HttpClient()
-    private val url = "https://cross-cultural-auto.000webhostapp.com/php/RESTfulAPI/"
+    private val url = "http://85.215.41.146/php/RESTfulAPI/"
 
 
     /**
@@ -103,7 +106,7 @@ class RESTfulPostManager {
             }
         }
 
-        val user = AppUser()
+        val user = AppUser(state)
         val username = user.getUsername(uuid)
 
         return Post(id,uuid,username,date,text)
@@ -117,7 +120,7 @@ class RESTfulPostManager {
      */
     suspend fun jsonStringToEntryLists(jsonString: String): List<Post> {
         val entryLists = mutableListOf<Post>()
-        val user = AppUser()
+        val user = AppUser(state)
         val cleanedJsonString = jsonString.trim().removePrefix("[").removeSuffix("]")
         val jsonObjects = cleanedJsonString.split("{")
 
