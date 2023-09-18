@@ -2,13 +2,16 @@ package account.manager
 
 import account.AppUser
 import account.RESTfulUserManager
+import event.TrendWaveState
 import managers.DataStorageManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 import utilities.CommonLogger
 import utilities.EncryptionUtil
 
-class LoginManager {
+class LoginManager(
+    private val state: TrendWaveState
+) {
 
     /**
      * Method called when user tries to login within the app
@@ -18,7 +21,7 @@ class LoginManager {
      * @return -> Error Handeling
      */
     suspend fun login(email: String, password: String): NException{
-        val user = AppUser()
+        val user = AppUser(state)
         val commonLogger = CommonLogger()
         val encryptedPassword = EncryptionUtil.encryption(password)
         val passwordDB = user.getPassword(user.getUUID(email))
@@ -45,10 +48,9 @@ class LoginManager {
             localDataManager.readString("username") != null &&
             localDataManager.readString("uuid") != null &&
             localDataManager.readString("role") != null) {
-            val loginManager = LoginManager()
             val exceptionHandler = ExceptionHandler()
             val message = exceptionHandler.fetchErrorMessage(
-                loginManager.login(
+                login(
                     email = localDataManager.readString("email")!!,
                     password = localDataManager.readString("password")!!
                 )

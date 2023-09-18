@@ -21,6 +21,9 @@ enum class NException {
      * 200
      */
 
+    IsAlreadyFollowing200,
+    IsNotFollowing201,
+
     /**
      * 300
      */

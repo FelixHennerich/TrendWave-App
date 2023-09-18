@@ -1,6 +1,9 @@
 package account.presentation
 
+import account.RESTfulUserManager
+import account.manager.FollowManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -28,8 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.Post
+import post.RESTfulPostManager
 import post.presentation.PostDisplay
 import utilities.presentation.BottomSheet
 
@@ -39,9 +49,7 @@ fun ProfileSheet(
     localDataSource: DataStorageManager,
     onEvent: (TrendWaveEvent) -> Unit,
     state: TrendWaveState,
-    posts: List<Post>,
-    follower: String,
-    following: String
+    pageOwner: RESTfulUserManager.User,
 ) {
     BottomSheet(
         visible = isOpen,
@@ -49,6 +57,13 @@ fun ProfileSheet(
         backgroundcolor = Color.White,
         padding = 0.dp
     ) {
+        var posts by remember { mutableStateOf<List<Post>>(emptyList()) }
+
+        GlobalScope.launch {
+            val restapi = RESTfulPostManager(state)
+            posts = restapi.getUserPosts(pageOwner.uuid)
+        }
+
         Scaffold(
             modifier = Modifier.offset(y = 25.dp).fillMaxWidth()
         ) {
@@ -72,7 +87,7 @@ fun ProfileSheet(
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    text = "${localDataSource.readString("username")}",
+                    text = pageOwner.username,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(end = 260.dp)
@@ -104,25 +119,85 @@ fun ProfileSheet(
 
             ){
                 Text(
-                    text = "Follower: $follower",
+                    text = "Follower: ${pageOwner.follower}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
                     modifier = Modifier.padding(15.dp)
                 )
                 Text(
-                    text = "Following: $following",
+                    text = "Following: ${pageOwner.following}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
                     modifier = Modifier.padding(15.dp)
                 )
             }
 
+            var color by remember { mutableStateOf(Color.Transparent) }
+            if (state.user?.followed?.contains(pageOwner.uuid) == false) {
+                color = Color.Red
+            }else {
+                color = Color.LightGray
+            }
+
+            Column(
+                modifier = Modifier.fillMaxWidth().offset(y = 265.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color, RoundedCornerShape(20))
+                        .clickable {
+                            GlobalScope.launch {
+                                val followManager = FollowManager(state, onEvent)
+                                if (state.user?.followed?.contains(pageOwner.uuid) == false) {
+                                    state.user?.let { it1 ->
+                                        followManager.followUser(
+                                            it1.uuid,
+                                            pageOwner.uuid
+                                        )
+                                    }
+                                    onEvent(TrendWaveEvent.ClickCloseProfileScreen)
+                                }else {
+                                    state.user?.let { it1 ->
+                                        followManager.unfollowUser(
+                                            it1.uuid,
+                                            pageOwner.uuid
+                                        )
+                                    }
+                                    onEvent(TrendWaveEvent.ClickCloseProfileScreen)
+
+                                }
+                            }
+                        }
+                ) {
+                    if (state.user?.followed?.contains(pageOwner.uuid) == false) {
+                        if (pageOwner.uuid != state.user?.uuid) {
+                            Text(
+                                text = "Subscribe",
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.White,
+                                modifier = Modifier.padding(10.dp)
+                            )
+                        }
+                    }else {
+                        if (pageOwner.uuid != state.user?.uuid) {
+                            Text(
+                                text = "Subscribed",
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.White,
+                                modifier = Modifier.padding(10.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
             Column(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.offset(y = 270.dp)
+                modifier = Modifier.offset(y = 320.dp)
             ) {
                 Text(
-                    text = "${localDataSource.readString("username")}'s activity",
+                    text = "${pageOwner.username}'s activity",
                     modifier = Modifier.offset(x = 20.dp),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold

@@ -13,7 +13,7 @@ import kotlin.math.sign
 class RESTfulUserManager {
 
     private val client = HttpClient()
-    private val url = "https://cross-cultural-auto.000webhostapp.com/php/RESTfulAPI/"
+    private val url = "http://85.215.41.146/php/RESTfulAPI/"
 
     data class User(
         val uuid: String,
@@ -24,7 +24,8 @@ class RESTfulUserManager {
         val birthday: String,
         val signup: String,
         val follower: String,
-        val following: String
+        val following: String,
+        var followed: String
     )
 
     /**
@@ -41,7 +42,7 @@ class RESTfulUserManager {
                 parameters.append("uuid", uuid)
             }
         }
-
+        commonLogger.log(response.bodyAsText())
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
 
         commonLogger.log(entryLists[0].toString())
@@ -52,7 +53,7 @@ class RESTfulUserManager {
      * Find a single Post by its email
      *
      * @param email -> unique email
-     * @return finished post
+     * @return finished user
      */
     suspend fun findUserByEmail(email: String): User {
         val commonLogger = CommonLogger()
@@ -65,7 +66,26 @@ class RESTfulUserManager {
 
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
 
-        commonLogger.log(entryLists[0].toString())
+        return entryLists[0]
+    }
+
+    /**
+     * Find a single Post by its username
+     *
+     * @param username -> username
+     * @return finished user
+     */
+    suspend fun findUserByUsername(username: String): User {
+        val commonLogger = CommonLogger()
+        val finurl = url + "userGetter.php"
+        val response = client.get(finurl) {
+            url {
+                parameters.append("username", username)
+            }
+        }
+
+        val entryLists = jsonStringToEntryLists(response.bodyAsText())
+
         return entryLists[0]
     }
 
@@ -97,7 +117,7 @@ class RESTfulUserManager {
      * @return finished User
      */
     suspend fun uploadUser(uuid: String, email: String, username: String, password: String, signup: String, birthday: String, role: String): User{
-        val finurl = url + "postGetter.php"
+        val finurl = url + "userGetter.php"
 
         client.post(finurl) {
             url {
@@ -111,26 +131,28 @@ class RESTfulUserManager {
             }
         }
 
-        return User(uuid,email,password,username,role,birthday,signup,"0","0")
+        return User(uuid,email,password,username,role,birthday,signup,"0","0", "")
     }
 
     suspend fun usernameCheck(username: String): Boolean{
-        val finurl = url + "postGetter.php"
+        val finurl = url + "userGetter.php"
 
         val response = client.post(finurl) {
             url {
                 parameters.append("username", username)
+                parameters.append("value", "1")
             }
         }
         return response.bodyAsText().contains("Username is free")
     }
 
     suspend fun emailCheck(email: String): Boolean{
-        val finurl = url + "postGetter.php"
+        val finurl = url + "userGetter.php"
 
         val response = client.post(finurl) {
             url {
                 parameters.append("email", email)
+                parameters.append("value", "1")
             }
         }
         return response.bodyAsText().contains("Email is free")
@@ -156,7 +178,7 @@ class RESTfulUserManager {
                     val parts = pair.split(":")
                     partlst.add(parts[1].removePrefix("\"").removeSuffix("\""))
                 }
-                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[4], partlst[5], partlst[6], partlst[7], partlst[8]))
+                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[4], partlst[5], partlst[6], partlst[7], partlst[8], partlst[9]))
             }
         }
 

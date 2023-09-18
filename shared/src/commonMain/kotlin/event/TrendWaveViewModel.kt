@@ -12,13 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TrendWaveViewModel(
-    private val imageDataSource: ImageDataSource
+    private val imageDataSource: ImageDataSource,
 ) : ViewModel() {
     private val _state = MutableStateFlow(TrendWaveState())
 
     val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), TrendWaveState())
 
-    val user = AppUser()
     /**
      * Will watch every event
      *
@@ -34,6 +33,11 @@ class TrendWaveViewModel(
             is TrendWaveEvent.ChangeLoginErrorMessage -> {
                 _state.update {it.copy(
                     LoginErrorMessage = event.message
+                ) }
+            }
+            is TrendWaveEvent.ChangePostErrorMessage -> {
+                _state.update { it.copy(
+                    createPostErrorMessage = event.message
                 ) }
             }
             is TrendWaveEvent.LocalPostCreation ->{
@@ -93,8 +97,8 @@ class TrendWaveViewModel(
                         it.copy(
                             posts = event.posts,
                             userposts = event.userposts,
-                            following = user.getFollowing(event.uuid),
-                            follower = user.getFollower(event.uuid)
+                            following = event.following,
+                            follower = event.follower
                         )
                     }
                 }
@@ -102,9 +106,59 @@ class TrendWaveViewModel(
             is TrendWaveEvent.ClickCloseProfileScreen -> {
                 _state.update {
                     it.copy(
-                        isProfileSheetOpen = false
+                        isProfileSheetOpen = false,
+                        isProfileUserSheetOpen = false
                     )
                 }
+            }
+            is TrendWaveEvent.LoadUserToLocal -> {
+                _state.update { it.copy(
+                    user = event.user
+                ) }
+            }
+            is TrendWaveEvent.ClickUserProfileViewButton -> {
+                _state.update { it.copy(
+                    isProfileUserSheetOpen = true,
+                    watchUserProfile = event.user
+                ) }
+            }
+            is TrendWaveEvent.RemoveFollowedUser -> {
+                var lst = state.value.user?.followed?.split("#")
+                lst?.minus(event.uuid)
+
+                var string = buildString {
+                    if (lst != null) {
+                        for(entry in lst){
+                            append("#$entry")
+                        }
+                    }
+                }
+                var user = state.value.user
+                if (user != null) {
+                    user.followed = string
+                }
+                _state.update { it.copy(
+                    user = user
+                ) }
+            }
+            is TrendWaveEvent.AddFollowedUser -> {
+                var lst = state.value.user?.followed?.split("#")
+                lst?.plus(event.uuid)
+
+                var string = buildString {
+                    if (lst != null) {
+                        for(entry in lst){
+                            append("#$entry")
+                        }
+                    }
+                }
+                var user = state.value.user
+                if (user != null) {
+                    user.followed = string
+                }
+                _state.update { it.copy(
+                    user = user
+                ) }
             }
             else -> {}
         }

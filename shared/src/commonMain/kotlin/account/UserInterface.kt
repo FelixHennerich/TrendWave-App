@@ -5,6 +5,7 @@ import account.utilities.RoleType
 interface UserInterface {
 
     suspend fun getUser(uuid: String): RESTfulUserManager.User
+    suspend fun getUserByUsername(user: String): RESTfulUserManager.User
     suspend fun getEmail(uuid: String) : String
     suspend fun getPassword(uuid: String) : String
     suspend fun getUsername(uuid: String) : String
@@ -15,6 +16,7 @@ interface UserInterface {
     fun hasPermissionRole(role: RoleType) : Boolean
     suspend fun getFollower(uuid: String): String
     suspend fun getFollowing(uuid: String): String
+    suspend fun getFollowed(uuid: String): String
 
 
 
