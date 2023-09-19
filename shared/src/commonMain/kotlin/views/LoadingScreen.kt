@@ -32,21 +32,6 @@ class LoadingScreen {
         localDataSource: DataStorageManager,
         state: TrendWaveState
     ) {
-        if(localDataSource.readString("email") != null) {
-            GlobalScope.launch {
-                val userClass = AppUser(state)
-                val uuid = localDataSource.readString("uuid")
-                val role = uuid?.let { userClass.getRole(it) }
-
-                if(localDataSource.readString("role") != role){
-                    if (role != null) {
-                        localDataSource.saveString("role", role)
-                    }
-                }
-            }
-        }
-
-
 
         var imageBytes by remember { mutableStateOf<ByteArray?>(null) }
         var loading by remember { mutableStateOf(true) }

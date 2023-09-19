@@ -53,6 +53,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
+import managers.DataStorageOnLogin
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 
@@ -279,11 +280,9 @@ class RegisterScreen {
                                 val username = userClass.getUsername(uuid)
                                 val role = userClass.getRole(uuid)
 
-                                localDataManager.saveString("email", user)
-                                localDataManager.saveString("password", password)
-                                localDataManager.saveString("username", username)
-                                localDataManager.saveString("role", role)
-                                localDataManager.saveString("uuid", uuid)
+                                val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
+                                DataStorageOnLogin.storeData(user, password, username, role, uuid)
+
                                 onNavigateHome()
                             }
                         }

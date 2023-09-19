@@ -154,15 +154,6 @@ fun addPostSheet(
                 ) {
                     Button(
                         onClick = {
-                            val followManager = FollowManager(state, onEvent)
-                            val commonLogger = CommonLogger()
-                            val exceptionHandler = ExceptionHandler()
-                            GlobalScope.launch {
-                                state.user?.let { it1 ->
-                                    commonLogger.log(exceptionHandler.fetchErrorMessage(followManager.followUser(it1.uuid, "00d17dafb353ba789a4da14c4829f6ca")))
-                                }
-                            }
-
                             if (post.length > 3) {
                                 val currentTime = getTimeMillis()
                                 if (currentTime - lastClickTime >= delayMillis) {

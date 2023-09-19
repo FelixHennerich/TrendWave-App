@@ -35,17 +35,14 @@ class RESTfulUserManager {
      * @return finished post
      */
     suspend fun findUserByUUID(uuid: String): User {
-        val commonLogger = CommonLogger()
         val finurl = url + "userGetter.php"
         val response = client.get(finurl) {
             url {
                 parameters.append("uuid", uuid)
             }
         }
-        commonLogger.log(response.bodyAsText())
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
 
-        commonLogger.log(entryLists[0].toString())
         return entryLists[0]
     }
 
@@ -56,7 +53,6 @@ class RESTfulUserManager {
      * @return finished user
      */
     suspend fun findUserByEmail(email: String): User {
-        val commonLogger = CommonLogger()
         val finurl = url + "userGetter.php"
         val response = client.get(finurl) {
             url {
@@ -119,7 +115,7 @@ class RESTfulUserManager {
     suspend fun uploadUser(uuid: String, email: String, username: String, password: String, signup: String, birthday: String, role: String): User{
         val finurl = url + "userGetter.php"
 
-        client.post(finurl) {
+        val response = client.post(finurl) {
             url {
                 parameters.append("uuid", uuid)
                 parameters.append("email", email)
