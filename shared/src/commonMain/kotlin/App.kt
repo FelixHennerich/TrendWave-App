@@ -52,8 +52,8 @@ fun App(
     val loginManager = LoginManager(state)
 
     GlobalScope.launch {
-        //if(loginManager.isLoggedIn(appModule.localDataSource)){
-            /*if(!loggedin) {
+        if(loginManager.isLoggedIn(appModule.localDataSource)){
+            if(!loggedin) {
                 loggedin = true
                 if (appModule.localDataSource.readString("uuid") != null) {
                     val uuid = appModule.localDataSource.readString("uuid").toString()
@@ -75,14 +75,14 @@ fun App(
                         delay(1)
                     }
                     currentScreen = Screen.Home
-                }
-            }*/
-        /*}else {
+                 }
+            }
+        }else {
             if(firstLogin) {
                 firstLogin = false
                 currentScreen = Screen.Login
             }
-        }*/
+        }
     }
 
     when (currentScreen) {

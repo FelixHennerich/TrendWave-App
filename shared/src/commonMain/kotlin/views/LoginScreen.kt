@@ -195,7 +195,6 @@ class LoginScreen {
                         )
 
                         onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
-
                         if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
                             val uuid = userClass.getUUID(user)
                             val username = userClass.getUsername(uuid)
