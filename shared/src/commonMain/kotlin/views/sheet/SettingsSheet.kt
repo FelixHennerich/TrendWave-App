@@ -2,6 +2,7 @@ package views.sheet
 
 import account.image.ImageDataSource
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -149,20 +150,22 @@ fun SettingsSheet(
                     }
                 }
 
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    TextButton(onClick = { }, modifier = Modifier.padding(top = 150.dp)) {
-                        Text("Change Status", color = Color.Gray, fontSize = 15.sp)
-                    }
-                    IconButton(
-                        onClick = { },
-                        Modifier.offset(x = 310.dp, y = 0.dp).padding(top = 141.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowForward,
-                            contentDescription = "",
-                            Modifier.padding(top = 20.dp)
-                        )
-                    }
+
+                /**
+                 * SAMPLE
+                 */
+                Box(modifier = Modifier.fillMaxWidth().clickable {  }) {
+                    Text(
+                        text = "Change Status",
+                        color = Color.Gray,
+                        fontSize = 15.sp,
+                        modifier = Modifier.padding(top = 150.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowForward,
+                        contentDescription = "",
+                        Modifier.offset(x = 310.dp, y = 0.dp).padding(top = 161.dp)
+                    )
                 }
 
                 Box(modifier = Modifier.fillMaxWidth()) {
