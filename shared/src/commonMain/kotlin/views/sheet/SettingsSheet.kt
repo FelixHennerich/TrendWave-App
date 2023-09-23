@@ -114,6 +114,7 @@ fun SettingsSheet(
                     )
                 )
 
+
                 Divider(
                     color = Color.Gray,
                     thickness = 1.dp,
