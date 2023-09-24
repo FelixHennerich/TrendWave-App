@@ -170,7 +170,6 @@ fun addPostSheet(
                                         }
                                     }
                                     lastClickTime = currentTime
-
                                 }
                             }else {
                                 onEvent(TrendWaveEvent.ChangePostErrorMessage("Your post is too short"))
