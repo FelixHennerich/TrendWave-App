@@ -40,10 +40,13 @@ class TrendWaveViewModel(
                     createPostErrorMessage = event.message
                 ) }
             }
-            is TrendWaveEvent.LocalPostCreation ->{
-                _state.update { it.copy(
-                    userposts = state.value.userposts?.plus(event.post)
-                ) }
+            is TrendWaveEvent.LocalPostCreation -> {
+                _state.update {
+                    it.copy(
+                        userposts = state.value.userposts?.plus(event.post),
+                        posts = state.value.posts.plus(event.post)
+                    )
+                }
             }
             is TrendWaveEvent.ClickPostButton -> {
                 _state.update { it.copy(
