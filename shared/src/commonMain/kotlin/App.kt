@@ -31,8 +31,7 @@ fun App(
     appModule: AppModule
 ){
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
-    var firstLogin by remember { mutableStateOf(true) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
     var loggedin by remember { mutableStateOf(false) }
     var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
     var lst1 by remember { mutableStateOf<List<Post>>(emptyList()) }
@@ -52,7 +51,8 @@ fun App(
     val loginManager = LoginManager(state)
 
     GlobalScope.launch {
-        /*if(loginManager.isLoggedIn(appModule.localDataSource)){
+        delay(100)
+        if(loginManager.isLoggedIn(appModule.localDataSource)){
             if(!loggedin) {
                 loggedin = true
                 if (appModule.localDataSource.readString("uuid") != null) {
@@ -78,11 +78,8 @@ fun App(
                  }
             }
         }else {
-            if(firstLogin) {
-                firstLogin = false
-                currentScreen = Screen.Login
-            }
-        }*/
+            currentScreen = Screen.Login
+        }
     }
 
     when (currentScreen) {
