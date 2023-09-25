@@ -2,6 +2,7 @@ package managers
 
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.setValue
+import utilities.CommonLogger
 
 actual class DataStorageManager {
 
@@ -31,7 +32,12 @@ actual class DataStorageManager {
      * @sample value = "test@test.de"
      */
     actual fun readString(key: String): String? {
-        return userDefaults.objectForKey(key) as? String
+        val storedValue = userDefaults.objectForKey(key)
+        return if(storedValue.toString() == "null"){
+            null
+        }else {
+            storedValue.toString()
+        }
     }
 
     /**

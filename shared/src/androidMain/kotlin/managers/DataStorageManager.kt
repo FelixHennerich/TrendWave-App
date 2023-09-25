@@ -33,7 +33,11 @@ actual class DataStorageManager(
      * @sample value = "test@test.de"
      */
     actual fun readString(key: String): String? {
-        return sharedPreferences.getString(key, null)
+        return if(sharedPreferences.getString(key, null) != null) {
+            sharedPreferences.getString(key, null)
+        } else {
+            null
+        }
     }
 
     /**
