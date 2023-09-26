@@ -15,6 +15,8 @@ sealed interface TrendWaveEvent {
     class ClickUserProfileViewButton(val user: RESTfulUserManager.User): TrendWaveEvent
     class AddFollowedUser(val uuid: String): TrendWaveEvent
     class RemoveFollowedUser(val uuid: String): TrendWaveEvent
+    class FollowUser(val uuid: String, val user: RESTfulUserManager.User): TrendWaveEvent
+    class UnfollowUser(val uuid: String, val user: RESTfulUserManager.User): TrendWaveEvent
     object ClickPostButton: TrendWaveEvent
     object ClickSettingsScreen: TrendWaveEvent
     object TestHomeButton: TrendWaveEvent

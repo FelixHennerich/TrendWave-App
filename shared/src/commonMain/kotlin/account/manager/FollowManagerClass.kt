@@ -4,12 +4,11 @@ import account.AppUser
 import event.TrendWaveEvent
 import event.TrendWaveState
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
 import io.ktor.client.request.post
 import managers.exceptions.NException
 import utilities.CommonLogger
 
-class FollowManager(
+class FollowManagerClass(
     private val state: TrendWaveState,
     private val onEvent: (TrendWaveEvent) -> Unit
 ) {
@@ -22,6 +21,7 @@ class FollowManager(
         }
 
         removeFollow(unfollowed)
+        removeFollowed(unfollower, unfollowed)
         removeFollowing(unfollower, unfollowed)
         return NException.SUCCESS001
     }
@@ -66,6 +66,31 @@ class FollowManager(
         }
     }
 
+    suspend fun removeFollowed(useruuid: String, unfolloweduuid: String){
+        val user = AppUser(state)
+        val currentFollowed = user.getFollowed(useruuid).split("#")
+        currentFollowed.minus(unfolloweduuid)
+        val commonLogger = CommonLogger()
+        commonLogger.log(currentFollowed.toString())
+
+        val newFollowed = buildString {
+            for(entry in currentFollowed){
+                append("$entry#")
+            }
+        }
+
+        val finurl = url + "followGetter.php"
+
+        client.post(finurl) {
+            url {
+                parameters.append("uuid", useruuid)
+                parameters.append("followed", newFollowed)
+                parameters.append("remove", "true")
+            }
+        }
+
+    }
+
     suspend fun removeFollowing(uuid: String, followed: String){
         val user = AppUser(state)
         val currentfollows = user.getFollowed(uuid).split("#")
@@ -73,7 +98,7 @@ class FollowManager(
 
         val followers = buildString {
             for(entry in currentfollows){
-                append("#$entry")
+                append("$entry#")
             }
         }
 
@@ -82,7 +107,7 @@ class FollowManager(
 
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.RemoveFollowedUser("#$followed"))
+        onEvent(TrendWaveEvent.RemoveFollowedUser("$followed#"))
 
         client.post(finurl) {
             url {
@@ -104,7 +129,7 @@ class FollowManager(
 
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.AddFollowedUser("#$followed"))
+        onEvent(TrendWaveEvent.AddFollowedUser("$followed#"))
 
         client.post(finurl) {
             url {
