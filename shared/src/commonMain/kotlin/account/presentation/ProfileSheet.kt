@@ -1,7 +1,7 @@
 package account.presentation
 
 import account.RESTfulUserManager
-import account.manager.FollowManager
+import account.manager.FollowManagerClass
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -148,13 +148,17 @@ fun ProfileSheet(
                         .background(color, RoundedCornerShape(20))
                         .clickable {
                             GlobalScope.launch {
-                                val followManager = FollowManager(state, onEvent)
+                                val followManager = FollowManagerClass(state, onEvent)
                                 if (state.user?.followed?.contains(pageOwner.uuid) == false) {
                                     state.user?.let { it1 ->
                                         followManager.followUser(
                                             it1.uuid,
                                             pageOwner.uuid
                                         )
+                                        onEvent(TrendWaveEvent.FollowUser(
+                                            pageOwner.uuid,
+                                            state.user!!
+                                        ))
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                                 }else {
@@ -163,6 +167,10 @@ fun ProfileSheet(
                                             it1.uuid,
                                             pageOwner.uuid
                                         )
+                                        onEvent(TrendWaveEvent.UnfollowUser(
+                                            pageOwner.uuid,
+                                            state.user!!
+                                        ))
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 

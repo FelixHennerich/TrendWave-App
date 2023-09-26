@@ -2,6 +2,7 @@ package event
 
 
 import account.AppUser
+import account.RESTfulUserManager
 import account.image.ImageDataSource
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.GlobalScope
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import utilities.CommonLogger
 
 class TrendWaveViewModel(
     private val imageDataSource: ImageDataSource,
@@ -88,6 +90,33 @@ class TrendWaveViewModel(
                         }
                     }
                 }
+            }
+            is TrendWaveEvent.FollowUser -> {
+                val newUser = event.user
+                newUser.followed = "${newUser.followed}#${event.uuid}"
+                _state.update { it.copy(
+                    user = newUser
+                ) }
+            }
+            is TrendWaveEvent.UnfollowUser -> {
+                val newUser = event.user
+                var lst = newUser.followed.split("#")
+                val commonLogger = CommonLogger()
+
+                if(lst.contains(event.uuid)){
+                    commonLogger.log("in here")
+                }
+
+                var newfollowed = buildString {
+                    for(entry in lst)   {
+                        append("$entry#")
+                    }
+                }
+
+                newUser.followed = newfollowed
+                _state.update { it.copy(
+                    user = newUser
+                ) }
             }
             is TrendWaveEvent.ProfileHomeButton -> {
                 _state.update { it.copy(
