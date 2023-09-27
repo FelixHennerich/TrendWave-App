@@ -166,6 +166,11 @@ class AppUser(
         }
     }
 
+    /**
+     * get user which are followed
+     * @param uuid -> Unique ID
+     * @return -> Userlist
+     */
     override suspend fun getFollowed(uuid: String): String{
         if(state.user?.uuid != uuid){
             val user = restApi.findUserByUUID(uuid)

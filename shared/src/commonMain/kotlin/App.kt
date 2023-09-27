@@ -84,9 +84,7 @@ fun App(
 
     when (currentScreen) {
         is Screen.Loading -> loadingScreenTT.LoadingScreen(
-            imageDataSource = appModule.imageDataSource,
-            localDataSource = appModule.localDataSource,
-            state = state
+            imageDataSource = appModule.imageDataSource
         )
         is Screen.Home -> homeScreenTT.HomeScreen(
             onEvent = viewModel::onEvent,
