@@ -25,7 +25,6 @@ class RESTfulPostManager(
      * @return finished post
      */
     suspend fun findPostById(id: String): Post {
-        val commonLogger = CommonLogger()
         val finurl = url + "postGetter.php"
         val response = client.get(finurl) {
             url {
@@ -35,7 +34,6 @@ class RESTfulPostManager(
 
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
 
-        commonLogger.log(entryLists[0].toString())
         return entryLists[0]
     }
 

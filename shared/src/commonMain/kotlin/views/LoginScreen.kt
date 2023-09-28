@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -171,7 +172,37 @@ class LoginScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        GlobalScope.launch {
+                            val loginManager = LoginManager(state)
+                            val exceptionHandler = ExceptionHandler()
+                            val userClass = AppUser(state)
+                            val message = exceptionHandler.fetchErrorMessage(
+                                loginManager.login(
+                                    email = user,
+                                    password = password
+                                )
+                            )
+
+                            onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
+                            if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                                val uuid = userClass.getUUID(user)
+                                val username = userClass.getUsername(uuid)
+                                val role = userClass.getRole(uuid)
+
+                                val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
+                                DataStorageOnLogin.storeData(user, password, username, role, uuid)
+
+                                onNavigateHome()
+                            }
+                        }
+                    }
+                )
             )
             Text(text = state.LoginErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {

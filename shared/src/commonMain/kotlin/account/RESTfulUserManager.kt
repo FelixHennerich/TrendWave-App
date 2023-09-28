@@ -24,7 +24,7 @@ class RESTfulUserManager {
         val birthday: String,
         val signup: String,
         val follower: String,
-        val following: String,
+        var following: String,
         var followed: String
     )
 

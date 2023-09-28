@@ -13,8 +13,8 @@ sealed interface TrendWaveEvent {
     class LocalPostCreation(val post: Post): TrendWaveEvent
     class LoadUserToLocal(val user: RESTfulUserManager.User): TrendWaveEvent
     class ClickUserProfileViewButton(val user: RESTfulUserManager.User): TrendWaveEvent
-    class AddFollowedUser(val uuid: String): TrendWaveEvent
-    class RemoveFollowedUser(val uuid: String): TrendWaveEvent
+    class AddFollowedUser(val uuid: String, val following: String): TrendWaveEvent
+    class RemoveFollowedUser(val uuid: String, val following: String): TrendWaveEvent
     class FollowUser(val uuid: String, val user: RESTfulUserManager.User): TrendWaveEvent
     class UnfollowUser(val uuid: String, val user: RESTfulUserManager.User): TrendWaveEvent
     object ClickPostButton: TrendWaveEvent

@@ -101,11 +101,6 @@ class TrendWaveViewModel(
             is TrendWaveEvent.UnfollowUser -> {
                 val newUser = event.user
                 var lst = newUser.followed.split("#")
-                val commonLogger = CommonLogger()
-
-                if(lst.contains(event.uuid)){
-                    commonLogger.log("in here")
-                }
 
                 var newfollowed = buildString {
                     for(entry in lst)   {
@@ -156,7 +151,7 @@ class TrendWaveViewModel(
             }
             is TrendWaveEvent.RemoveFollowedUser -> {
                 var lst = state.value.user?.followed?.split("#")
-                lst?.minus(event.uuid)
+                lst = lst?.minus(event.uuid)
 
                 var string = buildString {
                     if (lst != null) {
@@ -168,6 +163,7 @@ class TrendWaveViewModel(
                 var user = state.value.user
                 if (user != null) {
                     user.followed = string
+                    user.following = event.following
                 }
                 _state.update { it.copy(
                     user = user
@@ -187,6 +183,7 @@ class TrendWaveViewModel(
                 var user = state.value.user
                 if (user != null) {
                     user.followed = string
+                    user.following = event.following
                 }
                 _state.update { it.copy(
                     user = user

@@ -28,9 +28,7 @@ class LoadingScreen {
      */
     @Composable
     fun LoadingScreen(
-        imageDataSource: ImageDataSource,
-        localDataSource: DataStorageManager,
-        state: TrendWaveState
+        imageDataSource: ImageDataSource
     ) {
 
         var imageBytes by remember { mutableStateOf<ByteArray?>(null) }

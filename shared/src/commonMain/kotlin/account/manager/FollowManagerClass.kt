@@ -15,17 +15,30 @@ class FollowManagerClass(
     private val client = HttpClient()
     private val url = "http://85.215.41.146/php/RESTfulAPI/"
 
+    /**
+     * Unfollow a user
+     *
+     * @param unfollower -> Person who clicks "unfollow"
+     * @param unfollowed -> Person that will be unfollowed
+     * @return NException -> Exception Handling
+     */
     suspend fun unfollowUser(unfollower: String, unfollowed: String): NException{
         if(!isFollowing(unfollower, unfollowed)){
             return NException.IsNotFollowing201
         }
 
         removeFollow(unfollowed)
-        removeFollowed(unfollower, unfollowed)
         removeFollowing(unfollower, unfollowed)
         return NException.SUCCESS001
     }
 
+    /**
+     * follow a user
+     *
+     * @param follower -> Person who clicks "follow"
+     * @param followed -> Person that will be followed
+     * @return NException -> Exception Handling
+     */
     suspend fun followUser(follower: String, followed: String): NException{
         if(isFollowing(follower, followed)){
             return NException.IsAlreadyFollowing200
@@ -36,6 +49,11 @@ class FollowManagerClass(
         return NException.SUCCESS001
     }
 
+    /**
+     * Add a follow in the database
+     *
+     * @param uuid -> Unique ID of person that gets a follow
+     */
     suspend fun addFollow(uuid: String){
         val user = AppUser(state)
         val currentfollows = user.getFollower(uuid).toInt()
@@ -51,11 +69,19 @@ class FollowManagerClass(
         }
     }
 
+    /**
+     * remove a follow in the database
+     *
+     * @param uuid -> Unique Id if person that gets a follow removed
+     */
     suspend fun removeFollow(uuid: String){
         val user = AppUser(state)
         val currentfollows = user.getFollower(uuid).toInt()
         val followers = (currentfollows - 1)
         val finurl = url + "followGetter.php"
+
+        val cl = CommonLogger()
+        cl.log(followers.toString())
 
         client.post(finurl) {
             url {
@@ -66,48 +92,35 @@ class FollowManagerClass(
         }
     }
 
-    suspend fun removeFollowed(useruuid: String, unfolloweduuid: String){
-        val user = AppUser(state)
-        val currentFollowed = user.getFollowed(useruuid).split("#")
-        currentFollowed.minus(unfolloweduuid)
-        val commonLogger = CommonLogger()
-        commonLogger.log(currentFollowed.toString())
-
-        val newFollowed = buildString {
-            for(entry in currentFollowed){
-                append("$entry#")
-            }
-        }
-
-        val finurl = url + "followGetter.php"
-
-        client.post(finurl) {
-            url {
-                parameters.append("uuid", useruuid)
-                parameters.append("followed", newFollowed)
-                parameters.append("remove", "true")
-            }
-        }
-
-    }
-
+    /**
+     * remove 1 point of the following value
+     *
+     * @param uuid -> Person that clicks "unfollow"
+     * @param followed -> Person that will be unfollowed
+     */
     suspend fun removeFollowing(uuid: String, followed: String){
         val user = AppUser(state)
-        val currentfollows = user.getFollowed(uuid).split("#")
-        currentfollows.minus(followed)
+        var currentfollows = user.getFollowed(uuid).split("#")
+        val cl = CommonLogger()
+
 
         val followers = buildString {
             for(entry in currentfollows){
-                append("$entry#")
+                if(entry != "" && entry != followed) {
+                    append("$entry#")
+                }
             }
+            append("#")
         }
 
         val currentfollowing = user.getFollowing(uuid)
         val following = (currentfollowing.toInt() - 1)
 
+        cl.log(following.toString())
+
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.RemoveFollowedUser("$followed#"))
+        onEvent(TrendWaveEvent.RemoveFollowedUser(followed, following.toString()))
 
         client.post(finurl) {
             url {
@@ -119,6 +132,12 @@ class FollowManagerClass(
         }
     }
 
+    /**
+     * add following point
+     *
+     * @param uuid -> Person that clicks "follow"
+     * @param followed -> Person that gets the follow
+     */
     suspend fun addFollowing(uuid: String, followed: String){
         val user = AppUser(state)
         val currentfollows = user.getFollowed(uuid)
@@ -129,7 +148,10 @@ class FollowManagerClass(
 
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.AddFollowedUser("$followed#"))
+        onEvent(TrendWaveEvent.AddFollowedUser("$followed#", following.toString()))
+        val cl = CommonLogger()
+        cl.log(following.toString())
+        cl.log(followers.toString())
 
         client.post(finurl) {
             url {
@@ -141,6 +163,13 @@ class FollowManagerClass(
         }
     }
 
+    /**
+     * Request whether a person is already following another
+     *
+     * @param uuid -> Person who will be checked if he followes someone
+     * @param followed -> Person who will be checked if uuid follows hims
+     * @return true or false
+     */
     suspend fun isFollowing(uuid: String, followed: String): Boolean{
         val user = AppUser(state)
         val currentfollows = user.getFollowed(uuid)
