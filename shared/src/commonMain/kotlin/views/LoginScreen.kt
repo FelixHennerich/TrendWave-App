@@ -26,6 +26,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -131,7 +133,38 @@ class LoginScreen {
                     }
                 },
                 onValueChange = { text -> user = text },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, autoCorrect = false),
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        GlobalScope.launch {
+                            val loginManager = LoginManager(state)
+                            val exceptionHandler = ExceptionHandler()
+                            val userClass = AppUser(state)
+                            val message = exceptionHandler.fetchErrorMessage(
+                                loginManager.login(
+                                    email = user,
+                                    password = password
+                                )
+                            )
+
+                            onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
+                            if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                                val uuid = userClass.getUUID(user)
+                                val username = userClass.getUsername(uuid)
+                                val role = userClass.getRole(uuid)
+
+                                val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
+                                DataStorageOnLogin.storeData(user, password, username, role, uuid)
+
+                                onNavigateHome()
+                            }
+                        }
+                    }
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -180,9 +213,9 @@ class LoginScreen {
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
-                    autoCorrect = false,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {

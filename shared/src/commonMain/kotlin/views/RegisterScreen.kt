@@ -29,6 +29,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -139,9 +140,16 @@ class RegisterScreen {
                     }
                 },
                 onValueChange = { text -> email = text },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done,
+                ),
                 keyboardActions = KeyboardActions(
-                    onDone = { email = "" }
+                    onDone = {
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -190,7 +198,17 @@ class RegisterScreen {
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
+                )
             )
             TextField(
                 value = user,
@@ -204,9 +222,16 @@ class RegisterScreen {
                     }
                 },
                 onValueChange = { text -> user = text },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                ),
                 keyboardActions = KeyboardActions(
-                    onDone = { user = "" }
+                    onDone = {
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -237,9 +262,16 @@ class RegisterScreen {
                     }
                 },
                 onValueChange = { text -> birthday = text },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done,
+                ),
                 keyboardActions = KeyboardActions(
-                    onDone = { birthday = "" }
+                    onDone = {
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -271,37 +303,8 @@ class RegisterScreen {
             }
             Button(
                 onClick = {
-                    if(checkedConditionsState.value) {
-                        GlobalScope.launch {
-                            val creationManager = CreationManager()
-                            val exceptionHandler = ExceptionHandler()
-                            val userClass = AppUser(state)
-                            val message = exceptionHandler.fetchErrorMessage(
-                                creationManager.createAccount(
-                                    email,
-                                    password,
-                                    user,
-                                    birthday
-                                )
-                            )
-
-                            onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
-                            delay(1000)
-
-                            if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
-                                val uuid = userClass.getUUID(user)
-                                val username = userClass.getUsername(uuid)
-                                val role = userClass.getRole(uuid)
-
-                                val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
-                                DataStorageOnLogin.storeData(user, password, username, role, uuid)
-
-                                onNavigateHome()
-                            }
-                        }
-                    }else {
-                        onEvent(TrendWaveEvent.ChangeRegisterErrorMessage("Check the terms of use below"))
-                    }
+                    submit(checkedConditionsState.value, state, email, password, user, birthday,
+                        onEvent, localDataManager, onNavigateHome)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -350,6 +353,43 @@ class RegisterScreen {
             }
         }
 
+    }
+
+    fun submit(checkedConditionsState: Boolean, state: TrendWaveState,
+               email: String, password: String, user: String,
+               birthday: String, onEvent: (TrendWaveEvent) -> Unit, localDataManager: DataStorageManager,
+               onNavigateHome: () -> Unit){
+        if(checkedConditionsState) {
+            GlobalScope.launch {
+                val creationManager = CreationManager()
+                val exceptionHandler = ExceptionHandler()
+                val userClass = AppUser(state)
+                val message = exceptionHandler.fetchErrorMessage(
+                    creationManager.createAccount(
+                        email,
+                        password,
+                        user,
+                        birthday
+                    )
+                )
+
+                onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
+                delay(1000)
+
+                if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
+                    val uuid = userClass.getUUID(user)
+                    val username = userClass.getUsername(uuid)
+                    val role = userClass.getRole(uuid)
+
+                    val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
+                    DataStorageOnLogin.storeData(user, password, username, role, uuid)
+
+                    onNavigateHome()
+                }
+            }
+        }else {
+            onEvent(TrendWaveEvent.ChangeRegisterErrorMessage("Check the terms of use below"))
+        }
     }
 
 }
