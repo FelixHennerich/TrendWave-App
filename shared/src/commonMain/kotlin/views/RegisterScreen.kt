@@ -7,6 +7,7 @@ import account.manager.CreationManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -129,10 +130,13 @@ class RegisterScreen {
             TextField(
                 value = email,
                 placeholder = {
-                    Text(
-                        text = "E-Mail",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "E-Mail"
+                        )
+                    }
                 },
                 onValueChange = { text -> email = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -160,10 +164,13 @@ class RegisterScreen {
             TextField(
                 value = password,
                 placeholder = {
-                    Text(
-                        text = "Password",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Password"
+                        )
+                    }
                 },
                 onValueChange = { text -> password = text },
                 modifier = Modifier
@@ -188,10 +195,13 @@ class RegisterScreen {
             TextField(
                 value = user,
                 placeholder = {
-                    Text(
-                        text = "Username",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Username"
+                        )
+                    }
                 },
                 onValueChange = { text -> user = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -218,10 +228,13 @@ class RegisterScreen {
             TextField(
                 value = birthday,
                 placeholder = {
-                    Text(
-                        text = "Birthday dd.mm.yyyy",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Birthday dd.mm.yyyy"
+                        )
+                    }
                 },
                 onValueChange = { text -> birthday = text },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),

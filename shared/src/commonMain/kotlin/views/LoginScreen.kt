@@ -6,6 +6,7 @@ import account.image.Photo
 import account.manager.LoginManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -121,13 +122,16 @@ class LoginScreen {
             TextField(
                 value = user,
                 placeholder = {
-                    Text(
-                        text = "Email",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "E-mail"
+                        )
+                    }
                 },
                 onValueChange = { text -> user = text },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, autoCorrect = false),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
@@ -143,16 +147,19 @@ class LoginScreen {
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
-                )
+                ),
             )
             // Textfield for the password
             TextField(
                 value = password,
                 placeholder = {
-                    Text(
-                        text = "Password",
-                        modifier = Modifier.offset(y = (-3).dp),
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Password"
+                        )
+                    }
                 },
                 onValueChange = { text -> password = text },
                 modifier = Modifier
@@ -174,7 +181,8 @@ class LoginScreen {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
+                    autoCorrect = false,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
