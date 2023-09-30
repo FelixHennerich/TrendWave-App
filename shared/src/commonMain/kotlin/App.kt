@@ -31,7 +31,7 @@ fun App(
     appModule: AppModule
 ){
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Register) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
     var loggedin by remember { mutableStateOf(false) }
     var firstload by remember { mutableStateOf(false) }
     var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
