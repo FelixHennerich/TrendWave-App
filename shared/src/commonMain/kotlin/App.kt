@@ -52,7 +52,7 @@ fun App(
     val loginManager = LoginManager(state)
 
     GlobalScope.launch {
-        /*delay(100)
+        delay(100)
         if(loginManager.isLoggedIn(appModule.localDataSource)){
             if(!loggedin) {
                 loggedin = true
@@ -83,7 +83,7 @@ fun App(
                 currentScreen = Screen.Login
                 firstload = true
             }
-        }*/
+        }
     }
 
     when (currentScreen) {
