@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -54,6 +55,8 @@ import managers.DataStorageOnLogin
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import utilities.presentation.SideSheet
+import views.sheet.ForgotPasswordSheet
 
 
 class LoginScreen {
@@ -247,7 +250,7 @@ class LoginScreen {
             )
             Text(text = state.LoginErrorMessage ?: "", color = Color.Red)
             TextButton(onClick = {
-                //TODO: Forgot your password screen
+                onEvent(TrendWaveEvent.ClickForgotPasswordSheet)
             }) {
                 Text(text = "Forgot your password?", color = Color.Blue)
             }
@@ -304,6 +307,15 @@ class LoginScreen {
                     color = Color.Blue
                 )
             }
+        }
+        SideSheet(
+            visible = state.isForgetPasswordSheetOpen,
+            modifier = Modifier.fillMaxSize(),
+            backgroundcolor = Color.White,
+        ){
+            ForgotPasswordSheet(
+                onEvent = onEvent
+            )
         }
     }
 }
