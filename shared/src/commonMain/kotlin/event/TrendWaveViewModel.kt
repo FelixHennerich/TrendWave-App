@@ -189,6 +189,15 @@ class TrendWaveViewModel(
                     user = user
                 ) }
             }
+            is TrendWaveEvent.ClickForgotPasswordSheet -> {
+                _state.update { it.copy(
+                    isForgetPasswordSheetOpen = true
+                ) }
+            }is TrendWaveEvent.ClickCloseForgotPasswordSheet -> {
+                _state.update { it.copy(
+                    isForgetPasswordSheetOpen = false
+                ) }
+            }
             else -> {}
         }
     }

@@ -12,6 +12,7 @@ data class TrendWaveState(
     var isSettingsSheetOpen: Boolean = false,
     var isProfileSheetOpen: Boolean = false,
     var isProfileUserSheetOpen: Boolean = false,
+    var isForgetPasswordSheetOpen: Boolean = false,
     var posts: List<Post> = emptyList(),
     var userposts: List<Post>? = null, // TODO: ONLY FOR PROIFLE PAGE NOT FOR GENERAL USER PAGE
     var watchUserProfile: RESTfulUserManager.User? = null,
