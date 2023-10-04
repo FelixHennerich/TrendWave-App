@@ -1,6 +1,5 @@
 package views
 
-import account.AppUser
 import account.image.ImageDataSource
 import account.image.Photo
 import androidx.compose.foundation.layout.Box
@@ -14,10 +13,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import event.TrendWaveState
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import managers.DataStorageManager
 
 class LoadingScreen {
 

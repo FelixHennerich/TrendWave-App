@@ -1,11 +1,9 @@
 package account
 
-import account.utilities.UUID
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
-import post.Post
 import utilities.CommonLogger
 import utilities.DateUtil
 import kotlin.math.sign
@@ -160,7 +158,7 @@ class RESTfulUserManager {
      * @param jsonString -> String of all content
      * @return list of user
      */
-    fun jsonStringToEntryLists(jsonString: String): List<User> {
+    private fun jsonStringToEntryLists(jsonString: String): List<User> {
         val entryLists = mutableListOf<User>()
         val cleanedJsonString = jsonString.trim().removePrefix("[").removeSuffix("]")
         val jsonObjects = cleanedJsonString.split("{")

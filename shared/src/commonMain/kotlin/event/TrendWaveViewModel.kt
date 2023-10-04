@@ -5,6 +5,7 @@ import account.AppUser
 import account.RESTfulUserManager
 import account.image.ImageDataSource
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,6 +26,7 @@ class TrendWaveViewModel(
      *
      * @param event -> Eventlist of TrendWaveEvent
      */
+    @OptIn(DelicateCoroutinesApi::class)
     fun onEvent(event: TrendWaveEvent){
         when(event){
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
@@ -100,9 +102,9 @@ class TrendWaveViewModel(
             }
             is TrendWaveEvent.UnfollowUser -> {
                 val newUser = event.user
-                var lst = newUser.followed.split("#")
+                val lst = newUser.followed.split("#")
 
-                var newfollowed = buildString {
+                val newfollowed = buildString {
                     for(entry in lst)   {
                         append("$entry#")
                     }
@@ -153,14 +155,14 @@ class TrendWaveViewModel(
                 var lst = state.value.user?.followed?.split("#")
                 lst = lst?.minus(event.uuid)
 
-                var string = buildString {
+                val string = buildString {
                     if (lst != null) {
                         for(entry in lst){
                             append("#$entry")
                         }
                     }
                 }
-                var user = state.value.user
+                val user = state.value.user
                 if (user != null) {
                     user.followed = string
                     user.following = event.following
@@ -170,17 +172,17 @@ class TrendWaveViewModel(
                 ) }
             }
             is TrendWaveEvent.AddFollowedUser -> {
-                var lst = state.value.user?.followed?.split("#")
+                val lst = state.value.user?.followed?.split("#")
                 lst?.plus(event.uuid)
 
-                var string = buildString {
+                val string = buildString {
                     if (lst != null) {
                         for(entry in lst){
                             append("#$entry")
                         }
                     }
                 }
-                var user = state.value.user
+                val user = state.value.user
                 if (user != null) {
                     user.followed = string
                     user.following = event.following
