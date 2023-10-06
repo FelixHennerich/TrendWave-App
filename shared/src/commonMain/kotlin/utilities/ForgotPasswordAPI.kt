@@ -14,8 +14,11 @@ class ForgotPasswordAPI {
         val response = client.get(finurl)
     }
 
-    fun getAuthCodeByUser(uuid: String): String?{
+    suspend fun getAuthCodeByUser(uuid: String): String?{
+        val finurl = url + "emailAuthGetter.php"
         var code: String? = null
+
+        val response = client.get(finurl)
 
         return code
     }
