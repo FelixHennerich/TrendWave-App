@@ -62,6 +62,7 @@ class HomeScreen {
         localDataSource: DataStorageManager,
         imageDataSource: ImageDataSource
     ) {
+        val greeting = Greeting()
         Scaffold(
             Modifier.offset(y = 25.dp)
         ) {
