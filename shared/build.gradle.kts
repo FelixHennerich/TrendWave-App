@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
+
 kotlin {
     androidTarget()
 
@@ -36,6 +37,10 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("media.kamel:kamel-image:0.7.1") // Image API
                 implementation("io.ktor:ktor-client-core:2.3.3") // Image API
+
+
+
+                implementation("com.github.felixhennerich:library:0.0.1")
 
 
                 //Moko Dependency
@@ -138,5 +143,12 @@ dependencies {
 
 }
 
+
+repositories {
+    mavenCentral()
+    maven{
+        url = uri("https://maven.pkg.github.com/FelixHennerich/ExampleLib")
+    }
+}
 
 
