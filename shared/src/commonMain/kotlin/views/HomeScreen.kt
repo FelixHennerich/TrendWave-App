@@ -66,6 +66,7 @@ class HomeScreen {
         Scaffold(
             Modifier.offset(y = 25.dp)
         ) {
+
             LazyColumn {
                 item {
                     Row(
