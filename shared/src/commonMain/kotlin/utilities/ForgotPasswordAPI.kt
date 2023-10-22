@@ -17,7 +17,6 @@ class ForgotPasswordAPI {
         val response = client.get(finurl)
     }
 
-
     /**
      * provides an authcode for passwordreset by a specific user
      *
