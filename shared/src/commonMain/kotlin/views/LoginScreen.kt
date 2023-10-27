@@ -314,7 +314,8 @@ class LoginScreen {
             backgroundcolor = Color.White,
         ){
             ForgotPasswordSheet(
-                onEvent = onEvent
+                onEvent = onEvent,
+                state = state
             )
         }
     }
