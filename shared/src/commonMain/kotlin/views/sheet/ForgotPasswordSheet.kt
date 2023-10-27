@@ -1,5 +1,7 @@
 package views.sheet
 
+import account.AppUser
+import account.RESTfulUserManager
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +37,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
+import event.TrendWaveState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import utilities.ForgotPasswordAPI
 
 /**
  * Screen to edit the email if u forgot your password
@@ -42,8 +48,11 @@ import event.TrendWaveEvent
  * @param onEvent -> EventHandling
  */
 @Composable
-fun ForgotPasswordSheet(onEvent: (TrendWaveEvent) -> Unit) {
-
+fun ForgotPasswordSheet(
+    onEvent: (TrendWaveEvent) -> Unit,
+    state: (TrendWaveState)
+) {
+    var uuid = mutableStateOf("")
     Box(
         Modifier.offset(x = (-10).dp, y = 10.dp).fillMaxSize(),
         contentAlignment = Alignment.TopStart
@@ -112,7 +121,12 @@ fun ForgotPasswordSheet(onEvent: (TrendWaveEvent) -> Unit) {
     ){
         Button(
             onClick = {
-
+                val api = ForgotPasswordAPI()
+                GlobalScope.launch {
+                    val userclass = AppUser(state = state)
+                    val uuid = userclass.getUUID(email)
+                    api.createAuthcode(uuid)
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
