@@ -51,6 +51,7 @@ fun App(
     val state by viewModel.state.collectAsState()
     val loginManager = LoginManager(state)
 
+
     GlobalScope.launch {
         /*delay(100)
         if(loginManager.isLoggedIn(appModule.localDataSource)){
