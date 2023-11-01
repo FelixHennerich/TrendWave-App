@@ -116,6 +116,7 @@ fun ForgotPasswordSheet(
             ),
         )
     }
+
     Box(
         modifier = Modifier.offset(y = 300.dp)
     ){
