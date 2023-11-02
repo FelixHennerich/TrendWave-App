@@ -31,7 +31,7 @@ fun App(
     appModule: AppModule
 ){
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Login) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
     var loggedin by remember { mutableStateOf(false) }
     var firstload by remember { mutableStateOf(false) }
     var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
@@ -53,7 +53,7 @@ fun App(
 
 
     GlobalScope.launch {
-        /*delay(100)
+        delay(100)
         if(loginManager.isLoggedIn(appModule.localDataSource)){
             if(!loggedin) {
                 loggedin = true
@@ -84,7 +84,7 @@ fun App(
                 currentScreen = Screen.Login
                 firstload = true
             }
-        }*/
+        }
     }
 
     when (currentScreen) {

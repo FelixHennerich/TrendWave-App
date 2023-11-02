@@ -17,6 +17,9 @@ enum class NException {
     BirthdayWrong106,
     WrongPassword107,
 
+    LogoutError120,
+    LogoutWorked121,
+
     /**
      * 200
      */
