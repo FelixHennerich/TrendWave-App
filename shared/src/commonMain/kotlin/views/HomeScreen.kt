@@ -183,7 +183,7 @@ class HomeScreen {
         )
         SettingsSheet(
             isOpen = state.isSettingsSheetOpen,
-            imageDataSource = imageDataSource,
+            state = state,
             localDataSource = localDataSource,
             onEvent = onEvent
         )
