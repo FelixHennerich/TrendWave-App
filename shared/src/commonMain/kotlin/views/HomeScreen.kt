@@ -54,13 +54,15 @@ class HomeScreen {
      * @param state -> StateManager for PostAddSheet
      * @param localDataSource -> Get local data system
      * @param imageDataSource -> Get Image data system
+     * @param onNavigateLogin -> Navigate Login screen
      */
     @Composable
     fun HomeScreen(
         onEvent: (TrendWaveEvent) -> Unit,
         state: TrendWaveState,
         localDataSource: DataStorageManager,
-        imageDataSource: ImageDataSource
+        imageDataSource: ImageDataSource,
+        onNavigateLogin: () -> Unit
     ) {
         Scaffold(
             Modifier.offset(y = 25.dp)
@@ -185,7 +187,8 @@ class HomeScreen {
             isOpen = state.isSettingsSheetOpen,
             state = state,
             localDataSource = localDataSource,
-            onEvent = onEvent
+            onEvent = onEvent,
+            onLogout = onNavigateLogin
         )
         state.userposts?.let {
             ProfileSheet(

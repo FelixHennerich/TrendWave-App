@@ -3,6 +3,7 @@ package views.sheet
 import account.image.ImageDataSource
 import account.manager.LogoutManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +44,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import managers.DataStorageManager
 import utilities.presentation.SideSheet
+import views.LoginScreen
 
 /**
  * Settings UI Screen
@@ -51,13 +53,15 @@ import utilities.presentation.SideSheet
  * @param state -> Statemanager
  * @param localDataSource -> Datasource to display data
  * @param onEvent -> EventHandeling
+ * @param onLogout -> Navigate to login screen on logout
  */
 @Composable
 fun SettingsSheet(
     isOpen: Boolean,
     state: TrendWaveState,
     localDataSource: DataStorageManager,
-    onEvent: (TrendWaveEvent) -> Unit
+    onEvent: (TrendWaveEvent) -> Unit,
+    onLogout: () -> Unit
 ) {
 
     // var darkMode by mutableStateOf(true)
@@ -283,27 +287,33 @@ fun SettingsSheet(
              * LOGOUT
              */
 
-            Box(modifier = Modifier.fillMaxWidth().clickable {
-                val logoutManager = LogoutManager(
-                    state = state,
-                    localDataManager = localDataSource
-                )
-                logoutManager.logout()
-            }) {
-                Row(Modifier.offset(x = 130.dp, y = 600.dp).padding(50.dp)) {
-                    Text(
-                        text = "LOGOUT",
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        //modifier = Modifier.padding(top = 150.dp)
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .offset(x = 130.dp, y = 600.dp)
+                .padding(50.dp)
+                .clickable {
+                    val logoutManager = LogoutManager(
+                        state = state,
+                        localDataManager = localDataSource
                     )
-                    Icon(
-                        imageVector = Icons.Rounded.ExitToApp,
-                        contentDescription = "",
-                        Modifier.offset(x = (-80).dp)
-                    )
-                }
+                    logoutManager.logout()
+                    onLogout()
+                })
+            {
+                    Row() {
+                        Text(
+                            text = "LOGOUT",
+                            color = Color.Gray,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            //modifier = Modifier.padding(top = 150.dp)
+                        )
+                        Icon(
+                            imageVector = Icons.Rounded.ExitToApp,
+                            contentDescription = "",
+                            Modifier.offset(x = (-80).dp)
+                        )
+                    }
             }
 
 

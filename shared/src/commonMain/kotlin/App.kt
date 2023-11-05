@@ -95,7 +95,8 @@ fun App(
             onEvent = viewModel::onEvent,
             state = state,
             localDataSource = appModule.localDataSource,
-            imageDataSource = appModule.imageDataSource
+            imageDataSource = appModule.imageDataSource,
+            onNavigateLogin = {currentScreen = Screen.Login}
         )
         is Screen.Login -> loginScreenTT.LoginScreen(
             state = state,
