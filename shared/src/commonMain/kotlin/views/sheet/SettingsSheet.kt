@@ -287,7 +287,6 @@ fun SettingsSheet(
              * LOGOUT
              */
 
-
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .offset(x = 130.dp, y = 600.dp)
