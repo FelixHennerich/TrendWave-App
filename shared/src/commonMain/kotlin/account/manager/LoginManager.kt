@@ -32,6 +32,7 @@ class LoginManager(
         }
     }
 
+
     /**
      * Check whether logged in or not
      *
