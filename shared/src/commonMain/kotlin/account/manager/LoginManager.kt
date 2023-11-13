@@ -14,6 +14,7 @@ class LoginManager(
 ) {
 
 
+
     /**
      * Method called when user tries to login within the app
      *
