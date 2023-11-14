@@ -13,8 +13,6 @@ class LoginManager(
     private val state: TrendWaveState
 ) {
 
-
-
     /**
      * Method called when user tries to login within the app
      *
