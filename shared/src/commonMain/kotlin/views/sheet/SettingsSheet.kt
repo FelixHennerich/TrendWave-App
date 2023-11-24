@@ -268,6 +268,7 @@ fun SettingsSheet(
                             fontSize = 15.sp
                         )
                     }
+
                     IconButton(
                         onClick = { },
                         Modifier.offset(x = 310.dp, y = 0.dp).padding(top = 61.dp)
