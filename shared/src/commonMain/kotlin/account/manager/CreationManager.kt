@@ -23,7 +23,7 @@ class CreationManager {
      * @param authcode -> Authcode in MySQL MUST BE CHANGED AFTER USE
      * @return -> Error/Success-Code -- Following Codes
      */
-    suspend fun createAccount(email: String, password: String, username: String, birthday: String): NException {
+    suspend fun createAccount(email: String, uuid: String, password: String, username: String, birthday: String): NException {
         delay(1000)
 
         if(!charChecker(email) || !charChecker(password) || !charChecker(username)){
@@ -50,8 +50,6 @@ class CreationManager {
 
         val role = "Member" // IMPOmRTANT nerver create a account with owner permissions by default
         val encryptedPassword = EncryptionUtil.encryption(password); // Password encryption
-        val uuidclass = UUID() // uuid class
-        val uuid = uuidclass.generate128BitUUID() // 128Bit uuid generation
         val dateUtil = DateUtil() // Current date util
 
         try {
