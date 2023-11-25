@@ -4,6 +4,7 @@ import account.AppUser
 import account.image.ImageDataSource
 import account.image.Photo
 import account.manager.CreationManager
+import account.utilities.UUID
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -364,9 +365,14 @@ class RegisterScreen {
                 val creationManager = CreationManager()
                 val exceptionHandler = ExceptionHandler()
                 val userClass = AppUser(state)
+                val uuidclass = UUID() // uuid class
+                val uuid = uuidclass.generate128BitUUID() // 128Bit uuid generation
+
+                // Actual account creation
                 val message = exceptionHandler.fetchErrorMessage(
                     creationManager.createAccount(
                         email,
+                        uuid,
                         password,
                         user,
                         birthday
@@ -376,15 +382,14 @@ class RegisterScreen {
                 onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
                 delay(1000)
 
+                // Local data storage user data
                 if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
-                    val uuid = userClass.getUUID(user)
-                    val username = userClass.getUsername(uuid)
                     val role = userClass.getRole(uuid)
 
-                    val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
-                    DataStorageOnLogin.storeData(user, password, username, role, uuid)
+                    val dataStorageOnLogin = DataStorageOnLogin(localDataManager)
+                    dataStorageOnLogin.storeData(email, password, user, role, uuid)
 
-                    onNavigateHome()
+                    onNavigateHome() // navigate to home screen after register
                 }
             }
         }else {
