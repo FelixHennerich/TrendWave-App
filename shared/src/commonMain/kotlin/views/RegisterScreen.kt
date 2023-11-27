@@ -379,7 +379,6 @@ class RegisterScreen {
                     )
                 )
 
-
                 onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
                 delay(1000)
 
