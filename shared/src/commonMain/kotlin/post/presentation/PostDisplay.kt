@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -70,6 +72,35 @@ fun PostDisplay(
                 bottomEnd = 10.dp
             ))
     ) {
+        if (localDataStorageManager.readString("username") == postuser ||
+            localDataStorageManager.readString("role") == "Admin"
+        ) {
+            IconButton(
+                onClick = {
+                    GlobalScope.launch {
+                        val restAPI = RESTfulPostManager(state)
+                        restAPI.deletePost(postid)
+
+                        onEvent(
+                            TrendWaveEvent.PostDeletionButton(
+                                Post(
+                                    postid,
+                                    postuuid,
+                                    postuser,
+                                    postdate,
+                                    posttext
+                                ), state.posts
+                            )
+                        )
+                    }
+                },
+            ) {
+                Icon(
+                    imageVector = TablerIcons.Trash,
+                    contentDescription = "",
+                )
+            }
+        }
         Row(
             modifier = Modifier.offset(x = 8.dp, y = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -109,25 +140,7 @@ fun PostDisplay(
                     fontSize = 12.sp
                 )
             }
-            if(localDataStorageManager.readString("username") == postuser ||
-                localDataStorageManager.readString("role") == "Admin"){
-                IconButton(
-                    onClick = {
-                        GlobalScope.launch {
-                            val restAPI = RESTfulPostManager(state)
-                            restAPI.deletePost(postid)
 
-                            onEvent(TrendWaveEvent.PostDeletionButton(Post(postid, postuuid, postuser, postdate, posttext), state.posts))
-                        }
-                    },
-                    modifier = Modifier.offset(y = -(3).dp, x = 190.dp)
-                ){
-                    Icon(
-                        imageVector = TablerIcons.Trash,
-                        contentDescription = "",
-                    )
-                }
-            }
         }
         Text(
             text = "Posted: $postdate",
