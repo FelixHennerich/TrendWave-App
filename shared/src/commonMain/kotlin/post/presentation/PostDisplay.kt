@@ -72,37 +72,8 @@ fun PostDisplay(
                 bottomEnd = 10.dp
             ))
     ) {
-        if (localDataStorageManager.readString("username") == postuser ||
-            localDataStorageManager.readString("role") == "Admin"
-        ) {
-            IconButton(
-                onClick = {
-                    GlobalScope.launch {
-                        val restAPI = RESTfulPostManager(state)
-                        restAPI.deletePost(postid)
-
-                        onEvent(
-                            TrendWaveEvent.PostDeletionButton(
-                                Post(
-                                    postid,
-                                    postuuid,
-                                    postuser,
-                                    postdate,
-                                    posttext
-                                ), state.posts
-                            )
-                        )
-                    }
-                },
-            ) {
-                Icon(
-                    imageVector = TablerIcons.Trash,
-                    contentDescription = "",
-                )
-            }
-        }
         Row(
-            modifier = Modifier.offset(x = 8.dp, y = 8.dp),
+            modifier = Modifier.offset(x = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -132,26 +103,60 @@ fun PostDisplay(
                     }
                 }
             ) {
-                Text(
-                    text = "@$postuser",
-                    modifier = Modifier.offset(y = -(8).dp, x = -(4).dp),
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.offset(y = -(12).dp, x = -(4).dp),
+                ) {
+                        Text(
+                            text = "@$postuser",
+                            color = Color.DarkGray,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            text = "Posted: $postdate",
+                            modifier = Modifier.offset(y = 14.dp),
+                            color = Color.DarkGray,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 8.sp
+                        )
+                    if (localDataStorageManager.readString("username") == postuser ||
+                        localDataStorageManager.readString("role") == "Admin"
+                    ) {
+                        IconButton(
+                            onClick = {
+                                GlobalScope.launch {
+                                    val restAPI = RESTfulPostManager(state)
+                                    restAPI.deletePost(postid)
+
+                                    onEvent(
+                                        TrendWaveEvent.PostDeletionButton(
+                                            Post(
+                                                postid,
+                                                postuuid,
+                                                postuser,
+                                                postdate,
+                                                posttext
+                                            ), state.posts
+                                        )
+                                    )
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = TablerIcons.Trash,
+                                contentDescription = "",
+                            )
+                        }
+                    }
+                }
             }
 
         }
         Text(
-            text = "Posted: $postdate",
-            modifier = Modifier.offset(y = -(15).dp, x = 55.dp),
-            color = Color.DarkGray,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 8.sp
-        )
-        Text(
             text = posttext,
             modifier = Modifier.padding(start = 50.dp, end = 10.dp, bottom = 20.dp)
         )
+
     }
 }
