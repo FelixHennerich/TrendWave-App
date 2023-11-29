@@ -172,7 +172,7 @@ class RESTfulUserManager {
                     val parts = pair.split(":")
                     partlst.add(parts[1].removePrefix("\"").removeSuffix("\""))
                 }
-                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[4], partlst[5], partlst[6], partlst[7], partlst[8], partlst[9]))
+                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[6], partlst[4], partlst[5], partlst[7], partlst[8], partlst[9]))
             }
         }
 
