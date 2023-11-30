@@ -87,7 +87,7 @@ class HomeScreen {
                             text = "${localDataSource.readString("username")}",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 15.dp, end = 190.dp)
+                            modifier = Modifier.padding(top = 15.dp).weight(1f)
                         )
                         IconButton(
                             onClick = { onEvent(TrendWaveEvent.ClickSettingsScreen) },

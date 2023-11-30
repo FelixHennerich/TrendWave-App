@@ -90,7 +90,7 @@ fun ProfileSheet(
                     text = pageOwner.username,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(end = 260.dp)
+                    modifier = Modifier.offset(x = 3.dp).weight(1f)
                 )
             }
 
