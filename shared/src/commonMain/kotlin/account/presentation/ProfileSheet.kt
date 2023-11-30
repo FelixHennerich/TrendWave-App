@@ -43,6 +43,15 @@ import post.RESTfulPostManager
 import post.presentation.PostDisplay
 import utilities.presentation.BottomSheet
 
+/**
+ * ProfileSheet to display the profile of a player
+ *
+ * @param isOpen -> Is the sheet shown
+ * @param localDataSource -> Handle local data
+ * @param onEvent -> Manage the eventsystem
+ * @param state -> Update cache data
+ * @param pageOwner -> User of the profile sheet
+ */
 @Composable
 fun ProfileSheet(
     isOpen: Boolean,
