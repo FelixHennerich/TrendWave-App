@@ -33,8 +33,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.icons.FeatherIcons
+import compose.icons.LineaIcons
+import compose.icons.SimpleIcons
 import compose.icons.TablerIcons
+import compose.icons.feathericons.GitPullRequest
+import compose.icons.feathericons.Heart
 import compose.icons.feathericons.User
+import compose.icons.feathericons.UserCheck
+import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.Message
 import compose.icons.tablericons.Settings
@@ -49,6 +55,7 @@ import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
 import post.presentation.addPostSheet
+import utilities.color.Colors
 
 class HomeScreen {
 
@@ -68,16 +75,50 @@ class HomeScreen {
         onNavigateLogin: () -> Unit
     ) {
         LazyColumn(
-            modifier = Modifier.padding(top = 40.dp)
+
         ) {
             item {
+                //First row icons
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 15.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    //Profile Page Icon
+                    Icon(
+                        imageVector = FeatherIcons.User,
+                        contentDescription = "",
+                        modifier = Modifier.scale(.8f).clickable {
+                            onEvent(TrendWaveEvent.ProfileHomeButton)
+                        }
+                    )
 
+                    //Notification Page icon
+                    Icon(
+                        imageVector = TablerIcons.Bell,
+                        contentDescription = "",
+                        modifier = Modifier.padding(start = 280.dp).scale(.8f).clickable {
+
+                        }
+                    )
+
+                    //Settings page icon
+                    Icon(
+                        imageVector = TablerIcons.Settings,
+                        contentDescription = "",
+                        modifier = Modifier.padding(start = 20.dp).scale(.8f).clickable {
+                            onEvent(TrendWaveEvent.ClickSettingsScreen)
+                        }
+                    )
+                }
             }
+
             item {
                 //Top bar
                 Box(
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp).fillMaxWidth().background(
-                        Color(230, 255, 255),
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
+                        .fillMaxWidth().background(
+                        Color(Colors.SECONDARY),
                         RoundedCornerShape(
                             topStart = 13.dp,
                             topEnd = 13.dp,
@@ -87,6 +128,7 @@ class HomeScreen {
                     ),
                     contentAlignment = Alignment.Center
                 ) {
+                    //Hello message
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -104,9 +146,12 @@ class HomeScreen {
                                 .clickable { onEvent(TrendWaveEvent.ProfileHomeButton) }
                         )
                     }
+
+                    //Follower and Following count
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        //Follower
                         Box() {
                             Text(
                                 text = "Follower ",
@@ -123,6 +168,8 @@ class HomeScreen {
                                 )
                             }
                         }
+
+                        //Following
                         Box() {
                             Text(
                                 text = "Following ",
@@ -147,6 +194,7 @@ class HomeScreen {
                     modifier = Modifier.fillMaxWidth().padding(30.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    //Post button
                     PostButton(
                         modifier = Modifier,
                         buttontext = "Post",
@@ -154,6 +202,8 @@ class HomeScreen {
                         onEvent = onEvent,
                         event = TrendWaveEvent.ClickPostButton
                     )
+
+                    //Saved posts
                     PostButton(
                         modifier = Modifier,
                         buttontext = "Saved",
@@ -161,22 +211,27 @@ class HomeScreen {
                         onEvent = onEvent,
                         event = TrendWaveEvent.TestHomeButton
                     )
+
+                    //Following list
                     PostButton(
                         modifier = Modifier,
                         buttontext = "Following",
-                        imageVector = FeatherIcons.User,
+                        imageVector = FeatherIcons.UserCheck,
                         onEvent = onEvent,
                         event = TrendWaveEvent.FollowingHomeButton
                     )
+
+                    //TODO
                     PostButton(
                         modifier = Modifier,
-                        buttontext = "Profile",
-                        imageVector = FeatherIcons.User,
+                        buttontext = "TODO",
+                        imageVector = FeatherIcons.GitPullRequest,
                         onEvent = onEvent,
                         event = TrendWaveEvent.ClickSettingsScreen
                     )
                 }
 
+                //recent activity text
                 Text(
                     text = "Recent activity",
                     modifier = Modifier.offset(x = 20.dp, y = 40.dp).padding(bottom = 50.dp),
@@ -239,7 +294,7 @@ class HomeScreen {
             onLogout = onNavigateLogin
         )
 
-        if(state.user != null) {
+        if (state.user != null) {
             //Open Profile
             ProfileSheet(
                 isOpen = state.isProfileSheetOpen,
@@ -251,7 +306,7 @@ class HomeScreen {
         }
 
         //open Profile
-        if(state.watchUserProfile != null) {
+        if (state.watchUserProfile != null) {
             ProfileSheet(
                 isOpen = state.isProfileUserSheetOpen,
                 onEvent = onEvent,
