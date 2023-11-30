@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -105,50 +103,62 @@ fun PostDisplay(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.offset(y = -(12).dp, x = -(4).dp),
+                    modifier = Modifier.fillMaxWidth().offset(y = -(10).dp, x = -(4).dp),
                 ) {
                         Text(
-                            text = "@$postuser",
-                            color = Color.DarkGray,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp
+                                text = "@$postuser",
+                                color = Color.DarkGray,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp,
+                                modifier = Modifier.weight(2f)
                         )
                         Text(
                             text = "Posted: $postdate",
-                            modifier = Modifier.offset(y = 14.dp),
+                            modifier = Modifier.offset(y = 14.dp, x = -(157).dp),
                             color = Color.DarkGray,
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = FontWeight.Normal,
                             fontSize = 8.sp
                         )
-                    if (localDataStorageManager.readString("username") == postuser ||
-                        localDataStorageManager.readString("role") == "Admin"
-                    ) {
                         IconButton(
                             onClick = {
-                                GlobalScope.launch {
-                                    val restAPI = RESTfulPostManager(state)
-                                    restAPI.deletePost(postid)
+                                if (localDataStorageManager.readString("username") == postuser ||
+                                    localDataStorageManager.readString("role") == "Admin"
+                                ) {
+                                    GlobalScope.launch {
+                                        val restAPI = RESTfulPostManager(state)
+                                        restAPI.deletePost(postid)
 
-                                    onEvent(
-                                        TrendWaveEvent.PostDeletionButton(
-                                            Post(
-                                                postid,
-                                                postuuid,
-                                                postuser,
-                                                postdate,
-                                                posttext
-                                            ), state.posts
+                                        onEvent(
+                                            TrendWaveEvent.PostDeletionButton(
+                                                Post(
+                                                    postid,
+                                                    postuuid,
+                                                    postuser,
+                                                    postdate,
+                                                    posttext
+                                                ), state.posts
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             },
                         ) {
-                            Icon(
-                                imageVector = TablerIcons.Trash,
-                                contentDescription = "",
-                            )
+                            if (localDataStorageManager.readString("username") == postuser ||
+                                localDataStorageManager.readString("role") == "Admin"
+                            ) {
+                                Icon(
+                                    imageVector = TablerIcons.Trash,
+                                    contentDescription = "",
+                                    tint = Color.DarkGray
+                                )
+                            }else {
+                                Icon(
+                                    imageVector = TablerIcons.Trash,
+                                    contentDescription = "",
+                                    tint = Color(242, 242, 242)
+                                )
+                            }
                         }
-                    }
                 }
             }
 
