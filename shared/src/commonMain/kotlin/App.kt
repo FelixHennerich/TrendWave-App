@@ -52,14 +52,15 @@ fun App(
     val loginManager = LoginManager(state)
 
 
+    //Load data on app launch
     GlobalScope.launch {
         delay(100)
-        if(loginManager.isLoggedIn(appModule.localDataSource)){
-            if(!loggedin) {
+        if (loginManager.isLoggedIn(appModule.localDataSource)) {
+            if (!loggedin) {
                 loggedin = true
                 if (appModule.localDataSource.readString("uuid") != null) {
                     val uuid = appModule.localDataSource.readString("uuid").toString()
-                    if(state.user == null){
+                    if (state.user == null) {
                         val user = AppUser(state)
                         viewModel.onEvent(TrendWaveEvent.LoadUserToLocal(user.getUser(uuid)))
                     }
@@ -68,19 +69,27 @@ fun App(
                     lst = restAPI.getUserPosts(uuid)
                     lst1 = restAPI.getRandomPosts()
 
-                    while(lst1.isEmpty() && lst.isEmpty()){
+                    while (lst1.isEmpty() && lst.isEmpty()) {
                         delay(1)
                     }
-                    state.user?.let { TrendWaveEvent.UserPostLoading(lst1, lst, uuid, it.follower, state.user!!.following) }
+                    state.user?.let {
+                        TrendWaveEvent.UserPostLoading(
+                            lst1,
+                            lst,
+                            uuid,
+                            it.follower,
+                            state.user!!.following
+                        )
+                    }
                         ?.let { viewModel.onEvent(it) }
                     while (state.posts.isEmpty()) {
                         delay(1)
                     }
                     currentScreen = Screen.Home
-                 }
+                }
             }
-        }else {
-            if(!firstload) {
+        } else {
+            if (!firstload) {
                 currentScreen = Screen.Login
                 firstload = true
             }
@@ -88,16 +97,20 @@ fun App(
     }
 
     when (currentScreen) {
+        //Loading Screen Navigation
         is Screen.Loading -> loadingScreenTT.LoadingScreen(
             imageDataSource = appModule.imageDataSource
         )
+
+        //Home Screen Navigation
         is Screen.Home -> homeScreenTT.HomeScreen(
             onEvent = viewModel::onEvent,
             state = state,
             localDataSource = appModule.localDataSource,
-            imageDataSource = appModule.imageDataSource,
             onNavigateLogin = {currentScreen = Screen.Login}
         )
+
+        //Login Screen Navigation
         is Screen.Login -> loginScreenTT.LoginScreen(
             state = state,
             onEvent = viewModel::onEvent,
@@ -106,6 +119,8 @@ fun App(
             imageDataSource = appModule.imageDataSource,
             localDataManager = appModule.localDataSource
         )
+
+        //Register Screen Navigation
         is Screen.Register -> registerScreenTT.RegisterScreen(
             state = state,
             onEvent = viewModel::onEvent,
@@ -121,9 +136,10 @@ fun App(
 /**
  * define both screens as object
  *
- * @Object Home -> Main Screen, gonna be Login
- * @Object Login -> Login Screen
- * @Object Details -> Detail test screen
+ * @Object Loading -> Screen while starting the app
+ * @Object Home -> Screen after login or start the app
+ * @Object Login -> Enter user data to login
+ * @Object Register -> Create an account
  */
 sealed class Screen {
     data object Loading: Screen()

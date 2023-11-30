@@ -21,6 +21,7 @@ sealed interface TrendWaveEvent {
     object ClickSettingsScreen: TrendWaveEvent
     object TestHomeButton: TrendWaveEvent
     object ProfileHomeButton: TrendWaveEvent
+    object FollowingHomeButton: TrendWaveEvent
     object ClickClosePostButton: TrendWaveEvent
     object ClickCloseSettingsScreen: TrendWaveEvent
     object ClickCloseProfileScreen: TrendWaveEvent

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -42,15 +43,15 @@ fun PostButton(
 ) {
     Column(
         modifier = modifier
-            .height(80.dp)
-            .width(80.dp)
+            .height(60.dp)
+            .width(60.dp)
             .background(
                 Color(230, 255, 255),
                 RoundedCornerShape(
-                    topStart = 30.dp,
-                    topEnd = 30.dp,
-                    bottomEnd = 30.dp,
-                    bottomStart = 30.dp
+                    topStart = 20.dp,
+                    topEnd = 20.dp,
+                    bottomEnd = 20.dp,
+                    bottomStart = 20.dp
                 )
             ).clickable {
                 onEvent(event)
@@ -58,19 +59,20 @@ fun PostButton(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.height(21.dp))
+        //Image inside the button
         Icon(
             imageVector = imageVector,
             contentDescription = "",
-            modifier = Modifier.scale(1.5f)
+            modifier = Modifier.scale(1.1f).padding(top = 15.dp)
         )
 
+        //Text below the button
         Text(
             text = buttontext,
-            fontSize = 15.sp,
+            fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.Black,
-            modifier = Modifier.offset(y = 40.dp)
+            modifier = Modifier.offset(y = 30.dp)
         )
     }
 }
