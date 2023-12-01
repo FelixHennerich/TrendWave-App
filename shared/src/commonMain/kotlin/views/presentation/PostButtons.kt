@@ -29,6 +29,8 @@ import event.TrendWaveEvent
  * three buttons on home screen
  *
  * @param modifier -> Edits for HomeScreen
+ * @param backgroundcolor -> Background
+ * @param textcolor -> Color of text
  * @param buttontext -> Text inside the button
  * @param onEvent -> EventHandling
  * @param event -> Type of event
@@ -36,6 +38,8 @@ import event.TrendWaveEvent
 @Composable
 fun PostButton(
     modifier: Modifier,
+    backgroundcolor: Color,
+    textcolor: Color,
     buttontext: String,
     imageVector: ImageVector,
     onEvent: (TrendWaveEvent)-> Unit,
@@ -46,7 +50,7 @@ fun PostButton(
             .height(60.dp)
             .width(60.dp)
             .background(
-                Color(230, 255, 255),
+                backgroundcolor,
                 RoundedCornerShape(
                     topStart = 20.dp,
                     topEnd = 20.dp,
@@ -63,7 +67,8 @@ fun PostButton(
         Icon(
             imageVector = imageVector,
             contentDescription = "",
-            modifier = Modifier.scale(1.1f).padding(top = 15.dp)
+            modifier = Modifier.scale(1.1f).padding(top = 15.dp),
+            tint = textcolor
         )
 
         //Text below the button
@@ -71,7 +76,7 @@ fun PostButton(
             text = buttontext,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            color = textcolor,
             modifier = Modifier.offset(y = 30.dp)
         )
     }

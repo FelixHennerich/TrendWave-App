@@ -2,6 +2,7 @@ package post.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.RESTfulPostManager
+import utilities.color.Colors
+import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
 
 /**
@@ -64,33 +67,43 @@ fun addPostSheet(
             topEnd = 30.dp,
             topStart = 30.dp
         )),
-        backgroundcolor = Color.White,
+        backgroundcolor = Color.fromEnum(Colors.PRIMARY),
         padding = 0.dp
     ) {
 
         Scaffold(
             modifier = Modifier.offset(y = 25.dp).fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .background(Color(230, 255, 255)),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = { onEvent(TrendWaveEvent.ClickClosePostButton) }) {
+            Box(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
+                    .fillMaxWidth().background(
+                        Color.fromEnum(Colors.QUATERNARY),
+                        RoundedCornerShape(
+                            topStart = 13.dp,
+                            topEnd = 13.dp,
+                            bottomEnd = 13.dp,
+                            bottomStart = 13.dp
+                        )
+                    ),
+                contentAlignment = Alignment.Center
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween
+                )
+                {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = "",
+                        modifier = Modifier.clickable {
+                            onEvent(TrendWaveEvent.ClickClosePostButton)
+                        }
+                    )
+                    Text(
+                        text = "Create new post",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
-                Text(
-                    text = "Create new post",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.offset(x = -(190).dp)
-                )
             }
 
 

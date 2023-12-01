@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -41,6 +42,8 @@ import managers.DataStorageManager
 import post.Post
 import post.RESTfulPostManager
 import post.presentation.PostDisplay
+import utilities.color.Colors
+import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
 
 /**
@@ -63,7 +66,7 @@ fun ProfileSheet(
     BottomSheet(
         visible = isOpen,
         modifier = Modifier.fillMaxSize(),
-        backgroundcolor = Color.White,
+        backgroundcolor = Color.fromEnum(Colors.PRIMARY),
         padding = 0.dp
     ) {
         var posts by remember { mutableStateOf<List<Post>>(emptyList()) }
@@ -73,43 +76,57 @@ fun ProfileSheet(
             posts = restapi.getUserPosts(pageOwner.uuid)
         }
 
-        Scaffold(
-            modifier = Modifier.offset(y = 25.dp).fillMaxWidth()
+        Box (
+            modifier = Modifier.offset(y = 25.dp).background(Color.fromEnum(Colors.PRIMARY)).fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .background(Color(230, 255, 255)),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Box(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
+                    .fillMaxWidth().background(
+                        Color.fromEnum(Colors.QUATERNARY),
+                        RoundedCornerShape(
+                            topStart = 13.dp,
+                            topEnd = 13.dp,
+                            bottomEnd = 13.dp,
+                            bottomStart = 13.dp
+                        )
+                    ),
+                contentAlignment = Alignment.Center
             ) {
-                IconButton(onClick = {onEvent(TrendWaveEvent.ClickCloseProfileScreen)}) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = "",
+                        tint = Color.fromEnum(Colors.SENARY),
+                        modifier = Modifier.padding(end = 15.dp).clickable {
+                            onEvent(TrendWaveEvent.ClickCloseProfileScreen)
+                        }
+                    )
+                    Text(
+                        text = "@",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(end = 5.dp),
+                        color = Color.fromEnum(Colors.SENARY)
+                    )
+                    Text(
+                        text = pageOwner.username,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.offset(x = 3.dp).padding(end = 150.dp),
+                        color = Color.fromEnum(Colors.SENARY)
                     )
                 }
-                Text(
-                    text = "@",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                Text(
-                    text = pageOwner.username,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.offset(x = 3.dp).weight(1f)
-                )
             }
 
             Box(
-                modifier = Modifier.fillMaxWidth().offset(y = 90.dp),
+                modifier = Modifier.fillMaxWidth().offset(y = 110.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Row(
                     modifier = Modifier
-                        .background(Color(255, 204, 204), RoundedCornerShape(30.dp))
+                        .background(Color.fromEnum(Colors.QUINARY), RoundedCornerShape(30.dp))
                         .padding(50.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -117,12 +134,13 @@ fun ProfileSheet(
                         imageVector = Icons.Rounded.Person,
                         contentDescription = "",
                         modifier = Modifier.scale(3f),
+                        tint = Color.fromEnum(Colors.SENARY)
                     )
                 }
             }
 
             Row (
-                modifier = Modifier.offset(y = 160.dp).fillMaxWidth().padding(50.dp),
+                modifier = Modifier.offset(y = 180.dp).fillMaxWidth().padding(50.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
 
@@ -131,13 +149,15 @@ fun ProfileSheet(
                     text = "Follower: ${pageOwner.follower}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(15.dp)
+                    modifier = Modifier.padding(15.dp),
+                    color = Color.fromEnum(Colors.SENARY)
                 )
                 Text(
                     text = "Following: ${pageOwner.following}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(15.dp)
+                    modifier = Modifier.padding(15.dp),
+                    color = Color.fromEnum(Colors.SENARY)
                 )
             }
 
@@ -149,7 +169,7 @@ fun ProfileSheet(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth().offset(y = 265.dp),
+                modifier = Modifier.fillMaxWidth().offset(y = 285.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
@@ -211,17 +231,21 @@ fun ProfileSheet(
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.offset(y = 320.dp)
+                modifier = Modifier.offset(y = 340.dp)
             ) {
                 Text(
                     text = "${pageOwner.username}'s activity",
                     modifier = Modifier.offset(x = 20.dp),
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.fromEnum(Colors.SENARY)
                 )
                 for (post in posts) {
                     PostDisplay(
                         modifier = Modifier.fillMaxWidth(),
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
+                        iconbackgroundcolor = Color.fromEnum(Colors.QUINARY),
                         posttext = post.text,
                         postuser = post.username,
                         postuuid = post.uuid,

@@ -38,6 +38,9 @@ import post.Post
  * Display lingle posts
  *
  * @param modifier -> Modifications that will be available
+ * @param backgroundcolor -> Backgroundcolor
+ * @param textcolor -> Color of text
+ * @param iconbackgroundcolor -> Color if no pricture is there
  * @param posttext -> content of post
  * @param postuser -> Username of creator
  * @param postdate -> Date of creation
@@ -50,6 +53,9 @@ import post.Post
 @Composable
 fun PostDisplay(
     modifier: Modifier,
+    backgroundcolor: Color,
+    textcolor: Color,
+    iconbackgroundcolor: Color,
     posttext: String,
     postuser: String,
     postdate: String,
@@ -63,7 +69,7 @@ fun PostDisplay(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
-            .background(Color(242, 242, 242), RoundedCornerShape(
+            .background(backgroundcolor, RoundedCornerShape(
                 topStart = 10.dp,
                 topEnd = 10.dp,
                 bottomStart = 10.dp,
@@ -77,13 +83,14 @@ fun PostDisplay(
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color(255, 204, 204), RoundedCornerShape(30.dp))
+                    .background(iconbackgroundcolor, RoundedCornerShape(30.dp))
                     .padding(8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Person,
                     contentDescription = "",
+                    tint = textcolor,
                     modifier = Modifier.scale(1.3f),
                 )
             }
@@ -107,7 +114,7 @@ fun PostDisplay(
                 ) {
                         Text(
                                 text = "@$postuser",
-                                color = Color.DarkGray,
+                                color = textcolor,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 modifier = Modifier.weight(2f)
@@ -115,7 +122,7 @@ fun PostDisplay(
                         Text(
                             text = "Posted: $postdate",
                             modifier = Modifier.offset(y = 14.dp, x = -(157).dp),
-                            color = Color.DarkGray,
+                            color = textcolor,
                             fontWeight = FontWeight.Normal,
                             fontSize = 8.sp
                         )
@@ -149,13 +156,13 @@ fun PostDisplay(
                                 Icon(
                                     imageVector = TablerIcons.Trash,
                                     contentDescription = "",
-                                    tint = Color.DarkGray
+                                    tint = textcolor
                                 )
                             }else {
                                 Icon(
                                     imageVector = TablerIcons.Trash,
                                     contentDescription = "",
-                                    tint = Color(242, 242, 242)
+                                    tint = backgroundcolor
                                 )
                             }
                         }
@@ -165,6 +172,7 @@ fun PostDisplay(
         }
         Text(
             text = posttext,
+            color = textcolor,
             modifier = Modifier.padding(start = 50.dp, end = 10.dp, bottom = 20.dp)
         )
 
