@@ -76,7 +76,7 @@ class HomeScreen {
         onNavigateLogin: () -> Unit
     ) {
         LazyColumn(
-
+            modifier = Modifier.background(Color.fromEnum(Colors.PRIMARY))
         ) {
             item {
                 //First row icons
@@ -89,7 +89,8 @@ class HomeScreen {
                     Icon(
                         imageVector = FeatherIcons.User,
                         contentDescription = "",
-                        modifier = Modifier.scale(.8f).clickable {
+                        tint = Color.fromEnum(Colors.SENARY),
+                        modifier = Modifier.offset(x = 20.dp).scale(.8f).clickable {
                             onEvent(TrendWaveEvent.ProfileHomeButton)
                         }
                     )
@@ -98,7 +99,8 @@ class HomeScreen {
                     Icon(
                         imageVector = TablerIcons.Bell,
                         contentDescription = "",
-                        modifier = Modifier.padding(start = 280.dp).scale(.8f).clickable {
+                        tint = Color.fromEnum(Colors.SENARY),
+                        modifier = Modifier.padding(start = 250.dp).scale(.8f).clickable {
 
                         }
                     )
@@ -107,7 +109,8 @@ class HomeScreen {
                     Icon(
                         imageVector = TablerIcons.Settings,
                         contentDescription = "",
-                        modifier = Modifier.padding(start = 20.dp).scale(.8f).clickable {
+                        tint = Color.fromEnum(Colors.SENARY),
+                        modifier = Modifier.padding(end = 12.dp).scale(.8f).clickable {
                             onEvent(TrendWaveEvent.ClickSettingsScreen)
                         }
                     )
@@ -119,7 +122,7 @@ class HomeScreen {
                 Box(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
                         .fillMaxWidth().background(
-                        Color.fromEnum(Colors.SECONDARY),
+                        Color.fromEnum(Colors.QUATERNARY),
                         RoundedCornerShape(
                             topStart = 13.dp,
                             topEnd = 13.dp,
@@ -136,12 +139,14 @@ class HomeScreen {
                         Text(
                             text = "Hello, ",
                             fontSize = 20.sp,
+                            color = Color.fromEnum(Colors.SENARY),
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(start = 25.dp)
                         )
                         Text(
                             text = "${localDataSource.readString("username")}",
                             fontSize = 20.sp,
+                            color = Color.fromEnum(Colors.SENARY),
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.weight(1f)
                                 .clickable { onEvent(TrendWaveEvent.ProfileHomeButton) }
@@ -158,6 +163,7 @@ class HomeScreen {
                                 text = "Follower ",
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Normal,
+                                color = Color.fromEnum(Colors.SENARY),
                                 modifier = Modifier.padding(start = 230.dp)
                             )
                             state.user?.let {
@@ -165,6 +171,7 @@ class HomeScreen {
                                     text = it.follower,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
+                                    color = Color.fromEnum(Colors.SENARY),
                                     modifier = Modifier.padding(top = 15.dp, start = 240.dp)
                                 )
                             }
@@ -176,6 +183,7 @@ class HomeScreen {
                                 text = "Following ",
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Normal,
+                                color = Color.fromEnum(Colors.SENARY),
                                 modifier = Modifier.padding(start = 10.dp)
                             )
                             state.user?.let {
@@ -183,6 +191,7 @@ class HomeScreen {
                                     text = it.following,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
+                                    color = Color.fromEnum(Colors.SENARY),
                                     modifier = Modifier.padding(top = 15.dp, start = 20.dp)
                                 )
                             }
@@ -198,6 +207,8 @@ class HomeScreen {
                     //Post button
                     PostButton(
                         modifier = Modifier,
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
                         buttontext = "Post",
                         imageVector = TablerIcons.Message,
                         onEvent = onEvent,
@@ -207,6 +218,8 @@ class HomeScreen {
                     //Saved posts
                     PostButton(
                         modifier = Modifier,
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
                         buttontext = "Saved",
                         imageVector = TablerIcons.Bookmark,
                         onEvent = onEvent,
@@ -216,6 +229,8 @@ class HomeScreen {
                     //Following list
                     PostButton(
                         modifier = Modifier,
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
                         buttontext = "Following",
                         imageVector = FeatherIcons.UserCheck,
                         onEvent = onEvent,
@@ -225,6 +240,8 @@ class HomeScreen {
                     //TODO
                     PostButton(
                         modifier = Modifier,
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
                         buttontext = "TODO",
                         imageVector = FeatherIcons.GitPullRequest,
                         onEvent = onEvent,
@@ -237,6 +254,7 @@ class HomeScreen {
                     text = "Recent activity",
                     modifier = Modifier.offset(x = 20.dp, y = 40.dp).padding(bottom = 50.dp),
                     fontSize = 20.sp,
+                    color = Color.fromEnum(Colors.SENARY),
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -263,6 +281,9 @@ class HomeScreen {
             items(state.posts) { post ->
                 PostDisplay(
                     modifier = Modifier,
+                    backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                    textcolor = Color.fromEnum(Colors.SENARY),
+                    iconbackgroundcolor = Color.fromEnum(Colors.QUINARY),
                     posttext = post.text,
                     postuser = post.username,
                     postuuid = post.uuid,
@@ -270,7 +291,7 @@ class HomeScreen {
                     postid = post.id,
                     localDataStorageManager = localDataSource,
                     onEvent = onEvent,
-                    state = state
+                    state = state,
                 )
                 Spacer(Modifier.height(6.dp))
             }
