@@ -56,6 +56,7 @@ import views.presentation.PostButton
 import views.sheet.SettingsSheet
 import post.presentation.addPostSheet
 import utilities.color.Colors
+import utilities.color.fromEnum
 
 class HomeScreen {
 
@@ -118,7 +119,7 @@ class HomeScreen {
                 Box(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
                         .fillMaxWidth().background(
-                        Color(Colors.SECONDARY),
+                        Color.fromEnum(Colors.SECONDARY),
                         RoundedCornerShape(
                             topStart = 13.dp,
                             topEnd = 13.dp,
