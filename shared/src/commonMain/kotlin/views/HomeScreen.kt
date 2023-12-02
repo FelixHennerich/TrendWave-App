@@ -91,7 +91,7 @@ class HomeScreen {
                         contentDescription = "",
                         tint = Color.fromEnum(Colors.SENARY),
                         modifier = Modifier.offset(x = 20.dp).scale(.8f).clickable {
-                            onEvent(TrendWaveEvent.ProfileHomeButton)
+                            onEvent(TrendWaveEvent.ClickProfileHomeButton)
                         }
                     )
 
@@ -149,7 +149,7 @@ class HomeScreen {
                             color = Color.fromEnum(Colors.SENARY),
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.weight(1f)
-                                .clickable { onEvent(TrendWaveEvent.ProfileHomeButton) }
+                                .clickable { onEvent(TrendWaveEvent.ClickProfileHomeButton) }
                         )
                     }
 
@@ -268,7 +268,7 @@ class HomeScreen {
                     val currentTime = getTimeMillis()
                     if (currentTime - lastClickTime >= delayMillis) {
                         GlobalScope.launch {
-                            val restapi = RESTfulPostManager(state)
+                            val restapi = RESTfulPostManager()
                             onEvent(TrendWaveEvent.UpdatePostList(restapi.getRandomPosts()))
                         }
 

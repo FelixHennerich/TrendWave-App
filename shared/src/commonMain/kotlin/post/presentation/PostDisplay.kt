@@ -132,7 +132,7 @@ fun PostDisplay(
                                     localDataStorageManager.readString("role") == "Admin"
                                 ) {
                                     GlobalScope.launch {
-                                        val restAPI = RESTfulPostManager(state)
+                                        val restAPI = RESTfulPostManager()
                                         restAPI.deletePost(postid)
 
                                         onEvent(

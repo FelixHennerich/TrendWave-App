@@ -33,9 +33,6 @@ fun App(
 
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
     var loggedin by remember { mutableStateOf(false) }
-    var firstload by remember { mutableStateOf(false) }
-    var lst by remember { mutableStateOf<List<Post>>(emptyList()) }
-    var lst1 by remember { mutableStateOf<List<Post>>(emptyList()) }
     val loginScreenTT = LoginScreen()
     val loadingScreenTT = LoadingScreen()
     val homeScreenTT = HomeScreen()
@@ -44,59 +41,31 @@ fun App(
     val viewModel = getViewModel(
         key = "main-login-screen",
         factory = viewModelFactory {
-            TrendWaveViewModel(localDataStorageManager = appModule.localDataSource)
+            val restAPI = RESTfulPostManager()
+            TrendWaveViewModel(
+                localDataStorageManager = appModule.localDataSource,
+                restApi = restAPI
+            )
         }
     )
     val state by viewModel.state.collectAsState()
     val loginManager = LoginManager()
 
-
+    //Application start event
     viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
 
-    //Load data on app launch
-    /*
+    //Is logged in?
     GlobalScope.launch {
-        delay(100)
-        if (loginManager.isLoggedIn(appModule.localDataSource)) {
-            if (!loggedin) {
-                loggedin = true
-                if (appModule.localDataSource.readString("uuid") != null) {
-                    val uuid = appModule.localDataSource.readString("uuid").toString()
-                    if (state.user == null) {
-                        val user = AppUser(state)
-                        viewModel.onEvent(TrendWaveEvent.LoadUserToLocal(user.getUser(uuid)))
-                    }
-                    val restAPI = RESTfulPostManager(state)
-
-                    lst = restAPI.getUserPosts(uuid)
-                    lst1 = restAPI.getRandomPosts()
-
-                    while (lst1.isEmpty() && lst.isEmpty()) {
-                        delay(1)
-                    }
-                    state.user?.let {
-                        TrendWaveEvent.UserPostLoading(
-                            lst1,
-                            lst,
-                            uuid,
-                            it.follower,
-                            state.user!!.following
-                        )
-                    }
-                        ?.let { viewModel.onEvent(it) }
-                    while (state.posts.isEmpty()) {
-                        delay(1)
-                    }
-                    currentScreen = Screen.Home
-                }
-            }
-        } else {
-            if (!firstload) {
+        delay(200)
+        if(!loggedin) {
+            loggedin = true
+            if (loginManager.isLoggedIn(appModule.localDataSource)) {
+                currentScreen = Screen.Home
+            } else {
                 currentScreen = Screen.Login
-                firstload = true
             }
         }
-    }*/
+    }
 
     when (currentScreen) {
         //Loading Screen Navigation

@@ -83,6 +83,18 @@ class AppUser: UserInterface {
     }
 
     /**
+     * get the username of a user directly from the database
+     * @param uuid -> Unique ID
+     * @return -> username
+     */
+    suspend fun getUsernameDatabase(uuid: String): String {
+        val user = restApi.findUserByUUID(uuid)
+        return user.username
+    }
+
+
+
+    /**
      * get the uuid of a user
      * @param email -> email
      * @return -> uuid
@@ -104,6 +116,16 @@ class AppUser: UserInterface {
         } else {
             return state.user!!.role
         }
+    }
+
+    /**
+     * get the role of a user directly from the database
+     * @param uuid -> Unique ID
+     * @return -> role
+     */
+    suspend fun getRoleDatabase(uuid: String): String {
+        val user = restApi.findUserByUUID(uuid)
+        return user.role
     }
 
     /**

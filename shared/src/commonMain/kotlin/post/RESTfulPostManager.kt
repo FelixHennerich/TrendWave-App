@@ -10,9 +10,7 @@ import io.ktor.client.statement.bodyAsText
 import utilities.CommonLogger
 import utilities.DateUtil
 
-class RESTfulPostManager(
-    private val state: TrendWaveState
-) {
+class RESTfulPostManager{
 
     private val client = HttpClient()
     private val url = "http://85.215.41.146/php/RESTfulAPI/"

@@ -168,7 +168,7 @@ fun addPostSheet(
                                     onEvent(TrendWaveEvent.ClickClosePostButton)
 
                                     GlobalScope.launch {
-                                        val restapi = RESTfulPostManager(state)
+                                        val restapi = RESTfulPostManager()
                                         localDataSource.readString("uuid")?.let {
                                             val post = restapi.uploadPost(
                                                 uuid = it,
