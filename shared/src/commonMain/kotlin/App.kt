@@ -41,18 +41,20 @@ fun App(
     val homeScreenTT = HomeScreen()
     val registerScreenTT = RegisterScreen()
 
-
     val viewModel = getViewModel(
         key = "main-login-screen",
         factory = viewModelFactory {
-            TrendWaveViewModel(appModule.imageDataSource)
+            TrendWaveViewModel(localDataStorageManager = appModule.localDataSource)
         }
     )
     val state by viewModel.state.collectAsState()
-    val loginManager = LoginManager(state)
+    val loginManager = LoginManager()
 
+
+    viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
 
     //Load data on app launch
+    /*
     GlobalScope.launch {
         delay(100)
         if (loginManager.isLoggedIn(appModule.localDataSource)) {
@@ -94,7 +96,7 @@ fun App(
                 firstload = true
             }
         }
-    }
+    }*/
 
     when (currentScreen) {
         //Loading Screen Navigation

@@ -124,7 +124,7 @@ fun ForgotPasswordSheet(
             onClick = {
                 val api = ForgotPasswordAPI()
                 GlobalScope.launch {
-                    val userclass = AppUser(state = state)
+                    val userclass = AppUser()
                     val uuid = userclass.getUUID(email)
                     api.createAuthcode(uuid)
                 }

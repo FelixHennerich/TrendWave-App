@@ -55,7 +55,7 @@ class FollowManagerClass(
      * @param uuid -> Unique ID of person that gets a follow
      */
     suspend fun addFollow(uuid: String){
-        val user = AppUser(state)
+        val user = AppUser()
         val currentfollows = user.getFollower(uuid).toInt()
         val followers = (currentfollows + 1)
         val finurl = url + "followGetter.php"
@@ -75,7 +75,7 @@ class FollowManagerClass(
      * @param uuid -> Unique Id if person that gets a follow removed
      */
     suspend fun removeFollow(uuid: String){
-        val user = AppUser(state)
+        val user = AppUser()
         val currentfollows = user.getFollower(uuid).toInt()
         val followers = (currentfollows - 1)
         val finurl = url + "followGetter.php"
@@ -99,7 +99,7 @@ class FollowManagerClass(
      * @param followed -> Person that will be unfollowed
      */
     suspend fun removeFollowing(uuid: String, followed: String){
-        val user = AppUser(state)
+        val user = AppUser()
         var currentfollows = user.getFollowed(uuid).split("#")
         val cl = CommonLogger()
 
@@ -139,7 +139,7 @@ class FollowManagerClass(
      * @param followed -> Person that gets the follow
      */
     suspend fun addFollowing(uuid: String, followed: String){
-        val user = AppUser(state)
+        val user = AppUser()
         val currentfollows = user.getFollowed(uuid)
         val followers = "$currentfollows#$followed"
 
@@ -171,7 +171,7 @@ class FollowManagerClass(
      * @return true or false
      */
     suspend fun isFollowing(uuid: String, followed: String): Boolean{
-        val user = AppUser(state)
+        val user = AppUser()
         val currentfollows = user.getFollowed(uuid)
         return currentfollows.contains(followed)
     }

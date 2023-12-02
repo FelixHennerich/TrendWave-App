@@ -18,4 +18,7 @@ data class TrendWaveState(
     var watchUserProfile: RESTfulUserManager.User? = null,
     var follower: String? = null,
     var following: String? = null,
+
+
+    var isLoggedIn: Boolean = false,
 )

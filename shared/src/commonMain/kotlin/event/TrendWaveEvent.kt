@@ -27,4 +27,7 @@ sealed interface TrendWaveEvent {
     object ClickCloseProfileScreen: TrendWaveEvent
     object ClickForgotPasswordSheet: TrendWaveEvent
     object ClickCloseForgotPasswordSheet: TrendWaveEvent
+
+
+    object ApplicationStartEvent: TrendWaveEvent
 }

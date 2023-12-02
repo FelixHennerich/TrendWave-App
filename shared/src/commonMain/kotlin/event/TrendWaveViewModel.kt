@@ -4,7 +4,10 @@ package event
 import account.AppUser
 import account.RESTfulUserManager
 import account.image.ImageDataSource
+import account.manager.LoginManager
+import androidx.compose.runtime.collectAsState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import event.events.ApplicationStartEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +15,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import managers.DataStorageManager
 import utilities.CommonLogger
 
 class TrendWaveViewModel(
-    private val imageDataSource: ImageDataSource,
+    private val localDataStorageManager: DataStorageManager,
 ) : ViewModel() {
     private val _state = MutableStateFlow(TrendWaveState())
 
@@ -199,6 +203,13 @@ class TrendWaveViewModel(
                 _state.update { it.copy(
                     isForgetPasswordSheetOpen = false
                 ) }
+            }
+            is TrendWaveEvent.ApplicationStartEvent -> {
+                val applicationStartEvent = ApplicationStartEvent()
+                applicationStartEvent.onEvent(
+                    localDataSource = localDataStorageManager,
+                    _state = _state
+                )
             }
             else -> {}
         }

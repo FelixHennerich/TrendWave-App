@@ -97,7 +97,7 @@ fun PostDisplay(
             TextButton(
                 onClick = {
                     GlobalScope.launch {
-                        val user = AppUser(state)
+                        val user = AppUser()
                         onEvent(
                             TrendWaveEvent.ClickUserProfileViewButton(
                                 user.getUserByUsername(

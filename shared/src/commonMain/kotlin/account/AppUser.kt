@@ -1,16 +1,16 @@
 package account
 
 import account.utilities.RoleType
+import event.State
 import event.TrendWaveState
 import kotlinx.coroutines.flow.StateFlow
 
-class AppUser(
-    private val state: TrendWaveState
-): UserInterface {
+class AppUser: UserInterface {
 
     private val url: String
         get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val restApi = RESTfulUserManager()
+    val state = State.getState()
 
     /**
      * get user of database

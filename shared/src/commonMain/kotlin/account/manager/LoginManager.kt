@@ -9,9 +9,7 @@ import managers.exceptions.NException
 import utilities.CommonLogger
 import utilities.EncryptionUtil
 
-class LoginManager(
-    private val state: TrendWaveState
-) {
+class LoginManager {
 
     /**
      * Method called when user tries to login within the app
@@ -21,7 +19,7 @@ class LoginManager(
      * @return -> Error Handeling
      */
     suspend fun login(email: String, password: String): NException{
-        val user = AppUser(state)
+        val user = AppUser()
         val encryptedPassword = EncryptionUtil.encryption(password)
         val passwordDB = user.getPassword(user.getUUID(email))
 
