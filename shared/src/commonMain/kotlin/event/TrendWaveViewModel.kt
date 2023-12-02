@@ -4,7 +4,10 @@ package event
 import account.AppUser
 import account.RESTfulUserManager
 import account.image.ImageDataSource
+import account.manager.LoginManager
+import androidx.compose.runtime.collectAsState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import event.events.ApplicationStartEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +15,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import managers.DataStorageManager
+import post.RESTfulPostManager
 import utilities.CommonLogger
 
 class TrendWaveViewModel(
-    private val imageDataSource: ImageDataSource,
+    private val localDataStorageManager: DataStorageManager,
+    private val restApi: RESTfulPostManager
 ) : ViewModel() {
     private val _state = MutableStateFlow(TrendWaveState())
 
@@ -29,6 +35,65 @@ class TrendWaveViewModel(
     @OptIn(DelicateCoroutinesApi::class)
     fun onEvent(event: TrendWaveEvent){
         when(event){
+            /**
+             * Button Clicks
+             */
+            is TrendWaveEvent.ClickPostButton -> {
+                _state.update { it.copy(
+                    isAddPostSheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.ClickClosePostButton -> {
+                _state.update {
+                    it.copy(
+                        isAddPostSheetOpen = false,
+                    )
+                }
+            }
+            is TrendWaveEvent.ClickSettingsScreen -> {
+                _state.update { it.copy(
+                    isSettingsSheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.ClickCloseSettingsScreen -> {
+                _state.update { it.copy(
+                    isSettingsSheetOpen = false
+                ) }
+            }
+            is TrendWaveEvent.ClickProfileHomeButton -> {
+                _state.update { it.copy(
+                    isProfileSheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.ClickCloseProfileScreen -> {
+                _state.update {
+                    it.copy(
+                        isProfileSheetOpen = false,
+                        isProfileUserSheetOpen = false
+                    )
+                }
+            }
+            is TrendWaveEvent.ClickUserProfileViewButton -> {
+                _state.update { it.copy(
+                    isProfileUserSheetOpen = true,
+                    watchUserProfile = event.user
+                ) }
+            }
+            is TrendWaveEvent.ClickForgotPasswordSheet -> {
+                _state.update { it.copy(
+                    isForgetPasswordSheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.ClickCloseForgotPasswordSheet -> {
+                _state.update { it.copy(
+                    isForgetPasswordSheetOpen = false
+                ) }
+            }
+
+
+
+
+
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
                 _state.update {it.copy(
                     RegisterErrorMessage = event.message
@@ -51,28 +116,6 @@ class TrendWaveViewModel(
                         posts = state.value.posts.plus(event.post)
                     )
                 }
-            }
-            is TrendWaveEvent.ClickPostButton -> {
-                _state.update { it.copy(
-                    isAddPostSheetOpen = true
-                ) }
-            }
-            is TrendWaveEvent.ClickClosePostButton -> {
-                _state.update {
-                    it.copy(
-                        isAddPostSheetOpen = false,
-                    )
-                }
-            }
-            is TrendWaveEvent.ClickSettingsScreen -> {
-                _state.update { it.copy(
-                    isSettingsSheetOpen = true
-                ) }
-            }
-            is TrendWaveEvent.ClickCloseSettingsScreen -> {
-                _state.update { it.copy(
-                    isSettingsSheetOpen = false
-                ) }
             }
             is TrendWaveEvent.UpdatePostList -> {
                 _state.update {it.copy(
@@ -115,42 +158,6 @@ class TrendWaveViewModel(
                     user = newUser
                 ) }
             }
-            is TrendWaveEvent.ProfileHomeButton -> {
-                _state.update { it.copy(
-                    isProfileSheetOpen = true
-                ) }
-            }
-            is TrendWaveEvent.UserPostLoading -> {
-                GlobalScope.launch {
-                    _state.update {
-                        it.copy(
-                            posts = event.posts,
-                            userposts = event.userposts,
-                            following = event.following,
-                            follower = event.follower
-                        )
-                    }
-                }
-            }
-            is TrendWaveEvent.ClickCloseProfileScreen -> {
-                _state.update {
-                    it.copy(
-                        isProfileSheetOpen = false,
-                        isProfileUserSheetOpen = false
-                    )
-                }
-            }
-            is TrendWaveEvent.LoadUserToLocal -> {
-                _state.update { it.copy(
-                    user = event.user
-                ) }
-            }
-            is TrendWaveEvent.ClickUserProfileViewButton -> {
-                _state.update { it.copy(
-                    isProfileUserSheetOpen = true,
-                    watchUserProfile = event.user
-                ) }
-            }
             is TrendWaveEvent.RemoveFollowedUser -> {
                 var lst = state.value.user?.followed?.split("#")
                 lst = lst?.minus(event.uuid)
@@ -191,14 +198,13 @@ class TrendWaveViewModel(
                     user = user
                 ) }
             }
-            is TrendWaveEvent.ClickForgotPasswordSheet -> {
-                _state.update { it.copy(
-                    isForgetPasswordSheetOpen = true
-                ) }
-            }is TrendWaveEvent.ClickCloseForgotPasswordSheet -> {
-                _state.update { it.copy(
-                    isForgetPasswordSheetOpen = false
-                ) }
+            is TrendWaveEvent.ApplicationStartEvent -> {
+                val applicationStartEvent = ApplicationStartEvent()
+                applicationStartEvent.onEvent(
+                    localDataSource = localDataStorageManager,
+                    _state = _state,
+                    restAPI = restApi
+                )
             }
             else -> {}
         }

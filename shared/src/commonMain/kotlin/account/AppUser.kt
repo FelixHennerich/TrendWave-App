@@ -1,16 +1,16 @@
 package account
 
 import account.utilities.RoleType
+import event.State
 import event.TrendWaveState
 import kotlinx.coroutines.flow.StateFlow
 
-class AppUser(
-    private val state: TrendWaveState
-): UserInterface {
+class AppUser: UserInterface {
 
     private val url: String
         get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val restApi = RESTfulUserManager()
+    val state = State.getState()
 
     /**
      * get user of database
@@ -83,6 +83,18 @@ class AppUser(
     }
 
     /**
+     * get the username of a user directly from the database
+     * @param uuid -> Unique ID
+     * @return -> username
+     */
+    suspend fun getUsernameDatabase(uuid: String): String {
+        val user = restApi.findUserByUUID(uuid)
+        return user.username
+    }
+
+
+
+    /**
      * get the uuid of a user
      * @param email -> email
      * @return -> uuid
@@ -104,6 +116,16 @@ class AppUser(
         } else {
             return state.user!!.role
         }
+    }
+
+    /**
+     * get the role of a user directly from the database
+     * @param uuid -> Unique ID
+     * @return -> role
+     */
+    suspend fun getRoleDatabase(uuid: String): String {
+        val user = restApi.findUserByUUID(uuid)
+        return user.role
     }
 
     /**

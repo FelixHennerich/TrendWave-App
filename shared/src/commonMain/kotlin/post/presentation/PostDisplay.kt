@@ -97,7 +97,7 @@ fun PostDisplay(
             TextButton(
                 onClick = {
                     GlobalScope.launch {
-                        val user = AppUser(state)
+                        val user = AppUser()
                         onEvent(
                             TrendWaveEvent.ClickUserProfileViewButton(
                                 user.getUserByUsername(
@@ -132,7 +132,7 @@ fun PostDisplay(
                                     localDataStorageManager.readString("role") == "Admin"
                                 ) {
                                     GlobalScope.launch {
-                                        val restAPI = RESTfulPostManager(state)
+                                        val restAPI = RESTfulPostManager()
                                         restAPI.deletePost(postid)
 
                                         onEvent(

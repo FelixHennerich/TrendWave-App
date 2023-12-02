@@ -10,9 +10,7 @@ import io.ktor.client.statement.bodyAsText
 import utilities.CommonLogger
 import utilities.DateUtil
 
-class RESTfulPostManager(
-    private val state: TrendWaveState
-) {
+class RESTfulPostManager{
 
     private val client = HttpClient()
     private val url = "http://85.215.41.146/php/RESTfulAPI/"
@@ -104,7 +102,7 @@ class RESTfulPostManager(
             }
         }
 
-        val user = AppUser(state)
+        val user = AppUser()
         val username = user.getUsername(uuid)
 
         return Post(id,uuid,username,date,text)
@@ -118,7 +116,7 @@ class RESTfulPostManager(
      */
     suspend fun jsonStringToEntryLists(jsonString: String): List<Post> {
         val entryLists = mutableListOf<Post>()
-        val user = AppUser(state)
+        val user = AppUser()
         val cleanedJsonString = jsonString.trim().removePrefix("[").removeSuffix("]")
         val jsonObjects = cleanedJsonString.split("{")
 

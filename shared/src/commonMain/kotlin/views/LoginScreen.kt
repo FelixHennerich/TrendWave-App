@@ -144,9 +144,9 @@ class LoginScreen {
                 keyboardActions = KeyboardActions(
                     onDone = {
                         GlobalScope.launch {
-                            val loginManager = LoginManager(state)
+                            val loginManager = LoginManager()
                             val exceptionHandler = ExceptionHandler()
-                            val userClass = AppUser(state)
+                            val userClass = AppUser()
                             val message = exceptionHandler.fetchErrorMessage(
                                 loginManager.login(
                                     email = user,
@@ -223,9 +223,9 @@ class LoginScreen {
                 keyboardActions = KeyboardActions(
                     onDone = {
                         GlobalScope.launch {
-                            val loginManager = LoginManager(state)
+                            val loginManager = LoginManager()
                             val exceptionHandler = ExceptionHandler()
-                            val userClass = AppUser(state)
+                            val userClass = AppUser()
                             val message = exceptionHandler.fetchErrorMessage(
                                 loginManager.login(
                                     email = user,
@@ -259,9 +259,9 @@ class LoginScreen {
             Button(
                 onClick = {
                     GlobalScope.launch {
-                        val loginManager = LoginManager(state)
+                        val loginManager = LoginManager()
                         val exceptionHandler = ExceptionHandler()
-                        val userClass = AppUser(state)
+                        val userClass = AppUser()
                         val message = exceptionHandler.fetchErrorMessage(
                             loginManager.login(
                                 email = user,

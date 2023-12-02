@@ -72,7 +72,7 @@ fun ProfileSheet(
         var posts by remember { mutableStateOf<List<Post>>(emptyList()) }
 
         GlobalScope.launch {
-            val restapi = RESTfulPostManager(state)
+            val restapi = RESTfulPostManager()
             posts = restapi.getUserPosts(pageOwner.uuid)
         }
 

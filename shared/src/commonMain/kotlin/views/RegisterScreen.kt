@@ -364,7 +364,7 @@ class RegisterScreen {
             GlobalScope.launch {
                 val creationManager = CreationManager()
                 val exceptionHandler = ExceptionHandler()
-                val userClass = AppUser(state)
+                val userClass = AppUser()
                 val uuidclass = UUID() // uuid class
                 val uuid = uuidclass.generate128BitUUID() // 128Bit uuid generation
 
