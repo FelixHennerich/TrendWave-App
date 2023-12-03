@@ -259,24 +259,6 @@ class HomeScreen {
                 )
             }
 
-            item {
-
-                var lastClickTime by remember { mutableStateOf(0L) }
-                val delayMillis = 10000L
-
-                if (state.posts.isEmpty()) {
-                    val currentTime = getTimeMillis()
-                    if (currentTime - lastClickTime >= delayMillis) {
-                        GlobalScope.launch {
-                            val restapi = RESTfulPostManager()
-                            onEvent(TrendWaveEvent.UpdatePostList(restapi.getRandomPosts()))
-                        }
-
-                        lastClickTime = currentTime
-                    }
-                }
-            }
-
 
             items(state.posts) { post ->
                 PostDisplay(

@@ -21,4 +21,5 @@ data class TrendWaveState(
 
 
     var isLoggedIn: Boolean = false,
+    var isDataLoaded: Boolean = false,
 )

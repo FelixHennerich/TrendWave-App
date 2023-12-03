@@ -56,10 +56,13 @@ fun App(
 
     //Is logged in?
     GlobalScope.launch {
-        delay(200)
+        delay(100)
         if(!loggedin) {
             loggedin = true
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
+                while(state.posts.isEmpty()){
+                    delay(10)
+                }
                 currentScreen = Screen.Home
             } else {
                 currentScreen = Screen.Login
