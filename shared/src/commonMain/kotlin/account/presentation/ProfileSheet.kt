@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
@@ -55,6 +56,7 @@ import utilities.presentation.BottomSheet
  * @param state -> Update cache data
  * @param pageOwner -> User of the profile sheet
  */
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun ProfileSheet(
     isOpen: Boolean,
@@ -162,10 +164,12 @@ fun ProfileSheet(
             }
 
             var color by remember { mutableStateOf(Color.Transparent) }
-            if (state.user?.followed?.contains(pageOwner.uuid) == false) {
-                color = Color.Red
-            }else {
-                color = Color.LightGray
+            GlobalScope.launch {
+                val followManagerClass = FollowManagerClass()
+                if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid))
+                    color = Color.Red
+                else
+                    color = Color.LightGray
             }
 
             Column(
@@ -177,29 +181,15 @@ fun ProfileSheet(
                         .background(color, RoundedCornerShape(20))
                         .clickable {
                             GlobalScope.launch {
-                                val followManager = FollowManagerClass(state, onEvent)
-                                if (state.user?.followed?.contains(pageOwner.uuid) == false) {
+                                val followManager = FollowManagerClass()
+                                if (!followManager.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
                                     state.user?.let { it1 ->
-                                        followManager.followUser(
-                                            it1.uuid,
-                                            pageOwner.uuid
-                                        )
-                                        onEvent(TrendWaveEvent.FollowUser(
-                                            pageOwner.uuid,
-                                            state.user!!
-                                        ))
+                                        onEvent(TrendWaveEvent.FollowEvent(true, it1.uuid, pageOwner.uuid))
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                                 }else {
                                     state.user?.let { it1 ->
-                                        followManager.unfollowUser(
-                                            it1.uuid,
-                                            pageOwner.uuid
-                                        )
-                                        onEvent(TrendWaveEvent.UnfollowUser(
-                                            pageOwner.uuid,
-                                            state.user!!
-                                        ))
+                                        onEvent(TrendWaveEvent.FollowEvent(false, it1.uuid, pageOwner.uuid))
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 
@@ -207,24 +197,23 @@ fun ProfileSheet(
                             }
                         }
                 ) {
-                    if (state.user?.followed?.contains(pageOwner.uuid) == false) {
-                        if (pageOwner.uuid != state.user?.uuid) {
-                            Text(
-                                text = "Subscribe",
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(10.dp)
-                            )
+                    var text by remember { mutableStateOf("") }
+                    GlobalScope.launch {
+                        val followManagerClass = FollowManagerClass()
+                        if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
+                            text = "Subscribe"
+                        }else {
+                            text = "Subscribed"
                         }
-                    }else {
-                        if (pageOwner.uuid != state.user?.uuid) {
-                            Text(
-                                text = "Subscribed",
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(10.dp)
-                            )
-                        }
+                    }
+
+                    if(pageOwner.uuid != state.user?.uuid){
+                        Text(
+                            text = text,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Color.White,
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
             }

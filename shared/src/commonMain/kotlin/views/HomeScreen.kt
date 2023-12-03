@@ -75,6 +75,8 @@ class HomeScreen {
         localDataSource: DataStorageManager,
         onNavigateLogin: () -> Unit
     ) {
+        val appUser = AppUser()
+
         LazyColumn(
             modifier = Modifier.background(Color.fromEnum(Colors.PRIMARY))
         ) {
@@ -166,15 +168,17 @@ class HomeScreen {
                                 color = Color.fromEnum(Colors.SENARY),
                                 modifier = Modifier.padding(start = 230.dp)
                             )
-                            state.user?.let {
-                                Text(
-                                    text = it.follower,
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Normal,
-                                    color = Color.fromEnum(Colors.SENARY),
-                                    modifier = Modifier.padding(top = 15.dp, start = 240.dp)
-                                )
+                            var follower by remember { mutableStateOf("") }
+                            GlobalScope.launch {
+                                follower = appUser.getFollower(state.user!!.uuid)
                             }
+                            Text(
+                                text = follower,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.fromEnum(Colors.SENARY),
+                                modifier = Modifier.padding(top = 15.dp, start = 240.dp)
+                            )
                         }
 
                         //Following
@@ -186,15 +190,18 @@ class HomeScreen {
                                 color = Color.fromEnum(Colors.SENARY),
                                 modifier = Modifier.padding(start = 10.dp)
                             )
-                            state.user?.let {
-                                Text(
-                                    text = it.following,
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Normal,
-                                    color = Color.fromEnum(Colors.SENARY),
-                                    modifier = Modifier.padding(top = 15.dp, start = 20.dp)
-                                )
+                            var following by remember { mutableStateOf("") }
+                            GlobalScope.launch {
+                                following = appUser.getFollowing(state.user!!.uuid)
                             }
+                            Text(
+                                text = following,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.fromEnum(Colors.SENARY),
+                                modifier = Modifier.padding(top = 15.dp, start = 20.dp)
+                            )
+
                         }
                     }
                 }

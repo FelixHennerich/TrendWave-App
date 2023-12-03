@@ -8,10 +8,7 @@ import io.ktor.client.request.post
 import managers.exceptions.NException
 import utilities.CommonLogger
 
-class FollowManagerClass(
-    private val state: TrendWaveState,
-    private val onEvent: (TrendWaveEvent) -> Unit
-) {
+class FollowManagerClass{
     private val client = HttpClient()
     private val url = "http://85.215.41.146/php/RESTfulAPI/"
 
@@ -80,9 +77,6 @@ class FollowManagerClass(
         val followers = (currentfollows - 1)
         val finurl = url + "followGetter.php"
 
-        val cl = CommonLogger()
-        cl.log(followers.toString())
-
         client.post(finurl) {
             url {
                 parameters.append("uuid", uuid)
@@ -101,8 +95,6 @@ class FollowManagerClass(
     suspend fun removeFollowing(uuid: String, followed: String){
         val user = AppUser()
         var currentfollows = user.getFollowed(uuid).split("#")
-        val cl = CommonLogger()
-
 
         val followers = buildString {
             for(entry in currentfollows){
@@ -115,12 +107,8 @@ class FollowManagerClass(
 
         val currentfollowing = user.getFollowing(uuid)
         val following = (currentfollowing.toInt() - 1)
-
-        cl.log(following.toString())
-
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.RemoveFollowedUser(followed, following.toString()))
 
         client.post(finurl) {
             url {
@@ -148,10 +136,6 @@ class FollowManagerClass(
 
         val finurl = url + "followGetter.php"
 
-        onEvent(TrendWaveEvent.AddFollowedUser("$followed#", following.toString()))
-        val cl = CommonLogger()
-        cl.log(following.toString())
-        cl.log(followers.toString())
 
         client.post(finurl) {
             url {
