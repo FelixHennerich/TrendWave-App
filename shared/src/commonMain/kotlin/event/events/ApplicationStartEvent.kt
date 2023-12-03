@@ -3,6 +3,7 @@ package event.events
 import account.AppUser
 import account.manager.LoginManager
 import event.Event
+import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +22,12 @@ class ApplicationStartEvent: Event {
     override fun onEvent(localDataSource: DataStorageManager,_state: MutableStateFlow<TrendWaveState>, restAPI: RESTfulPostManager){
         this._state = _state
         GlobalScope.launch {
+            //is user logged in? -> Load data -> Load user posts
             if(loadUserData(localDataSource)){
                 localDataSource.readString("uuid")?.let { loadUserPosts(it, restAPI) }
             }
+            //Random posts laden
+            loadRandomPosts(restAPI)
         }
     }
 
@@ -79,11 +83,23 @@ class ApplicationStartEvent: Event {
     /**
      * Load user posts
      */
-
     suspend fun loadUserPosts(uuid: String, restAPI: RESTfulPostManager) {
         _state.update {it.copy(
-            userposts = restAPI.getUserPosts(uuid)
+            userposts = restAPI.getUserPosts(uuid),
+            isDataLoaded = true
         )}
+    }
+
+
+    /**
+     * Load Random posts
+     */
+    suspend fun loadRandomPosts(restAPI: RESTfulPostManager){
+        if(_state.value.posts.isEmpty()){
+            _state.update { it.copy(
+                posts = restAPI.getRandomPosts()
+            ) }
+        }
     }
 
 
