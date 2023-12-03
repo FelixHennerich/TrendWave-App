@@ -14,8 +14,6 @@ class LogoutManager(
             state.user = null
             state.posts = emptyList()
             state.userposts = null
-            state.follower = null
-            state.following = null
             state.watchUserProfile = null
             if (localDataManager.readString("email") != null &&
                 localDataManager.readString("password") != null &&

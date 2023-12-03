@@ -7,6 +7,6 @@ import post.RESTfulPostManager
 
 interface Event {
 
-    fun onEvent(localDataSource: DataStorageManager, _state: MutableStateFlow<TrendWaveState>, restAPI: RESTfulPostManager)
+    fun onEvent(localDataSource: DataStorageManager, _state: MutableStateFlow<TrendWaveState>)
 
 }

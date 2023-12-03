@@ -19,11 +19,7 @@ class AppUser: UserInterface {
      * @param -> email
      */
     override suspend fun getUser(uuid: String): RESTfulUserManager.User {
-        if(state.user?.uuid != uuid) {
-            return restApi.findUserByUUID(uuid)
-        }else {
-            return state.user!!
-        }
+        return restApi.findUserByUUID(uuid)
     }
 
     /**
@@ -33,11 +29,7 @@ class AppUser: UserInterface {
      * @param -> user
      */
     override suspend fun getUserByUsername(user: String): RESTfulUserManager.User {
-        if(state.user?.username != user) {
-            return restApi.findUserByUsername(user)
-        }else {
-            return state.user!!
-        }
+        return restApi.findUserByUsername(user)
     }
 
     /**
@@ -46,12 +38,8 @@ class AppUser: UserInterface {
      * @return -> email
      */
     override suspend fun getEmail(uuid: String): String {
-        if(state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.email
-        }else {
-            return state.user!!.email
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.email
     }
 
     /**
@@ -60,12 +48,8 @@ class AppUser: UserInterface {
      * @return -> password
      */
     override suspend fun getPassword(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.password
-        } else {
-            return state.user!!.password
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.password
     }
 
     /**
@@ -74,25 +58,9 @@ class AppUser: UserInterface {
      * @return -> username
      */
     override suspend fun getUsername(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.username
-        } else {
-            return state.user!!.username
-        }
-    }
-
-    /**
-     * get the username of a user directly from the database
-     * @param uuid -> Unique ID
-     * @return -> username
-     */
-    suspend fun getUsernameDatabase(uuid: String): String {
         val user = restApi.findUserByUUID(uuid)
         return user.username
     }
-
-
 
     /**
      * get the uuid of a user
@@ -110,20 +78,6 @@ class AppUser: UserInterface {
      * @return -> role
      */
     override suspend fun getRole(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.role
-        } else {
-            return state.user!!.role
-        }
-    }
-
-    /**
-     * get the role of a user directly from the database
-     * @param uuid -> Unique ID
-     * @return -> role
-     */
-    suspend fun getRoleDatabase(uuid: String): String {
         val user = restApi.findUserByUUID(uuid)
         return user.role
     }
@@ -134,12 +88,8 @@ class AppUser: UserInterface {
      * @return -> birthday
      */
     override suspend fun getBirthday(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.birthday
-        } else {
-            return state.user!!.birthday
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.birthday
     }
 
     /**
@@ -148,12 +98,8 @@ class AppUser: UserInterface {
      * @return -> signup
      */
     override suspend fun getSignupday(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.signup
-        } else {
-            return state.user!!.signup
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.signup
     }
 
     override fun hasPermissionRole(role: RoleType): Boolean {
@@ -166,12 +112,8 @@ class AppUser: UserInterface {
      * @return -> follower
      */
     override suspend fun getFollower(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.follower
-        } else {
-            return state.user!!.follower
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.follower
     }
 
     /**
@@ -180,12 +122,8 @@ class AppUser: UserInterface {
      * @return -> following
      */
     override suspend fun getFollowing(uuid: String): String {
-        if (state.user?.uuid != uuid) {
-            val user = restApi.findUserByUUID(uuid)
-            return user.following
-        } else {
-            return state.user!!.following
-        }
+        val user = restApi.findUserByUUID(uuid)
+        return user.following
     }
 
     /**
@@ -193,13 +131,9 @@ class AppUser: UserInterface {
      * @param uuid -> Unique ID
      * @return -> Userlist
      */
-    override suspend fun getFollowed(uuid: String): String{
-        if(state.user?.uuid != uuid){
-            val user = restApi.findUserByUUID(uuid)
-            return user.followed
-        }else {
-            return state.user!!.followed
-        }
+    override suspend fun getFollowed(uuid: String): String {
+        val user = restApi.findUserByUUID(uuid)
+        return user.followed
     }
 
 }

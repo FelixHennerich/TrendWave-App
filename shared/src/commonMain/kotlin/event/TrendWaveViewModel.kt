@@ -8,6 +8,7 @@ import account.manager.LoginManager
 import androidx.compose.runtime.collectAsState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import event.events.ApplicationStartEvent
+import event.events.FollowEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -136,74 +137,20 @@ class TrendWaveViewModel(
                     }
                 }
             }
-            is TrendWaveEvent.FollowUser -> {
-                val newUser = event.user
-                newUser.followed = "${newUser.followed}#${event.uuid}"
-                _state.update { it.copy(
-                    user = newUser
-                ) }
-            }
-            is TrendWaveEvent.UnfollowUser -> {
-                val newUser = event.user
-                val lst = newUser.followed.split("#")
-
-                val newfollowed = buildString {
-                    for(entry in lst)   {
-                        append("$entry#")
-                    }
-                }
-
-                newUser.followed = newfollowed
-                _state.update { it.copy(
-                    user = newUser
-                ) }
-            }
-            is TrendWaveEvent.RemoveFollowedUser -> {
-                var lst = state.value.user?.followed?.split("#")
-                lst = lst?.minus(event.uuid)
-
-                val string = buildString {
-                    if (lst != null) {
-                        for(entry in lst){
-                            append("#$entry")
-                        }
-                    }
-                }
-                val user = state.value.user
-                if (user != null) {
-                    user.followed = string
-                    user.following = event.following
-                }
-                _state.update { it.copy(
-                    user = user
-                ) }
-            }
-            is TrendWaveEvent.AddFollowedUser -> {
-                val lst = state.value.user?.followed?.split("#")
-                lst?.plus(event.uuid)
-
-                val string = buildString {
-                    if (lst != null) {
-                        for(entry in lst){
-                            append("#$entry")
-                        }
-                    }
-                }
-                val user = state.value.user
-                if (user != null) {
-                    user.followed = string
-                    user.following = event.following
-                }
-                _state.update { it.copy(
-                    user = user
-                ) }
-            }
             is TrendWaveEvent.ApplicationStartEvent -> {
                 val applicationStartEvent = ApplicationStartEvent()
                 applicationStartEvent.onEvent(
                     localDataSource = localDataStorageManager,
                     _state = _state,
                     restAPI = restApi
+                )
+            }
+            is TrendWaveEvent.FollowEvent -> {
+                val followEvent = FollowEvent()
+                followEvent.onEvent(
+                    follow = event.follow,
+                    executeruuid = event.executeruuid,
+                    uuid = event.uuid,
                 )
             }
             else -> {}

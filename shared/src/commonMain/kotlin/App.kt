@@ -63,6 +63,9 @@ fun App(
                 while(state.posts.isEmpty()){
                     delay(10)
                 }
+                while(state.user == null){
+                    delay(10)
+                }
                 currentScreen = Screen.Home
             } else {
                 currentScreen = Screen.Login

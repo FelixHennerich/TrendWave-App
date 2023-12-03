@@ -12,14 +12,14 @@ import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.RESTfulPostManager
 
-class ApplicationStartEvent: Event {
+class ApplicationStartEvent {
 
     private var _state: MutableStateFlow<TrendWaveState> = MutableStateFlow(TrendWaveState())
 
     /**
      * Method will be run when the app starts
      */
-    override fun onEvent(localDataSource: DataStorageManager,_state: MutableStateFlow<TrendWaveState>, restAPI: RESTfulPostManager){
+    fun onEvent(localDataSource: DataStorageManager,_state: MutableStateFlow<TrendWaveState>, restAPI: RESTfulPostManager){
         this._state = _state
         GlobalScope.launch {
             //is user logged in? -> Load data -> Load user posts
@@ -45,13 +45,13 @@ class ApplicationStartEvent: Event {
 
             //Update role and username if changed
             uuid?.let {
-                if (appUser.getRoleDatabase(it) != role) {
+                if (appUser.getRole(it) != role) {
                     localDataSource.deleteEntry("role")
-                    localDataSource.saveString("role", appUser.getRoleDatabase(it))
+                    localDataSource.saveString("role", appUser.getRole(it))
                 }
-                if (appUser.getRoleDatabase(it) != username) {
+                if (appUser.getRole(it) != username) {
                     localDataSource.deleteEntry("username")
-                    localDataSource.saveString("username", appUser.getUsernameDatabase(it))
+                    localDataSource.saveString("username", appUser.getUsername(it))
                 }
             }
 

@@ -77,7 +77,7 @@ fun PostButton(
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = textcolor,
-            modifier = Modifier.offset(y = 30.dp)
+            modifier = Modifier.padding(1.dp).offset(y = 30.dp)
         )
     }
 }
