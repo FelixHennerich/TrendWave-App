@@ -1,24 +1,27 @@
 package views
 
 import account.AppUser
-import account.image.ImageDataSource
 import account.presentation.ProfileSheet
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,11 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.icons.FeatherIcons
-import compose.icons.LineaIcons
-import compose.icons.SimpleIcons
 import compose.icons.TablerIcons
-import compose.icons.feathericons.GitPullRequest
-import compose.icons.feathericons.Heart
+import compose.icons.feathericons.Info
 import compose.icons.feathericons.User
 import compose.icons.feathericons.UserCheck
 import compose.icons.tablericons.Bell
@@ -46,11 +46,9 @@ import compose.icons.tablericons.Message
 import compose.icons.tablericons.Settings
 import event.TrendWaveEvent
 import event.TrendWaveState
-import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
-import post.RESTfulPostManager
 import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
@@ -75,54 +73,14 @@ class HomeScreen {
         localDataSource: DataStorageManager,
         onNavigateLogin: () -> Unit
     ) {
-        val appUser = AppUser()
 
         LazyColumn(
             modifier = Modifier.background(Color.fromEnum(Colors.PRIMARY))
         ) {
             item {
-                //First row icons
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 15.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    //Profile Page Icon
-                    Icon(
-                        imageVector = FeatherIcons.User,
-                        contentDescription = "",
-                        tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.offset(x = 20.dp).scale(.8f).clickable {
-                            onEvent(TrendWaveEvent.ClickProfileHomeButton)
-                        }
-                    )
-
-                    //Notification Page icon
-                    Icon(
-                        imageVector = TablerIcons.Bell,
-                        contentDescription = "",
-                        tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.padding(start = 250.dp).scale(.8f).clickable {
-
-                        }
-                    )
-
-                    //Settings page icon
-                    Icon(
-                        imageVector = TablerIcons.Settings,
-                        contentDescription = "",
-                        tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.padding(end = 12.dp).scale(.8f).clickable {
-                            onEvent(TrendWaveEvent.ClickSettingsScreen)
-                        }
-                    )
-                }
-            }
-
-            item {
                 //Top bar
                 Box(
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp).height(120.dp)
                         .fillMaxWidth().background(
                         Color.fromEnum(Colors.QUATERNARY),
                         RoundedCornerShape(
@@ -131,8 +89,7 @@ class HomeScreen {
                             bottomEnd = 13.dp,
                             bottomStart = 13.dp
                         )
-                    ),
-                    contentAlignment = Alignment.Center
+                    )
                 ) {
                     //Hello message
                     Row(
@@ -140,126 +97,61 @@ class HomeScreen {
                     ) {
                         Text(
                             text = "Hello, ",
-                            fontSize = 20.sp,
+                            fontSize = 25.sp,
                             color = Color.fromEnum(Colors.SENARY),
                             fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(start = 25.dp)
+                            modifier = Modifier.padding(start = 25.dp, top = 30.dp)
                         )
                         Text(
                             text = "${localDataSource.readString("username")}",
-                            fontSize = 20.sp,
+                            fontSize = 25.sp,
                             color = Color.fromEnum(Colors.SENARY),
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f).padding(top = 30.dp)
                                 .clickable { onEvent(TrendWaveEvent.ClickProfileHomeButton) }
                         )
                     }
-
-                    //Follower and Following count
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.TopEnd
                     ) {
-                        //Follower
-                        Box() {
-                            Text(
-                                text = "Follower ",
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.fromEnum(Colors.SENARY),
-                                modifier = Modifier.padding(start = 230.dp)
-                            )
-                            var follower by remember { mutableStateOf("") }
-                            GlobalScope.launch {
-                                follower = appUser.getFollower(state.user!!.uuid)
-                            }
-                            Text(
-                                text = follower,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.fromEnum(Colors.SENARY),
-                                modifier = Modifier.padding(top = 15.dp, start = 240.dp)
-                            )
-                        }
+                        Icon(
+                            imageVector = FeatherIcons.Info,
+                            contentDescription = "",
+                            tint = Color.fromEnum(Colors.SENARY),
+                            modifier = Modifier.scale(1f).padding(10.dp)
+                        )
+                    }
+                }
 
-                        //Following
-                        Box() {
-                            Text(
-                                text = "Following ",
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.fromEnum(Colors.SENARY),
-                                modifier = Modifier.padding(start = 10.dp)
-                            )
-                            var following by remember { mutableStateOf("") }
-                            GlobalScope.launch {
-                                following = appUser.getFollowing(state.user!!.uuid)
-                            }
-                            Text(
-                                text = following,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.fromEnum(Colors.SENARY),
-                                modifier = Modifier.padding(top = 15.dp, start = 20.dp)
-                            )
+                Spacer(Modifier.height(30.dp))
 
+                //Button Bar
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    for(abcd in 1..10) {
+                        item {
+                            //Post button
+                            PostButton(
+                                modifier = Modifier.padding(end = 10.dp),
+                                backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                                textcolor = Color.fromEnum(Colors.SENARY),
+                                imageVector = TablerIcons.Message,
+                                onEvent = onEvent,
+                                event = TrendWaveEvent.ClickPostButton
+                            )
                         }
                     }
                 }
 
-                //Button Bar
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(30.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    //Post button
-                    PostButton(
-                        modifier = Modifier,
-                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                        textcolor = Color.fromEnum(Colors.SENARY),
-                        buttontext = "Post",
-                        imageVector = TablerIcons.Message,
-                        onEvent = onEvent,
-                        event = TrendWaveEvent.ClickPostButton
-                    )
-
-                    //Saved posts
-                    PostButton(
-                        modifier = Modifier,
-                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                        textcolor = Color.fromEnum(Colors.SENARY),
-                        buttontext = "Saved",
-                        imageVector = TablerIcons.Bookmark,
-                        onEvent = onEvent,
-                        event = TrendWaveEvent.TestHomeButton
-                    )
-
-                    //Following list
-                    PostButton(
-                        modifier = Modifier,
-                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                        textcolor = Color.fromEnum(Colors.SENARY),
-                        buttontext = "Following",
-                        imageVector = FeatherIcons.UserCheck,
-                        onEvent = onEvent,
-                        event = TrendWaveEvent.FollowingHomeButton
-                    )
-
-                    //TODO
-                    PostButton(
-                        modifier = Modifier,
-                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                        textcolor = Color.fromEnum(Colors.SENARY),
-                        buttontext = "TODO",
-                        imageVector = FeatherIcons.GitPullRequest,
-                        onEvent = onEvent,
-                        event = TrendWaveEvent.ClickSettingsScreen
-                    )
-                }
+                Spacer(Modifier.height(30.dp))
 
                 //recent activity text
                 Text(
-                    text = "Recent activity",
-                    modifier = Modifier.offset(x = 20.dp, y = 40.dp).padding(bottom = 50.dp),
+                    text = "Top Trending",
+                    modifier = Modifier.offset(x = 20.dp).padding(bottom = 10.dp),
                     fontSize = 20.sp,
                     color = Color.fromEnum(Colors.SENARY),
                     fontWeight = FontWeight.Bold
