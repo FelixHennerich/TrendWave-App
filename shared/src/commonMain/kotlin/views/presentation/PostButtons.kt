@@ -31,7 +31,6 @@ import event.TrendWaveEvent
  * @param modifier -> Edits for HomeScreen
  * @param backgroundcolor -> Background
  * @param textcolor -> Color of text
- * @param buttontext -> Text inside the button
  * @param onEvent -> EventHandling
  * @param event -> Type of event
  */
@@ -40,22 +39,29 @@ fun PostButton(
     modifier: Modifier,
     backgroundcolor: Color,
     textcolor: Color,
-    buttontext: String,
     imageVector: ImageVector,
     onEvent: (TrendWaveEvent)-> Unit,
     event: TrendWaveEvent
 ) {
     Column(
         modifier = modifier
-            .height(60.dp)
-            .width(60.dp)
+            .height(85.dp)
+            .width(85.dp)
+            .border(
+                width = 1.dp, color = textcolor, shape = RoundedCornerShape(
+                    topStart = 90.dp,
+                    topEnd = 90.dp,
+                    bottomEnd = 90.dp,
+                    bottomStart = 90.dp
+                )
+            )
             .background(
                 backgroundcolor,
                 RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
+                    topStart = 90.dp,
+                    topEnd = 90.dp,
+                    bottomEnd = 90.dp,
+                    bottomStart = 90.dp
                 )
             ).clickable {
                 onEvent(event)
@@ -67,17 +73,8 @@ fun PostButton(
         Icon(
             imageVector = imageVector,
             contentDescription = "",
-            modifier = Modifier.scale(1.1f).padding(top = 15.dp),
+            modifier = Modifier.scale(1.4f),
             tint = textcolor
-        )
-
-        //Text below the button
-        Text(
-            text = buttontext,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = textcolor,
-            modifier = Modifier.padding(1.dp).offset(y = 30.dp)
         )
     }
 }
