@@ -192,7 +192,9 @@ class HomeScreen {
                             )
                             var following by remember { mutableStateOf("") }
                             GlobalScope.launch {
-                                following = appUser.getFollowing(state.user!!.uuid)
+                                state.user?.uuid?.let {
+                                    following = appUser.getFollowing(it)
+                                }
                             }
                             Text(
                                 text = following,
