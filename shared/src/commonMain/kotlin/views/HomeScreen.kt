@@ -196,32 +196,37 @@ class HomeScreen {
                             )
                         }
                         Box(
-                            modifier = Modifier.fillMaxSize().clickable {
-                                GlobalScope.launch {
-                                    //Blur effect and animation
-                                    if (!isDropInfoVisable) {
-                                        isDropInfoVisable = true
-                                        for (i in 0..10) {
-                                            blurEffect = i.dp
-                                            delay(25)
-                                        }
-                                    } else {
-                                        isDropInfoVisable = false
-                                        for (i in 10 downTo 0) {
-                                            blurEffect = i.dp
-                                            delay(25)
-                                        }
-                                    }
-                                }
-                            },
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.TopEnd
                         ) {
-                            Icon(
-                                imageVector = FeatherIcons.Info,
-                                contentDescription = "",
-                                tint = Color.fromEnum(Colors.SENARY),
-                                modifier = Modifier.scale(1f).padding(10.dp)
-                            )
+                            Box(
+                                modifier = Modifier.clickable {
+                                    GlobalScope.launch {
+                                        //Blur effect and animation
+                                        if (!isDropInfoVisable) {
+                                            isDropInfoVisable = true
+                                            for (i in 0..10) {
+                                                blurEffect = i.dp
+                                                delay(25)
+                                            }
+                                        } else {
+                                            isDropInfoVisable = false
+                                            for (i in 10 downTo 0) {
+                                                blurEffect = i.dp
+                                                delay(25)
+                                            }
+                                        }
+                                    }
+                                },
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Icon(
+                                    imageVector = FeatherIcons.Info,
+                                    contentDescription = "",
+                                    tint = Color.fromEnum(Colors.SENARY),
+                                    modifier = Modifier.scale(1f).padding(10.dp)
+                                )
+                            }
                         }
                     }
 
