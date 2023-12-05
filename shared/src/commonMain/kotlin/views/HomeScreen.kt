@@ -84,7 +84,21 @@ class HomeScreen {
     ) {
         var isDropInfoVisable by remember { mutableStateOf(false) }
         var blurEffect by remember { mutableStateOf(0.dp) }
-        Scaffold(bottomBar = {
+        Scaffold(
+            modifier = Modifier.clickable {
+                //Click while Blur
+                if (isDropInfoVisable) {
+                    isDropInfoVisable = false
+                    GlobalScope.launch {
+                        for (i in 10 downTo 0) {
+                            blurEffect = i.dp
+                            delay(25)
+                        }
+                    }
+                }
+                //
+            },
+            bottomBar = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Bottom
@@ -165,7 +179,20 @@ class HomeScreen {
                                 color = Color.fromEnum(Colors.SENARY),
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.weight(1f).padding(top = 30.dp)
-                                    .clickable { onEvent(TrendWaveEvent.ClickProfileHomeButton) }
+                                    .clickable {
+                                        //Click while Blur
+                                        if (isDropInfoVisable) {
+                                            isDropInfoVisable = false
+                                            GlobalScope.launch {
+                                                for (i in 10 downTo 0) {
+                                                    blurEffect = i.dp
+                                                    delay(25)
+                                                }
+                                            }
+                                        }
+                                        //
+                                        onEvent(TrendWaveEvent.ClickProfileHomeButton)
+                                    }
                             )
                         }
                         Box(
@@ -214,7 +241,8 @@ class HomeScreen {
                                     textcolor = Color.fromEnum(Colors.SENARY),
                                     imageVector = TablerIcons.Message,
                                     onEvent = onEvent,
-                                    event = TrendWaveEvent.ClickPostButton
+                                    event = TrendWaveEvent.ClickPostButton,
+                                    notclickable = isDropInfoVisable,
                                 )
                             }
                         }
@@ -247,6 +275,7 @@ class HomeScreen {
                         localDataStorageManager = localDataSource,
                         onEvent = onEvent,
                         state = state,
+                        notclickable = isDropInfoVisable,
                     )
                     Spacer(Modifier.height(6.dp))
                 }

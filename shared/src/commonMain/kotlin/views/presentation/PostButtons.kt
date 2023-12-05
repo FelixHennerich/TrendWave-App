@@ -41,7 +41,8 @@ fun PostButton(
     textcolor: Color,
     imageVector: ImageVector,
     onEvent: (TrendWaveEvent)-> Unit,
-    event: TrendWaveEvent
+    event: TrendWaveEvent,
+    notclickable: Boolean,
 ) {
     Column(
         modifier = modifier
@@ -64,7 +65,10 @@ fun PostButton(
                     bottomStart = 90.dp
                 )
             ).clickable {
-                onEvent(event)
+                if(!notclickable) {
+                    onEvent(event)
+                }
+
             },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

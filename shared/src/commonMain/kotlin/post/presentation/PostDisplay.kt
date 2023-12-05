@@ -66,7 +66,8 @@ fun PostDisplay(
     postid: String,
     localDataStorageManager: DataStorageManager,
     onEvent: (TrendWaveEvent) -> Unit,
-    state: TrendWaveState
+    state: TrendWaveState,
+    notclickable: Boolean,
 ) {
     Column(
         modifier = modifier
@@ -101,8 +102,16 @@ fun PostDisplay(
             //Text
             Box(
                 modifier = Modifier.fillMaxHeight().offset(y = -(5).dp).clickable {
-                    GlobalScope.launch {
-                        onEvent(TrendWaveEvent.ClickUserProfileViewButton(AppUser().getUserByUsername(postuser)))
+                    if(!notclickable) {
+                        GlobalScope.launch {
+                            onEvent(
+                                TrendWaveEvent.ClickUserProfileViewButton(
+                                    AppUser().getUserByUsername(
+                                        postuser
+                                    )
+                                )
+                            )
+                        }
                     }
                 },
             ) {
@@ -132,14 +141,16 @@ fun PostDisplay(
                         if (localDataStorageManager.readString("username") == postuser ||
                             localDataStorageManager.readString("role") == "Admin"
                         ) {
-                            GlobalScope.launch {
-                                RESTfulPostManager().deletePost(postid)
-                                onEvent(
-                                    TrendWaveEvent.PostDeletionButton(
-                                        Post(postid, postuuid, postuser, postdate, posttext),
-                                        state.posts
+                            if(!notclickable) {
+                                GlobalScope.launch {
+                                    RESTfulPostManager().deletePost(postid)
+                                    onEvent(
+                                        TrendWaveEvent.PostDeletionButton(
+                                            Post(postid, postuuid, postuser, postdate, posttext),
+                                            state.posts
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                     },
