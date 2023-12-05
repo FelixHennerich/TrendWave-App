@@ -242,7 +242,8 @@ fun ProfileSheet(
                         postid = post.id,
                         localDataStorageManager = localDataSource,
                         onEvent = onEvent,
-                        state = state
+                        state = state,
+                        notclickable = false,
                     )
                 }
             }
