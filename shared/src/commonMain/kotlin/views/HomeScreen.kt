@@ -114,30 +114,40 @@ class HomeScreen {
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "Profile",
-                            fontSize = 20.sp,
-                            modifier = Modifier.offset(y = 30.dp).clickable {
+                        Box(
+                            modifier = Modifier.offset(y = 30.dp).padding(5.dp).clickable {
                                 onEvent(TrendWaveEvent.ClickProfileHomeButton)
                             },
-                            color = Color.fromEnum(Colors.SENARY)
-                        )
-                        Text(
-                            text = "Settings",
-                            fontSize = 20.sp,
-                            modifier = Modifier.offset(y = 80.dp).clickable {
+                        ) {
+                            Text(
+                                text = "Profile",
+                                fontSize = 20.sp,
+                                color = Color.fromEnum(Colors.SENARY)
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier.offset(y = 80.dp).padding(5.dp).clickable {
                                 onEvent(TrendWaveEvent.ClickSettingsScreen)
                             },
-                            color = Color.fromEnum(Colors.SENARY)
-                        )
-                        Text(
-                            text = "Notifications",
-                            fontSize = 20.sp,
-                            modifier = Modifier.offset(y = 130.dp).clickable {
+                        ) {
+                            Text(
+                                text = "Settings",
+                                fontSize = 20.sp,
+                                color = Color.fromEnum(Colors.SENARY)
+                            )
+                        }
+                        Box(
+                            modifier = Modifier.offset(y = 130.dp).padding(5.dp).clickable {
                                 //TODO
                             },
-                            color = Color.fromEnum(Colors.SENARY)
-                        )
+                        ) {
+                            Text(
+                                text = "Notifications",
+                                fontSize = 20.sp,
+                                color = Color.fromEnum(Colors.SENARY)
+                            )
+                        }
                     }
                 }
 
