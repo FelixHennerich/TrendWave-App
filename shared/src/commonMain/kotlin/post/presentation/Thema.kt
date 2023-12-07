@@ -23,6 +23,7 @@ import compose.icons.feathericons.ChevronUp
  * @param displayName -> name of theme
  */
 enum class Thema(val displayName: String) {
+    THEMA0("Select your topic..."),
     THEMA1("Computer Science"),
     THEMA2("Social Media"),
     THEMA3("Animals"),
@@ -49,7 +50,7 @@ fun DropdownMenu(
     cornerrad: Dp
 ) : Thema {
     var expanded by remember { mutableStateOf(false) } // is dropdownmenu toggled?
-    var selectedThema by remember { mutableStateOf(Thema.THEMA1) } // currently selected theme
+    var selectedThema by remember { mutableStateOf(Thema.THEMA0) } // currently selected theme
     var cornerstart by remember { mutableStateOf(cornerrad) } // Radius of corner
     var cornerend by remember { mutableStateOf(cornerrad) } // Radius of corner
     //If toggled change
