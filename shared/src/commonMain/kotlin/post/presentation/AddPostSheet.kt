@@ -111,6 +111,7 @@ fun addPostSheet(
 
         //Theme dropdown menu to select
         //TODO
+        DropdownMenu()
 
         // Post enter menu
         TextField(
