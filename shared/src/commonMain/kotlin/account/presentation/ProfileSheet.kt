@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +46,7 @@ import post.RESTfulPostManager
 import post.presentation.PostDisplay
 import utilities.color.Colors
 import utilities.color.fromEnum
+import androidx.compose.foundation.lazy.items
 import utilities.presentation.BottomSheet
 
 /**
@@ -78,8 +80,9 @@ fun ProfileSheet(
             posts = restapi.getUserPosts(pageOwner.uuid)
         }
 
-        Box (
-            modifier = Modifier.offset(y = 25.dp).background(Color.fromEnum(Colors.PRIMARY)).fillMaxWidth()
+        Box(
+            modifier = Modifier.padding(top = 20.dp).background(Color.fromEnum(Colors.PRIMARY))
+                .fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
@@ -92,7 +95,7 @@ fun ProfileSheet(
                             bottomStart = 10.dp
                         )
                     ),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.CenterStart
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -101,7 +104,7 @@ fun ProfileSheet(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = "",
                         tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.padding(end = 20.dp).clickable {
+                        modifier = Modifier.padding(start = 10.dp).clickable {
                             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                         }
                     )
@@ -109,14 +112,14 @@ fun ProfileSheet(
                         text = "@",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.offset(y = -(3).dp).padding(end = 3.dp),
+                        modifier = Modifier.offset(y = -(3).dp).padding(start = 15.dp),
                         color = Color.fromEnum(Colors.SENARY)
                     )
                     Text(
                         text = pageOwner.username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.offset(y = -(3).dp).padding(end = 155.dp),
+                        modifier = Modifier.offset(y = -(3).dp).padding(start = 3.dp),
                         color = Color.fromEnum(Colors.SENARY)
                     )
                 }
@@ -141,12 +144,12 @@ fun ProfileSheet(
                 }
             }
 
-            Row (
+            Row(
                 modifier = Modifier.offset(y = 180.dp).fillMaxWidth().padding(50.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
 
-            ){
+            ) {
                 Text(
                     text = "Follower: ${pageOwner.follower}",
                     fontWeight = FontWeight.SemiBold,
@@ -182,14 +185,30 @@ fun ProfileSheet(
                         .clickable {
                             GlobalScope.launch {
                                 val followManager = FollowManagerClass()
-                                if (!followManager.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
+                                if (!followManager.isFollowing(
+                                        state.user?.uuid!!,
+                                        pageOwner.uuid
+                                    )
+                                ) {
                                     state.user?.let { it1 ->
-                                        onEvent(TrendWaveEvent.FollowEvent(true, it1.uuid, pageOwner.uuid))
+                                        onEvent(
+                                            TrendWaveEvent.FollowEvent(
+                                                true,
+                                                it1.uuid,
+                                                pageOwner.uuid
+                                            )
+                                        )
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
-                                }else {
+                                } else {
                                     state.user?.let { it1 ->
-                                        onEvent(TrendWaveEvent.FollowEvent(false, it1.uuid, pageOwner.uuid))
+                                        onEvent(
+                                            TrendWaveEvent.FollowEvent(
+                                                false,
+                                                it1.uuid,
+                                                pageOwner.uuid
+                                            )
+                                        )
                                     }
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 
@@ -202,12 +221,12 @@ fun ProfileSheet(
                         val followManagerClass = FollowManagerClass()
                         if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
                             text = "Subscribe"
-                        }else {
+                        } else {
                             text = "Subscribed"
                         }
                     }
 
-                    if(pageOwner.uuid != state.user?.uuid){
+                    if (pageOwner.uuid != state.user?.uuid) {
                         Text(
                             text = text,
                             fontWeight = FontWeight.ExtraBold,
@@ -219,16 +238,20 @@ fun ProfileSheet(
             }
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.offset(y = 340.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 340.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
+
                 Text(
                     text = "${pageOwner.username}'s activity",
-                    modifier = Modifier.offset(x = 20.dp),
+                    modifier = Modifier.padding(start = 10.dp),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.fromEnum(Colors.SENARY)
                 )
+
                 for (post in posts) {
                     PostDisplay(
                         modifier = Modifier.fillMaxWidth(),
@@ -246,6 +269,8 @@ fun ProfileSheet(
                         notclickable = false,
                     )
                 }
+
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }

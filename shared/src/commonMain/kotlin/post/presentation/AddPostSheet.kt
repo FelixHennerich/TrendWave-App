@@ -88,7 +88,7 @@ fun addPostSheet(
 
         //whole Screen
         Box(
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp).height(80.dp)
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 20.dp, bottom = 40.dp).height(80.dp)
                 .fillMaxWidth().background(
                     color = Color.fromEnum(Colors.QUATERNARY),
                     shape = corner
@@ -112,7 +112,7 @@ fun addPostSheet(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.fromEnum(Colors.SENARY),
-                    modifier = Modifier.offset(y = 7.dp).padding(start = 20.dp)
+                    modifier = Modifier.offset(y = 7.dp).padding(start = 15.dp)
                 )
             }
         }
@@ -142,7 +142,7 @@ fun addPostSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .padding(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 8.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 8.dp)
                 .background(
                     color = Color.fromEnum(Colors.TERTIARY),
                     shape = corner

@@ -163,7 +163,7 @@ class HomeScreen {
                 item {
                     //Top bar
                     Box(
-                        modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+                        modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 20.dp)
                             .height(120.dp)
                             .fillMaxWidth().background(
                                 color = Color.fromEnum(Colors.QUATERNARY),
@@ -292,6 +292,7 @@ class HomeScreen {
                     )
                     Spacer(Modifier.height(6.dp))
                 }
+
                 item {
                     Spacer(Modifier.height(100.dp))
                 }
