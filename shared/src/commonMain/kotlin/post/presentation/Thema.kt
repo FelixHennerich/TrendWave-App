@@ -1,52 +1,105 @@
 package post.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType.Companion.Text
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.ChevronDown
+import compose.icons.feathericons.ChevronUp
 
+/**
+ * Theme enum for posts
+ *
+ * @param displayName -> name of theme
+ */
 enum class Thema(val displayName: String) {
-    THEMA1("Thema 1"),
-    THEMA2("Thema 2"),
-    THEMA3("Thema 3"),
+    THEMA1("Computer Science"),
+    THEMA2("Social Media"),
+    THEMA3("Animals"),
 }
 
+/**
+ * Dropdownmenu in the post screen
+ *
+ * @param mainbackgroundcolor -> background
+ * @param secondbackgroundcolor -> background of boxes
+ * @param texticoncolor -> Color of text and icons
+ * @param bordercolor -> color of box border
+ * @param corner -> corner shape
+ * @param cornerrad -> corner radius
+ * @return selected theme
+ */
 @Composable
-fun DropdownMenu() {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedThema by remember { mutableStateOf(Thema.THEMA1) }
+fun DropdownMenu(
+    mainbackgroundcolor: Color,
+    secondbackgroundcolor: Color,
+    texticoncolor: Color,
+    bordercolor: Color,
+    corner: RoundedCornerShape,
+    cornerrad: Dp
+) : Thema {
+    var expanded by remember { mutableStateOf(false) } // is dropdownmenu toggled?
+    var selectedThema by remember { mutableStateOf(Thema.THEMA1) } // currently selected theme
+    var cornerstart by remember { mutableStateOf(cornerrad) } // Radius of corner
+    var cornerend by remember { mutableStateOf(cornerrad) } // Radius of corner
+    //If toggled change
+    if(expanded){
+        cornerstart = 0.dp
+        cornerend = 0.dp
+    }else {
+        cornerend = cornerrad
+        cornerstart = cornerrad
+    }
 
     Box(
         modifier = Modifier
             .padding(16.dp)
-            .background(Color.Gray)
+            .background(
+                color = mainbackgroundcolor,
+                shape = corner
+            )
             .clickable { expanded = !expanded }
+            .border(
+                width = 1.dp,
+                color = bordercolor,
+                shape = corner
+            )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = bordercolor,
+                    shape = RoundedCornerShape(
+                        topStart = 10.dp,
+                        topEnd = 10.dp,
+                        bottomStart = cornerstart,
+                        bottomEnd = cornerend,
+                    )
+                )
                 .padding(8.dp)
+
         ) {
-            BasicTextField(
-                value = selectedThema.displayName,
-                onValueChange = { },
-                readOnly = true,
+            Text(
+                text = selectedThema.displayName,
+                color = texticoncolor,
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                imageVector = if (expanded) Icons.Default.Refresh else Icons.Default.Add,
+                imageVector = if (expanded) FeatherIcons.ChevronUp  else FeatherIcons.ChevronDown,
+                tint = texticoncolor,
                 contentDescription = null
             )
         }
@@ -56,7 +109,7 @@ fun DropdownMenu() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp)
-                    .background(Color.White)
+                    .background(secondbackgroundcolor)
             ) {
                 Column {
                     Thema.values().forEach { theme ->
@@ -69,11 +122,15 @@ fun DropdownMenu() {
                                     expanded = false
                                 }
                         ) {
-                            Text(theme.displayName)
+                            Text(
+                                text = theme.displayName,
+                                color = texticoncolor
+                            )
                         }
                     }
                 }
             }
         }
     }
+    return selectedThema
 }

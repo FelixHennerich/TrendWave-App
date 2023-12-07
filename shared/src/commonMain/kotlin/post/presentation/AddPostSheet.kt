@@ -37,15 +37,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.RESTfulPostManager
+import utilities.CommonLogger
 import utilities.color.Colors
 import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
@@ -55,13 +58,20 @@ import utilities.presentation.BottomSheet
  *
  * @param isOpen -> Sheet shown or not
  * @param onEvent -> EventHandling
+ * @param localDataSource -> Data management
+ * @param state -> State management
+ * @param corner -> Value of corner shape
+ * @param cornerrad -> value of radius
+ *
  */
 @Composable
 fun addPostSheet(
     isOpen: Boolean,
     onEvent: (TrendWaveEvent) -> Unit,
     localDataSource: DataStorageManager,
-    state: TrendWaveState
+    state: TrendWaveState,
+    corner: RoundedCornerShape,
+    cornerrad: Dp
 ) {
     BottomSheet(
         visible = isOpen,
@@ -80,15 +90,10 @@ fun addPostSheet(
         Box(
             modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp).height(80.dp)
                 .fillMaxWidth().background(
-                    Color.fromEnum(Colors.QUATERNARY),
-                    RoundedCornerShape(
-                        topStart = 13.dp,
-                        topEnd = 13.dp,
-                        bottomEnd = 13.dp,
-                        bottomStart = 13.dp
-                    )
+                    color = Color.fromEnum(Colors.QUATERNARY),
+                    shape = corner
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.CenterStart
         ) {
             //Create new post box
             Row(
@@ -97,7 +102,8 @@ fun addPostSheet(
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = "",
-                    modifier = Modifier.clickable {
+                    tint = Color.fromEnum(Colors.SENARY),
+                    modifier = Modifier.padding(10.dp).clickable {
                         onEvent(TrendWaveEvent.ClickClosePostButton)
                     }
                 )
@@ -105,13 +111,21 @@ fun addPostSheet(
                     text = "Create new post",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
+                    color = Color.fromEnum(Colors.SENARY),
+                    modifier = Modifier.offset(y = 7.dp).padding(start = 20.dp)
                 )
             }
         }
 
         //Theme dropdown menu to select
-        //TODO
-        DropdownMenu()
+        val thema = DropdownMenu( // Thema = displayname of selected
+            mainbackgroundcolor = Color.fromEnum(Colors.TERTIARY),
+            secondbackgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+            texticoncolor = Color.fromEnum(Colors.SENARY),
+            bordercolor = Color.fromEnum(Colors.SENARY),
+            corner = corner,
+            cornerrad = cornerrad
+        )
 
         // Post enter menu
         TextField(
@@ -129,18 +143,15 @@ fun addPostSheet(
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 8.dp)
-                .background(Color.fromEnum(Colors.TERTIARY), RoundedCornerShape(
-                    topStart = 13.dp,
-                    topEnd = 13.dp,
-                    bottomEnd = 13.dp,
-                    bottomStart = 13.dp
-                ))
-                .border(1.dp, color = Color.fromEnum(Colors.SENARY), shape = RoundedCornerShape(
-                    topStart = 13.dp,
-                    topEnd = 13.dp,
-                    bottomEnd = 13.dp,
-                    bottomStart = 13.dp
-                )),
+                .background(
+                    color = Color.fromEnum(Colors.TERTIARY),
+                    shape = corner
+                )
+                .border(
+                    width = 1.dp,
+                    color = Color.fromEnum(Colors.SENARY),
+                    shape = corner
+                ),
             textStyle = TextStyle(
                 textAlign = TextAlign.Left,
                 color = Color.fromEnum(Colors.SENARY),
