@@ -86,10 +86,10 @@ fun ProfileSheet(
                     .fillMaxWidth().background(
                         Color.fromEnum(Colors.QUATERNARY),
                         RoundedCornerShape(
-                            topStart = 13.dp,
-                            topEnd = 13.dp,
-                            bottomEnd = 13.dp,
-                            bottomStart = 13.dp
+                            topStart = 10.dp,
+                            topEnd = 10.dp,
+                            bottomEnd = 10.dp,
+                            bottomStart = 10.dp
                         )
                     ),
                 contentAlignment = Alignment.Center
@@ -101,7 +101,7 @@ fun ProfileSheet(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = "",
                         tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.padding(end = 15.dp).clickable {
+                        modifier = Modifier.padding(end = 20.dp).clickable {
                             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                         }
                     )
@@ -109,14 +109,14 @@ fun ProfileSheet(
                         text = "@",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(end = 5.dp),
+                        modifier = Modifier.offset(y = -(3).dp).padding(end = 3.dp),
                         color = Color.fromEnum(Colors.SENARY)
                     )
                     Text(
                         text = pageOwner.username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.offset(x = 3.dp).padding(end = 150.dp),
+                        modifier = Modifier.offset(y = -(3).dp).padding(end = 155.dp),
                         color = Color.fromEnum(Colors.SENARY)
                     )
                 }

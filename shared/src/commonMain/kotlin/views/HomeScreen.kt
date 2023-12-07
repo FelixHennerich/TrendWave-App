@@ -84,6 +84,9 @@ class HomeScreen {
     ) {
         var isDropInfoVisable by remember { mutableStateOf(false) }
         var blurEffect by remember { mutableStateOf(0.dp) }
+        val cornerrad = 10.dp
+        var corner = RoundedCornerShape(cornerrad)
+
         Scaffold(
             modifier = Modifier.clickable {
                 //Click while Blur
@@ -163,13 +166,8 @@ class HomeScreen {
                         modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
                             .height(120.dp)
                             .fillMaxWidth().background(
-                                Color.fromEnum(Colors.QUATERNARY),
-                                RoundedCornerShape(
-                                    topStart = 13.dp,
-                                    topEnd = 13.dp,
-                                    bottomEnd = 13.dp,
-                                    bottomStart = 13.dp
-                                )
+                                color = Color.fromEnum(Colors.QUATERNARY),
+                                shape = corner
                             )
                     ) {
                         //Hello message
@@ -305,7 +303,9 @@ class HomeScreen {
             isOpen = state.isAddPostSheetOpen,
             onEvent = onEvent,
             localDataSource = localDataSource,
-            state = state
+            state = state,
+            corner = corner,
+            cornerrad = cornerrad
         )
 
         //Open Settings
