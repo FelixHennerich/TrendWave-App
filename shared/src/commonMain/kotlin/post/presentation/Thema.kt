@@ -84,8 +84,8 @@ fun DropdownMenu(
                     width = 1.dp,
                     color = bordercolor,
                     shape = RoundedCornerShape(
-                        topStart = 10.dp,
-                        topEnd = 10.dp,
+                        topStart = cornerrad,
+                        topEnd = cornerrad,
                         bottomStart = cornerstart,
                         bottomEnd = cornerend,
                     )
@@ -110,7 +110,13 @@ fun DropdownMenu(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp)
-                    .background(secondbackgroundcolor)
+                    .background(
+                        color = secondbackgroundcolor,
+                        shape = RoundedCornerShape(
+                            bottomStart = cornerrad,
+                            bottomEnd = cornerrad
+                        )
+                    )
             ) {
                 Column {
                     Thema.values().forEach { theme ->
