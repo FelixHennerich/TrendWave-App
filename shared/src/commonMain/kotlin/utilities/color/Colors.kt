@@ -7,5 +7,8 @@ enum class Colors {
     TERTIARY,
     QUATERNARY,
     QUINARY,
-    SENARY
+    SENARY,
+
+
+    GREEN
 }

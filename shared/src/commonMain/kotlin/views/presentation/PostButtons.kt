@@ -3,27 +3,26 @@ package views.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
+import utilities.color.Colors
+import utilities.color.fromEnum
 
 /**
  * three buttons on home screen
@@ -43,42 +42,59 @@ fun PostButton(
     onEvent: (TrendWaveEvent)-> Unit,
     event: TrendWaveEvent,
     notclickable: Boolean,
+    smallicon: ImageVector,
+    primarybackground: Color,
+    addbutton: Boolean
 ) {
-    Column(
-        modifier = modifier
-            .height(85.dp)
-            .width(85.dp)
-            .border(
-                width = 1.dp, color = textcolor, shape = RoundedCornerShape(
-                    topStart = 90.dp,
-                    topEnd = 90.dp,
-                    bottomEnd = 90.dp,
-                    bottomStart = 90.dp
-                )
-            )
-            .background(
-                backgroundcolor,
-                RoundedCornerShape(
-                    topStart = 90.dp,
-                    topEnd = 90.dp,
-                    bottomEnd = 90.dp,
-                    bottomStart = 90.dp
-                )
-            ).clickable {
-                if(!notclickable) {
-                    onEvent(event)
-                }
-
-            },
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
+        contentAlignment = Alignment.BottomEnd,
     ) {
-        //Image inside the button
+        Box(
+            modifier = modifier
+                .height(85.dp)
+                .width(85.dp)
+                .border(
+                    width = 1.dp, color = textcolor, shape = RoundedCornerShape(
+                        topStart = 90.dp,
+                        topEnd = 90.dp,
+                        bottomEnd = 90.dp,
+                        bottomStart = 90.dp
+                    )
+                )
+                .background(
+                    backgroundcolor,
+                    RoundedCornerShape(
+                        topStart = 90.dp,
+                        topEnd = 90.dp,
+                        bottomEnd = 90.dp,
+                        bottomStart = 90.dp
+                    )
+                ).clickable {
+                    if (!notclickable) {
+                        onEvent(event)
+                    }
+
+                },
+            contentAlignment = Alignment.Center,
+        ) {
+            //Image inside the button
+            Icon(
+                imageVector = imageVector,
+                contentDescription = "",
+                modifier = Modifier.scale(1.4f),
+                tint = textcolor
+            )
+        }
+        var iconcolor by remember { mutableStateOf(textcolor) }
+        if(addbutton)
+            iconcolor = Color.fromEnum(Colors.GREEN)
         Icon(
-            imageVector = imageVector,
+            imageVector = smallicon,
             contentDescription = "",
-            modifier = Modifier.scale(1.4f),
-            tint = textcolor
+            modifier = Modifier.padding(end = 10.dp)
+                .border(width = 4.dp, color = primarybackground, shape = RoundedCornerShape(90))
+                .background(color = primarybackground, shape = RoundedCornerShape(90)).scale(.8f),
+            tint = iconcolor
         )
     }
 }

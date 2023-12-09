@@ -23,7 +23,8 @@ class RESTfulUserManager {
         val signup: String,
         val follower: String,
         var following: String,
-        var followed: String
+        var followed: String,
+        var homebuttons: String
     )
 
     /**
@@ -88,7 +89,7 @@ class RESTfulUserManager {
      *
      * @param uuid -> user unique id
      */
-    suspend fun deletePost(uuid: String){
+    suspend fun deleteUser(uuid: String){
         val finurl = url + "userGetter.php"
         client.get(finurl) {
             url {
@@ -125,7 +126,7 @@ class RESTfulUserManager {
             }
         }
 
-        return User(uuid,email,password,username,role,birthday,signup,"0","0", "")
+        return User(uuid,email,password,username,role,birthday,signup,"0","0", "", "")
     }
 
     suspend fun usernameCheck(username: String): Boolean{
@@ -172,7 +173,7 @@ class RESTfulUserManager {
                     val parts = pair.split(":")
                     partlst.add(parts[1].removePrefix("\"").removeSuffix("\""))
                 }
-                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[6], partlst[4], partlst[5], partlst[7], partlst[8], partlst[9]))
+                entryLists.add(User(partlst[0], partlst[1], partlst[2], partlst[3], partlst[6], partlst[4], partlst[5], partlst[7], partlst[8], partlst[9], partlst[10]))
             }
         }
 
