@@ -1,31 +1,24 @@
 package views
 
-import account.AppUser
 import account.presentation.ProfileSheet
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -44,12 +37,9 @@ import androidx.compose.ui.unit.sp
 import compose.icons.FeatherIcons
 import compose.icons.TablerIcons
 import compose.icons.feathericons.Info
+import compose.icons.feathericons.Plus
 import compose.icons.feathericons.User
-import compose.icons.feathericons.UserCheck
-import compose.icons.tablericons.Bell
-import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.Message
-import compose.icons.tablericons.Settings
 import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
@@ -63,7 +53,6 @@ import post.presentation.addPostSheet
 import utilities.color.Colors
 import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
-import utilities.presentation.blurredBackground
 
 class HomeScreen {
 
@@ -241,11 +230,47 @@ class HomeScreen {
                     Spacer(Modifier.height(30.dp))
 
                     //Button Bar
+                    val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
                     LazyRow(
                         modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        state = lazyListState
                     ) {
-                        for (abcd in 1..10) {
+
+                        //Add post
+                        item {
+                            //Post button
+                            PostButton(
+                                modifier = Modifier.padding(end = 10.dp),
+                                backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                                textcolor = Color.fromEnum(Colors.SENARY),
+                                imageVector = TablerIcons.Message,
+                                onEvent = onEvent,
+                                event = TrendWaveEvent.ClickPostButton,
+                                notclickable = isDropInfoVisable,
+                                smallicon = FeatherIcons.Plus,
+                                primarybackground = Color.fromEnum(Colors.PRIMARY),
+                                addbutton = true
+                            )
+                        }
+
+                        item {
+                            //Post button
+                            PostButton(
+                                modifier = Modifier.padding(end = 10.dp),
+                                backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                                textcolor = Color.fromEnum(Colors.SENARY),
+                                imageVector = FeatherIcons.User,
+                                onEvent = onEvent,
+                                event = TrendWaveEvent.TestHomeButton,
+                                notclickable = isDropInfoVisable,
+                                smallicon = FeatherIcons.Plus,
+                                primarybackground = Color.fromEnum(Colors.PRIMARY),
+                                addbutton = true
+                            )
+                        }
+
+                        for (abcd in 1..7) {
                             item {
                                 //Post button
                                 PostButton(
@@ -254,8 +279,11 @@ class HomeScreen {
                                     textcolor = Color.fromEnum(Colors.SENARY),
                                     imageVector = TablerIcons.Message,
                                     onEvent = onEvent,
-                                    event = TrendWaveEvent.ClickPostButton,
+                                    event = TrendWaveEvent.TestHomeButton,
                                     notclickable = isDropInfoVisable,
+                                    smallicon = TablerIcons.Message,
+                                    primarybackground = Color.fromEnum(Colors.PRIMARY),
+                                    addbutton = false
                                 )
                             }
                         }
