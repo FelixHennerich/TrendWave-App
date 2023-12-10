@@ -136,4 +136,14 @@ class AppUser: UserInterface {
         return user.followed
     }
 
+    /**
+     * get home buttons string
+     * @param uuid -> Unique ID
+     * @return -> String of buttons Watch postButtonManager
+     */
+    suspend fun getButtons(uuid: String): String{
+        val user = restApi.findUserByUUID(uuid)
+        return user.homebuttons
+    }
+
 }

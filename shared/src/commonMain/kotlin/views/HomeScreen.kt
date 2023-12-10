@@ -23,8 +23,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +55,8 @@ import post.presentation.addPostSheet
 import utilities.color.Colors
 import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
+import views.presentation.PostButtonManager
+import views.presentation.PostButtons
 
 class HomeScreen {
 
@@ -75,6 +79,14 @@ class HomeScreen {
         var blurEffect by remember { mutableStateOf(0.dp) }
         val cornerrad = 10.dp
         var corner = RoundedCornerShape(cornerrad)
+        var postbuttonlist: MutableList<PostButtons> by mutableStateOf(mutableListOf())
+
+        GlobalScope.launch {
+            delay(100)
+            postbuttonlist = PostButtonManager().getButtonsDatabase(
+                state.user?.uuid!!, onEvent, isDropInfoVisable
+            ).toMutableList()
+        }
 
         Scaffold(
             modifier = Modifier.clickable {
@@ -270,22 +282,21 @@ class HomeScreen {
                             )
                         }
 
-                        for (abcd in 1..7) {
-                            item {
-                                //Post button
-                                PostButton(
-                                    modifier = Modifier.padding(end = 10.dp),
-                                    backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                                    textcolor = Color.fromEnum(Colors.SENARY),
-                                    imageVector = TablerIcons.Message,
-                                    onEvent = onEvent,
-                                    event = TrendWaveEvent.TestHomeButton,
-                                    notclickable = isDropInfoVisable,
-                                    smallicon = TablerIcons.Message,
-                                    primarybackground = Color.fromEnum(Colors.PRIMARY),
-                                    addbutton = false
-                                )
-                            }
+
+                        for(entry in postbuttonlist)
+                        item{
+                            PostButton(
+                                modifier = entry.modifier,
+                                backgroundcolor = entry.backgroundcolor,
+                                textcolor = entry.textcolor,
+                                imageVector = entry.imageVector,
+                                onEvent = entry.onEvent,
+                                event = entry.event,
+                                notclickable = entry.notclickable,
+                                smallicon = entry.smallicon,
+                                primarybackground = entry.primarybackground,
+                                addbutton = entry.addbutton
+                            )
                         }
                     }
 

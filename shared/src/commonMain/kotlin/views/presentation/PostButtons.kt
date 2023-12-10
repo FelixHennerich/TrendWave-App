@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +25,22 @@ import androidx.compose.ui.unit.dp
 import event.TrendWaveEvent
 import utilities.color.Colors
 import utilities.color.fromEnum
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
+
+data class PostButtons(
+    val modifier: Modifier,
+    val backgroundcolor: Color,
+    val textcolor: Color,
+    val imageVector: ImageVector,
+    val onEvent: (TrendWaveEvent)-> Unit,
+    val event: TrendWaveEvent,
+    val notclickable: Boolean,
+    val smallicon: ImageVector,
+    val primarybackground: Color,
+    val addbutton: Boolean
+)
 /**
  * three buttons on home screen
  *
