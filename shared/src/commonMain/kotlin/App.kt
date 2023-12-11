@@ -18,6 +18,8 @@ import views.LoginScreen
 import views.HomeScreen
 import views.LoadingScreen
 import views.RegisterScreen
+import views.presentation.PostButtonManager
+import views.presentation.PostButtons
 
 
 /**
@@ -50,16 +52,19 @@ fun App(
     )
     val state by viewModel.state.collectAsState()
     val loginManager = LoginManager()
+    var postbuttonlist: MutableList<PostButtons> by mutableStateOf(mutableListOf())
 
     //Application start event
     viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
 
     //Is logged in?
     GlobalScope.launch {
-        delay(100)
+        delay(10)
         if(!loggedin) {
             loggedin = true
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
+                postbuttonlist = PostButtonManager().getButtonsDatabase(
+                    appModule.localDataSource.readString("uuid")!!, viewModel::onEvent, true).toMutableList()
                 while(state.posts.isEmpty()){
                     delay(10)
                 }
@@ -84,7 +89,8 @@ fun App(
             onEvent = viewModel::onEvent,
             state = state,
             localDataSource = appModule.localDataSource,
-            onNavigateLogin = {currentScreen = Screen.Login}
+            onNavigateLogin = {currentScreen = Screen.Login},
+            postbuttonlst = postbuttonlist
         )
 
         //Login Screen Navigation

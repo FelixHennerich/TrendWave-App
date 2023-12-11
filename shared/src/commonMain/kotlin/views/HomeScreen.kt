@@ -73,20 +73,14 @@ class HomeScreen {
         onEvent: (TrendWaveEvent) -> Unit,
         state: TrendWaveState,
         localDataSource: DataStorageManager,
-        onNavigateLogin: () -> Unit
+        onNavigateLogin: () -> Unit,
+        postbuttonlst: MutableList<PostButtons>
     ) {
         var isDropInfoVisable by remember { mutableStateOf(false) }
         var blurEffect by remember { mutableStateOf(0.dp) }
         val cornerrad = 10.dp
         var corner = RoundedCornerShape(cornerrad)
-        var postbuttonlist: MutableList<PostButtons> by mutableStateOf(mutableListOf())
 
-        GlobalScope.launch {
-            delay(100)
-            postbuttonlist = PostButtonManager().getButtonsDatabase(
-                state.user?.uuid!!, onEvent, isDropInfoVisable
-            ).toMutableList()
-        }
 
         Scaffold(
             modifier = Modifier.clickable {
@@ -283,7 +277,7 @@ class HomeScreen {
                         }
 
 
-                        for(entry in postbuttonlist)
+                        for(entry in postbuttonlst)
                         item{
                             PostButton(
                                 modifier = entry.modifier,
