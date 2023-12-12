@@ -101,6 +101,7 @@ class HomeScreen {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Bottom
             ) {
+
                 //BottomSheet for Profile, Settigs and Notifications
                 BottomSheet(
                     visible = isDropInfoVisable,
