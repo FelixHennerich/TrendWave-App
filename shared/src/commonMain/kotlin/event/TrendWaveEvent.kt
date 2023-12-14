@@ -2,6 +2,7 @@ package event
 
 import account.RESTfulUserManager
 import post.Post
+import views.presentation.PostButtons
 
 sealed interface TrendWaveEvent {
 
@@ -27,6 +28,7 @@ sealed interface TrendWaveEvent {
     object ApplicationStartEvent: TrendWaveEvent
 
     class FollowEvent(val follow: Boolean, val executeruuid: String, val uuid: String): TrendWaveEvent
+    class loadDataToCachePostButtons(val buttons: List<PostButtons>): TrendWaveEvent
 
 
 

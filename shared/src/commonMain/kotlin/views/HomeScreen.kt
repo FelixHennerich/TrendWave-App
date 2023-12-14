@@ -52,6 +52,7 @@ import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
 import post.presentation.addPostSheet
+import utilities.CommonLogger
 import utilities.color.Colors
 import utilities.color.fromEnum
 import utilities.presentation.BottomSheet
@@ -74,7 +75,7 @@ class HomeScreen {
         state: TrendWaveState,
         localDataSource: DataStorageManager,
         onNavigateLogin: () -> Unit,
-        postbuttonlst: MutableList<PostButtons>
+        postbuttonlst: List<PostButtons>
     ) {
         var isDropInfoVisable by remember { mutableStateOf(false) }
         var blurEffect by remember { mutableStateOf(0.dp) }
@@ -277,8 +278,9 @@ class HomeScreen {
                         }
 
 
-                        for(entry in postbuttonlst)
-                        item{
+                        val commonLogger = CommonLogger()
+                        commonLogger.log(postbuttonlst.toString())
+                        items(postbuttonlst){ entry ->
                             PostButton(
                                 modifier = entry.modifier,
                                 backgroundcolor = entry.backgroundcolor,
