@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import post.RESTfulPostManager
 import post.Post
+import utilities.CommonLogger
 import views.LoginScreen
 import views.HomeScreen
 import views.LoadingScreen
@@ -52,7 +53,6 @@ fun App(
     )
     val state by viewModel.state.collectAsState()
     val loginManager = LoginManager()
-    var postbuttonlist: MutableList<PostButtons> by mutableStateOf(mutableListOf())
 
     //Application start event
     viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
@@ -63,16 +63,15 @@ fun App(
         if(!loggedin) {
             loggedin = true
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
-                postbuttonlist = PostButtonManager().getButtonsDatabase(
+                PostButtonManager().getButtonsDatabase(
                     appModule.localDataSource.readString("uuid")!!, viewModel::onEvent, true).toMutableList()
-                while(state.posts.isEmpty()){
+                while(state.posts.isEmpty() || state.user == null || state.buttonshomescreen.isEmpty()){
                     delay(10)
                 }
-                while(state.user == null){
-                    delay(10)
-                }
+                //Set screen to home
                 currentScreen = Screen.Home
             } else {
+                //Set screen to Login
                 currentScreen = Screen.Login
             }
         }
@@ -90,7 +89,7 @@ fun App(
             state = state,
             localDataSource = appModule.localDataSource,
             onNavigateLogin = {currentScreen = Screen.Login},
-            postbuttonlst = postbuttonlist
+            postbuttonlst = state.buttonshomescreen
         )
 
         //Login Screen Navigation

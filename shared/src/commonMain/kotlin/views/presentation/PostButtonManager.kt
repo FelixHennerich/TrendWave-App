@@ -47,8 +47,6 @@ class PostButtonManager {
         val postbuttons = appUser.getButtons(uuid)
         val postbuttonlst = emptyList<PostButtons>().toMutableList()
 
-        val commonLogger = CommonLogger()
-
         val input = postbuttons
         val parts = input.split("#")
 
@@ -81,7 +79,8 @@ class PostButtonManager {
             }
         }
 
-        commonLogger.log(postbuttonlst.toString())
+        onEvent(TrendWaveEvent.loadDataToCachePostButtons(postbuttonlst))
+
 
         return postbuttonlst
     }
