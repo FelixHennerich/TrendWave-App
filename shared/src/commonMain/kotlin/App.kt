@@ -77,6 +77,7 @@ fun App(
         }
     }
 
+
     when (currentScreen) {
         //Loading Screen Navigation
         is Screen.Loading -> loadingScreenTT.LoadingScreen(
