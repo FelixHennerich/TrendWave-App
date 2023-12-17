@@ -53,7 +53,6 @@ fun SideSheet(
                     )
                 )
                 .background(backgroundcolor)
-                .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ){
             content()
