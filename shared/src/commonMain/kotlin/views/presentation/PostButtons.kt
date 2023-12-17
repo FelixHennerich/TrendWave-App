@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
@@ -33,7 +34,8 @@ data class PostButtons(
     val modifier: Modifier,
     val backgroundcolor: Color,
     val textcolor: Color,
-    val imageVector: ImageVector,
+    val imageVector: ImageVector?,
+    val text: String?,
     val onEvent: (TrendWaveEvent)-> Unit,
     val event: TrendWaveEvent,
     val notclickable: Boolean,
@@ -55,7 +57,8 @@ fun PostButton(
     modifier: Modifier,
     backgroundcolor: Color,
     textcolor: Color,
-    imageVector: ImageVector,
+    imageVector: ImageVector?,
+    text: String?,
     onEvent: (TrendWaveEvent)-> Unit,
     event: TrendWaveEvent,
     notclickable: Boolean,
@@ -95,12 +98,19 @@ fun PostButton(
             contentAlignment = Alignment.Center,
         ) {
             //Image inside the button
-            Icon(
-                imageVector = imageVector,
-                contentDescription = "",
-                modifier = Modifier.scale(1.4f),
-                tint = textcolor
-            )
+            if(imageVector != null) {
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = "",
+                    modifier = Modifier.scale(1.4f),
+                    tint = textcolor
+                )
+            }else if(text != null){
+                Text(
+                    text = text,
+                    color = textcolor,
+                )
+            }
         }
         var iconcolor by remember { mutableStateOf(textcolor) }
         if(addbutton)

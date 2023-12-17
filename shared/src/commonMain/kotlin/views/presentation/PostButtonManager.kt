@@ -57,11 +57,14 @@ class PostButtonManager {
                 val firstElement = subParts[0]
                 if (firstElement == "0") {
                     //Account
+                    val commonLogger = CommonLogger()
+                    commonLogger.log(notClickable.toString())
                     postbuttonlst += PostButtons(
                         modifier = Modifier.padding(end = 10.dp),
                         backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
                         textcolor = Color.fromEnum(Colors.SENARY),
-                        imageVector = Icons.Rounded.Person,
+                        imageVector = null,
+                        text = appUser.getUsername(subParts[1]),
                         onEvent = onEvent,
                         event = TrendWaveEvent.ClickUserProfileViewButton(
                             appUser.getUser(
@@ -71,7 +74,7 @@ class PostButtonManager {
                         notclickable = notClickable,
                         smallicon = Icons.Rounded.Person,
                         primarybackground = Color.fromEnum(Colors.PRIMARY),
-                        addbutton = true
+                        addbutton = false
                     )
                 } else if (firstElement == "1") {
                     //Message

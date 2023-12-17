@@ -65,7 +65,7 @@ fun App(
             loggedin = true
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
                 PostButtonManager().getButtonsDatabase(
-                    appModule.localDataSource.readString("uuid")!!, viewModel::onEvent, true).toMutableList()
+                    appModule.localDataSource.readString("uuid")!!, viewModel::onEvent, false).toMutableList()
                 while(state.posts.isEmpty() || state.user == null || state.buttonshomescreen.isEmpty()){
                     delay(10)
                 }

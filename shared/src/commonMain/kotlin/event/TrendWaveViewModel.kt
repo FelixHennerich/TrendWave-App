@@ -75,6 +75,8 @@ class TrendWaveViewModel(
                 }
             }
             is TrendWaveEvent.ClickUserProfileViewButton -> {
+                val commonLogger = CommonLogger()
+                commonLogger.log("IN HERERERERERE")
                 _state.update { it.copy(
                     isProfileUserSheetOpen = true,
                     watchUserProfile = event.user
