@@ -170,9 +170,9 @@ fun ProfileSheet(
             GlobalScope.launch {
                 val followManagerClass = FollowManagerClass()
                 if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid))
-                    color = Color.Red
+                    color = Color.fromEnum(Colors.QUATERNARY)
                 else
-                    color = Color.LightGray
+                    color = Color.fromEnum(Colors.QUINARY)
             }
 
             Column(
