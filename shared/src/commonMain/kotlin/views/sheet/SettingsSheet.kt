@@ -155,7 +155,8 @@ fun SettingsSheet(
 
                     //Change Password
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 40.dp).clickable { },
+                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 40.dp)
+                            .clickable { },
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -174,7 +175,8 @@ fun SettingsSheet(
 
                     //Change Status
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 80.dp).clickable { },
+                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 80.dp)
+                            .clickable { },
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -192,7 +194,8 @@ fun SettingsSheet(
 
                     //Privacy
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 120.dp).clickable { },
+                        modifier = Modifier.fillMaxWidth().padding(10.dp).padding(top = 120.dp)
+                            .clickable { },
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -251,7 +254,7 @@ fun SettingsSheet(
 
 
             Box(
-                modifier = Modifier.fillMaxWidth().offset(x = 130.dp, y = 600.dp).padding(50.dp)
+                modifier = Modifier.fillMaxWidth().padding(start = 50.dp,top = 500.dp)
                     .clickable {
                         val logoutManager = LogoutManager(
                             state = state,
@@ -259,8 +262,9 @@ fun SettingsSheet(
                         )
                         logoutManager.logout()
                         onLogout()
-                    })
-            {
+                    },
+                contentAlignment = Alignment.Center
+            ) {
                 Row() {
                     //Logout Text
                     Text(
