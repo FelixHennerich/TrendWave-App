@@ -286,14 +286,14 @@ class LoginScreen {
         ){
             ForgotPasswordSheet(
                 onEvent = onEvent,
-                state = state
+                corner = corner
             )
         }
     }
 
 
     fun onDone(email: String, password: String, localDataManager: DataStorageManager, onEvent: (TrendWaveEvent) -> Unit, onNavigateHome: () -> Unit){
-        if(email != null && password != null) {
+        if(email != "" && password != "") {
             GlobalScope.launch {
                 val loginManager = LoginManager()
                 val exceptionHandler = ExceptionHandler()
