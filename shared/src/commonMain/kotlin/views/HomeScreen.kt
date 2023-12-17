@@ -353,7 +353,8 @@ class HomeScreen {
             state = state,
             localDataSource = localDataSource,
             onEvent = onEvent,
-            onLogout = onNavigateLogin
+            onLogout = onNavigateLogin,
+            corner = corner
         )
 
         if (state.user != null) {

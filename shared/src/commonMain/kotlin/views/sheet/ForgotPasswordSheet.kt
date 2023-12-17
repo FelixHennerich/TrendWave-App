@@ -2,6 +2,7 @@ package views.sheet
 
 import account.AppUser
 import account.RESTfulUserManager
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,16 +42,19 @@ import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import utilities.ForgotPasswordAPI
+import utilities.color.Colors
+import utilities.color.fromEnum
 
 /**
  * Screen to edit the email if u forgot your password
  *
  * @param onEvent -> EventHandling
+ * @param corner -> Corner shape
  */
 @Composable
 fun ForgotPasswordSheet(
     onEvent: (TrendWaveEvent) -> Unit,
-    state: (TrendWaveState)
+    corner: RoundedCornerShape
 ) {
     var uuid = mutableStateOf("")
     Box(
@@ -83,7 +87,9 @@ fun ForgotPasswordSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "E-mail"
+                        text = "E-mail",
+                        modifier = Modifier.offset(y = -(2).dp, x = 3.dp),
+                        color = Color.fromEnum(Colors.SENARY)
                     )
                 }
             },
@@ -93,20 +99,22 @@ fun ForgotPasswordSheet(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done,
             ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-
-                }
-            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(66.dp)
-                .padding(start = 50.dp, end = 50.dp, top = 8.dp, bottom = 8.dp)
-                .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(30)),
-            shape = RoundedCornerShape(30),
+                .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                .background(
+                    color = Color.fromEnum(Colors.TERTIARY),
+                    shape = corner
+                )
+                .border(
+                    width = 1.dp,
+                    color = Color.fromEnum(Colors.SENARY),
+                    shape = corner
+                ),
             textStyle = TextStyle(
                 textAlign = TextAlign.Left,
-                color = Color.Blue,
+                color = Color.fromEnum(Colors.SENARY),
                 fontSize = 14.sp
             ),
             colors = TextFieldDefaults.textFieldColors(
@@ -114,6 +122,9 @@ fun ForgotPasswordSheet(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
+            keyboardActions = KeyboardActions(
+                onDone = { createAuthcode(email) },
+            )
         )
     }
 
@@ -121,14 +132,7 @@ fun ForgotPasswordSheet(
         modifier = Modifier.offset(y = 300.dp)
     ){
         Button(
-            onClick = {
-                val api = ForgotPasswordAPI()
-                GlobalScope.launch {
-                    val userclass = AppUser()
-                    val uuid = userclass.getUUID(email)
-                    api.createAuthcode(uuid)
-                }
-            },
+            onClick = { createAuthcode(email) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(66.dp)
@@ -144,5 +148,12 @@ fun ForgotPasswordSheet(
             )
         }
     }
-
+}
+fun createAuthcode(email: String){
+    val api = ForgotPasswordAPI()
+    GlobalScope.launch {
+        val userclass = AppUser()
+        val uuid = userclass.getUUID(email)
+        api.createAuthcode(uuid)
+    }
 }
