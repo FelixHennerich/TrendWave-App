@@ -293,6 +293,7 @@ class LoginScreen {
 
 
 
+
     fun onDone(email: String, password: String, localDataManager: DataStorageManager, onEvent: (TrendWaveEvent) -> Unit, onNavigateHome: () -> Unit){
         if(email != "" && password != "") {
             GlobalScope.launch {
