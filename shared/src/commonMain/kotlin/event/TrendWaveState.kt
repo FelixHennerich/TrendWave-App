@@ -18,6 +18,7 @@ data class TrendWaveState(
     var userposts: List<Post>? = null, // TODO: ONLY FOR PROIFLE PAGE NOT FOR GENERAL USER PAGE
     var watchUserProfile: RESTfulUserManager.User? = null,
     var buttonshomescreen: List<PostButtons> = emptyList(),
+    var buttonshomescreenloaded: Boolean = false,
 
 
     var isLoggedIn: Boolean = false,
