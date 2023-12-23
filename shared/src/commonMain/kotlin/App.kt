@@ -66,7 +66,7 @@ fun App(
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
                 PostButtonManager().getButtonsDatabase(
                     appModule.localDataSource.readString("uuid")!!, viewModel::onEvent, false).toMutableList()
-                while(state.posts.isEmpty() || state.user == null || state.buttonshomescreen.isEmpty()){
+                while(state.posts.isEmpty() || state.user == null || !state.buttonshomescreenloaded){
                     delay(10)
                 }
                 //Set screen to home

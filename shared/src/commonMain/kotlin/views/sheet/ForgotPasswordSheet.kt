@@ -4,6 +4,7 @@ import account.AppUser
 import account.RESTfulUserManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,26 +59,23 @@ fun ForgotPasswordSheet(
 ) {
     var uuid = mutableStateOf("")
     Box(
-        Modifier.offset(x = (-10).dp, y = 10.dp).fillMaxSize(),
+        Modifier.padding(10.dp).fillMaxSize(),
         contentAlignment = Alignment.TopStart
     ) {
-        IconButton(
-            onClick = { onEvent(TrendWaveEvent.ClickCloseForgotPasswordSheet) },
-            Modifier.offset(x = 0.dp, y = 0.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = "",
-                Modifier.padding(top = 20.dp)
-            )
-
-        }
+        Icon(
+            imageVector = Icons.Rounded.ArrowBack,
+            contentDescription = "",
+            modifier = Modifier.padding(top = 20.dp).clickable {
+                onEvent(TrendWaveEvent.ClickCloseForgotPasswordSheet)
+            },
+            tint = Color.fromEnum(Colors.SENARY)
+        )
     }
 
     var email by remember { mutableStateOf("") }
 
     Box(
-        modifier = Modifier.offset(y =200.dp),
+        modifier = Modifier.offset(y = 100.dp),
         contentAlignment = Alignment.Center,
     ) {
         TextField(
@@ -129,16 +127,16 @@ fun ForgotPasswordSheet(
     }
 
     Box(
-        modifier = Modifier.offset(y = 300.dp)
+        modifier = Modifier.offset(y = 200.dp)
     ){
         Button(
             onClick = { createAuthcode(email) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(66.dp)
-                .padding(start = 50.dp, end = 50.dp, top = 8.dp, bottom = 8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-            shape = RoundedCornerShape(30)
+                .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.fromEnum(Colors.QUATERNARY)),
+            shape = corner
         ) {
             Text(
                 text = "Send Request",

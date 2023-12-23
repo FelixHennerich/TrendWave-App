@@ -240,7 +240,6 @@ class HomeScreen {
                     val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
                     LazyRow(
                         modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                         state = lazyListState
                     ) {
 

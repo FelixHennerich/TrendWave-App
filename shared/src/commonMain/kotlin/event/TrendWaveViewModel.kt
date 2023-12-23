@@ -142,7 +142,8 @@ class TrendWaveViewModel(
             is TrendWaveEvent.loadDataToCachePostButtons -> {
                 val list = event.buttons
                 _state.update { it.copy(
-                    buttonshomescreen = list
+                    buttonshomescreen = list,
+                    buttonshomescreenloaded = true,
                 )}
             }
             is TrendWaveEvent.ApplicationStartEvent -> {
