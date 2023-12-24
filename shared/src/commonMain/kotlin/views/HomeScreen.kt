@@ -48,6 +48,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
+import post.presentation.MessageDisplay
 import post.presentation.PostDisplay
 import views.presentation.PostButton
 import views.sheet.SettingsSheet
@@ -344,6 +345,17 @@ class HomeScreen {
             state = state,
             corner = corner,
             cornerrad = cornerrad
+        )
+
+        //Message Display screen
+        MessageDisplay(
+            visible = state.isMessageDisplaySheetOpen,
+            onEvent = onEvent,
+            backgroundcolor = Color.fromEnum(Colors.PRIMARY),
+            corner = corner,
+            modifier = Modifier.fillMaxSize(),
+            authorname = state.messageDisplayAuthorname,
+            posttext = state.messageDisplayMessageText
         )
 
         //Open Settings
