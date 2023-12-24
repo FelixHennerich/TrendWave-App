@@ -39,6 +39,7 @@ class TrendWaveViewModel(
             /**
              * Button Clicks
              */
+            //Post Screen
             is TrendWaveEvent.ClickPostButton -> {
                 _state.update { it.copy(
                     isAddPostSheetOpen = true
@@ -51,6 +52,8 @@ class TrendWaveViewModel(
                     )
                 }
             }
+
+            //Settings screen
             is TrendWaveEvent.ClickSettingsScreen -> {
                 _state.update { it.copy(
                     isSettingsSheetOpen = true
@@ -61,6 +64,8 @@ class TrendWaveViewModel(
                     isSettingsSheetOpen = false
                 ) }
             }
+
+            //Profile Screen
             is TrendWaveEvent.ClickProfileHomeButton -> {
                 _state.update { it.copy(
                     isProfileSheetOpen = true
@@ -75,13 +80,13 @@ class TrendWaveViewModel(
                 }
             }
             is TrendWaveEvent.ClickUserProfileViewButton -> {
-                val commonLogger = CommonLogger()
-                commonLogger.log("IN HERERERERERE")
                 _state.update { it.copy(
                     isProfileUserSheetOpen = true,
                     watchUserProfile = event.user
                 ) }
             }
+
+            //Forgot password sheet
             is TrendWaveEvent.ClickForgotPasswordSheet -> {
                 _state.update { it.copy(
                     isForgetPasswordSheetOpen = true
@@ -93,10 +98,26 @@ class TrendWaveViewModel(
                 ) }
             }
 
+            //Post message display screen
+            is TrendWaveEvent.ClickPostMessageDisplay -> {
+                _state.update { it.copy(
+                    messageDisplayAuthorname = event.authorname,
+                    messageDisplayMessageText = event.posttext,
+                    isMessageDisplaySheetOpen = true
+                ) }
+            }
+            is TrendWaveEvent.ClickCloseMessageDisplay -> {
+                _state.update {
+                    it.copy(
+                        isMessageDisplaySheetOpen = false,
+                    )
+                }
+            }
 
 
 
 
+            //Errormessages during login
             is TrendWaveEvent.ChangeRegisterErrorMessage -> {
                 _state.update {it.copy(
                     RegisterErrorMessage = event.message
@@ -112,6 +133,9 @@ class TrendWaveViewModel(
                     createPostErrorMessage = event.message
                 ) }
             }
+
+
+
             is TrendWaveEvent.LocalPostCreation -> {
                 _state.update {
                     it.copy(
