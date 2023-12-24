@@ -355,7 +355,8 @@ class HomeScreen {
             corner = corner,
             modifier = Modifier.fillMaxSize(),
             authorname = state.messageDisplayAuthorname,
-            posttext = state.messageDisplayMessageText
+            posttext = state.messageDisplayMessageText,
+            postdate = state.messageDisplayPostDate
         )
 
         //Open Settings

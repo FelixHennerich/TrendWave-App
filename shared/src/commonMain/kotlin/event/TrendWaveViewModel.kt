@@ -103,6 +103,7 @@ class TrendWaveViewModel(
                 _state.update { it.copy(
                     messageDisplayAuthorname = event.authorname,
                     messageDisplayMessageText = event.posttext,
+                    messageDisplayPostDate = event.postdate,
                     isMessageDisplaySheetOpen = true
                 ) }
             }
