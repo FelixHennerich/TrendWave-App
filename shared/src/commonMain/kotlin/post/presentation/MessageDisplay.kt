@@ -33,6 +33,7 @@ fun MessageDisplay(
     backgroundcolor: Color,
     authorname: String,
     posttext: String,
+    postdate: String,
     onEvent: (TrendWaveEvent) -> Unit,
     corner: RoundedCornerShape
 ) {
@@ -71,6 +72,24 @@ fun MessageDisplay(
                     modifier = Modifier.offset(y = 7.dp).padding(start = 15.dp)
                 )
             }
+
+            Box(
+                modifier = Modifier.fillMaxWidth().offset(y = 100.dp).background(Color.fromEnum(Colors.TERTIARY), corner).padding(20.dp),
+            ){
+                Text(
+                    text = "Posted on: $postdate",
+                    color = Color.fromEnum(Colors.SENARY),
+                    fontSize = 15.sp
+                )
+                Text(
+                    text = "$posttext",
+                    color = Color.fromEnum(Colors.SENARY),
+                    fontSize = 15.sp,
+                    modifier = Modifier.offset(y = 50.dp)
+                )
+            }
+
+
         }
 
 
