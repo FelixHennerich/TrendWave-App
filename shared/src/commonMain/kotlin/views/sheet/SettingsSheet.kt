@@ -278,7 +278,7 @@ fun SettingsSheet(
                     Icon(
                         imageVector = Icons.Rounded.ExitToApp,
                         contentDescription = "",
-                        modifier = Modifier.offset(x = (-80).dp),
+                        modifier = Modifier.offset(x = (-100).dp),
                         tint = Color.fromEnum(Colors.SENARY),
                     )
                 }
