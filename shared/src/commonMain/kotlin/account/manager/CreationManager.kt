@@ -1,10 +1,9 @@
 package account.manager
 
 import account.RESTfulUserManager
-import account.utilities.UUID
 import kotlinx.coroutines.delay
-import utilities.DateUtil
-import utilities.EncryptionUtil
+import utilities.textutils.DateUtil
+import utilities.textutils.EncryptionUtil
 import managers.exceptions.NException
 
 class CreationManager {

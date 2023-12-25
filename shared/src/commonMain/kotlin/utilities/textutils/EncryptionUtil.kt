@@ -1,4 +1,4 @@
-package utilities
+package utilities.textutils
 
 import kotlin.math.ceil
 import kotlin.math.floor
