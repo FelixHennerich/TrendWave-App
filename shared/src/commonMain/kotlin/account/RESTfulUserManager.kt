@@ -5,8 +5,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
 import utilities.CommonLogger
-import utilities.DateUtil
-import kotlin.math.sign
 
 class RESTfulUserManager {
 

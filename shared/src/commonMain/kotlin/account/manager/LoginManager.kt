@@ -1,13 +1,10 @@
 package account.manager
 
 import account.AppUser
-import account.RESTfulUserManager
-import event.TrendWaveState
 import managers.DataStorageManager
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
-import utilities.CommonLogger
-import utilities.EncryptionUtil
+import utilities.textutils.EncryptionUtil
 
 class LoginManager {
 

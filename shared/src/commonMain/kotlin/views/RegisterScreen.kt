@@ -59,6 +59,7 @@ import managers.DataStorageManager
 import managers.DataStorageOnLogin
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
+import utilities.textutils.closeKeyboard
 
 class RegisterScreen {
 
@@ -360,6 +361,7 @@ class RegisterScreen {
                email: String, password: String, user: String,
                birthday: String, onEvent: (TrendWaveEvent) -> Unit, localDataManager: DataStorageManager,
                onNavigateHome: () -> Unit){
+        closeKeyboard()
         if(checkedConditionsState) {
             GlobalScope.launch {
                 val creationManager = CreationManager()
