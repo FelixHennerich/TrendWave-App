@@ -1,12 +1,15 @@
 package account.manager
 
+import event.TrendWaveEvent
 import event.TrendWaveState
 import managers.DataStorageManager
 import managers.exceptions.NException
+import views.presentation.PostButtonManager
 
 class LogoutManager(
     val state: TrendWaveState,
-    val localDataManager: DataStorageManager
+    val localDataManager: DataStorageManager,
+    val onEvent: (TrendWaveEvent) -> Unit
 ) {
 
     fun logout(): NException{
@@ -27,6 +30,9 @@ class LogoutManager(
                 localDataManager.deleteEntry("uuid")
                 localDataManager.deleteEntry("role")
             }
+            PostButtonManager().deleteLocalButtons(
+                onEvent = onEvent
+            )
             return NException.LogoutWorked121
         } catch (e: Exception){
             return NException.LogoutError120

@@ -82,10 +82,15 @@ class PostButtonManager {
             }
         }
 
-        onEvent(TrendWaveEvent.loadDataToCachePostButtons(postbuttonlst))
+        onEvent(TrendWaveEvent.LoadDataToCachePostButtons(postbuttonlst))
 
 
         return postbuttonlst
+    }
+
+
+    fun deleteLocalButtons(onEvent: (TrendWaveEvent) -> Unit){
+        onEvent(TrendWaveEvent.DeleteLocalHomeButtons)
     }
 
 
