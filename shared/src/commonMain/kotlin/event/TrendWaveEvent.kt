@@ -28,13 +28,14 @@ sealed interface TrendWaveEvent {
      * Events
      */
     object ApplicationStartEvent: TrendWaveEvent
-
     class FollowEvent(val follow: Boolean, val executeruuid: String, val uuid: String): TrendWaveEvent
-    class loadDataToCachePostButtons(val buttons: List<PostButtons>): TrendWaveEvent
+    class LoadDataToCachePostButtons(val buttons: List<PostButtons>): TrendWaveEvent
+    object DeleteLocalHomeButtons: TrendWaveEvent
 
 
-
-
+    /**
+     * Error Messages
+     */
     class ChangeLoginErrorMessage(val message: String): TrendWaveEvent
     class ChangeRegisterErrorMessage(val message: String): TrendWaveEvent
     class ChangePostErrorMessage(val message: String): TrendWaveEvent
@@ -42,5 +43,4 @@ sealed interface TrendWaveEvent {
     class PostDeletionButton(val post: Post, val posts: List<Post>): TrendWaveEvent
     class LocalPostCreation(val post: Post): TrendWaveEvent
     object TestHomeButton: TrendWaveEvent
-    object FollowingHomeButton: TrendWaveEvent
 }

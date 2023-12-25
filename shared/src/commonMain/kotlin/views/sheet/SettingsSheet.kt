@@ -256,9 +256,11 @@ fun SettingsSheet(
             Box(
                 modifier = Modifier.fillMaxWidth().padding(start = 50.dp,top = 500.dp)
                     .clickable {
+                        //Logout function called
                         val logoutManager = LogoutManager(
                             state = state,
-                            localDataManager = localDataSource
+                            localDataManager = localDataSource,
+                            onEvent = onEvent
                         )
                         logoutManager.logout()
                         onLogout()

@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import managers.DataStorageOnLogin
@@ -57,6 +59,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import utilities.color.Colors
 import utilities.color.fromEnum
 import utilities.presentation.SideSheet
+import views.presentation.PostButtonManager
 import views.sheet.ForgotPasswordSheet
 
 
@@ -87,6 +90,7 @@ class LoginScreen {
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
         val cornerrad = 10.dp
         var corner = RoundedCornerShape(cornerrad)
+        val focusManager = LocalFocusManager.current
 
 
         Column(
@@ -178,7 +182,8 @@ class LoginScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onDone(user, password, localDataManager, onEvent, onNavigateHome)
+                        focusManager.clearFocus()
+                        onDone(user, password, localDataManager, onEvent, onNavigateHome, state)
                     }
                 )
             )
@@ -231,7 +236,8 @@ class LoginScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onDone(user, password, localDataManager, onEvent, onNavigateHome)
+                        focusManager.clearFocus()
+                        onDone(user, password, localDataManager, onEvent, onNavigateHome, state)
                     }
                 )
             )
@@ -251,7 +257,8 @@ class LoginScreen {
             // Button and other UI elements
             Button(
                 onClick = {
-                    onDone(user, password, localDataManager, onEvent, onNavigateHome)
+                    focusManager.clearFocus()
+                    onDone(user, password, localDataManager, onEvent, onNavigateHome, state)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -291,9 +298,10 @@ class LoginScreen {
         }
     }
 
-    fun onDone(email: String, password: String, localDataManager: DataStorageManager, onEvent: (TrendWaveEvent) -> Unit, onNavigateHome: () -> Unit){
+    fun onDone(email: String, password: String, localDataManager: DataStorageManager, onEvent: (TrendWaveEvent) -> Unit, onNavigateHome: () -> Unit, state: TrendWaveState){
         if(email != "" && password != "") {
             GlobalScope.launch {
+                //Logindata correct?
                 val loginManager = LoginManager()
                 val exceptionHandler = ExceptionHandler()
                 val userClass = AppUser()
@@ -304,15 +312,25 @@ class LoginScreen {
                     )
                 )
 
+                //If error occurs show it on screen
                 onEvent(TrendWaveEvent.ChangeLoginErrorMessage(message))
+
+                //Did it work?
                 if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
                     val uuid = userClass.getUUID(email)
                     val username = userClass.getUsername(uuid)
                     val role = userClass.getRole(uuid)
 
+                    //Update the local stored data
                     val DataStorageOnLogin = DataStorageOnLogin(localDataManager)
                     DataStorageOnLogin.storeData(email, password, username, role, uuid)
 
+
+                    //Loading all data for homescreen
+                    PostButtonManager().getButtonsDatabase(
+                        localDataManager.readString("uuid")!!, onEvent, false).toMutableList()
+
+                    //Navigate to homesccren
                     onNavigateHome()
                 }
             }

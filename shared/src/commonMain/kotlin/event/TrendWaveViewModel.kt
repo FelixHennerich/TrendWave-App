@@ -164,12 +164,18 @@ class TrendWaveViewModel(
                     }
                 }
             }
-            is TrendWaveEvent.loadDataToCachePostButtons -> {
+            is TrendWaveEvent.LoadDataToCachePostButtons -> {
                 val list = event.buttons
                 _state.update { it.copy(
                     buttonshomescreen = list,
                     buttonshomescreenloaded = true,
                 )}
+            }
+            is TrendWaveEvent.DeleteLocalHomeButtons -> {
+                _state.update { it.copy(
+                    buttonshomescreen = emptyList(),
+                    buttonshomescreenloaded = false,
+                ) }
             }
             is TrendWaveEvent.ApplicationStartEvent -> {
                 val applicationStartEvent = ApplicationStartEvent()

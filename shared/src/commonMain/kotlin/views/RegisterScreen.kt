@@ -37,8 +37,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -59,7 +62,7 @@ import managers.DataStorageManager
 import managers.DataStorageOnLogin
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
-import utilities.textutils.closeKeyboard
+import views.presentation.PostButtonManager
 
 class RegisterScreen {
 
@@ -74,7 +77,7 @@ class RegisterScreen {
      * @param imageDataSource -> ImageAPI
      * @param localDataManager -> LocalDataManager
      */
-    @OptIn(DelicateCoroutinesApi::class)
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalComposeUiApi::class)
     @Composable
     fun RegisterScreen(
         state: TrendWaveState,
@@ -92,6 +95,7 @@ class RegisterScreen {
         val checkedConditionsState = remember {
             mutableStateOf(false)
         }
+        val focusManager = LocalFocusManager.current
 
         Column(
             Modifier
@@ -149,6 +153,7 @@ class RegisterScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        focusManager.clearFocus()
                         submit(checkedConditionsState.value, state, email, password, user, birthday,
                             onEvent, localDataManager, onNavigateHome)
                     }
@@ -207,6 +212,7 @@ class RegisterScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        focusManager.clearFocus()
                         submit(checkedConditionsState.value, state, email, password, user, birthday,
                             onEvent, localDataManager, onNavigateHome)
                     }
@@ -231,6 +237,7 @@ class RegisterScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        focusManager.clearFocus()
                         submit(checkedConditionsState.value, state, email, password, user, birthday,
                             onEvent, localDataManager, onNavigateHome)
                     }
@@ -271,6 +278,7 @@ class RegisterScreen {
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        focusManager.clearFocus()
                         submit(checkedConditionsState.value, state, email, password, user, birthday,
                             onEvent, localDataManager, onNavigateHome)
                     }
@@ -305,6 +313,7 @@ class RegisterScreen {
             }
             Button(
                 onClick = {
+                    focusManager.clearFocus()
                     submit(checkedConditionsState.value, state, email, password, user, birthday,
                         onEvent, localDataManager, onNavigateHome)
                 },
@@ -357,11 +366,11 @@ class RegisterScreen {
 
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     fun submit(checkedConditionsState: Boolean, state: TrendWaveState,
                email: String, password: String, user: String,
                birthday: String, onEvent: (TrendWaveEvent) -> Unit, localDataManager: DataStorageManager,
                onNavigateHome: () -> Unit){
-        closeKeyboard()
         if(checkedConditionsState) {
             GlobalScope.launch {
                 val creationManager = CreationManager()
@@ -381,20 +390,29 @@ class RegisterScreen {
                     )
                 )
 
+                //update error msg if existing
                 onEvent(TrendWaveEvent.ChangeRegisterErrorMessage(message))
-                delay(1000)
 
-                // Local data storage user data
+                // success?
                 if (message == exceptionHandler.fetchErrorMessage(NException.SUCCESS001)) {
                     val role = userClass.getRole(uuid)
 
+                    //store data locally
                     val dataStorageOnLogin = DataStorageOnLogin(localDataManager)
                     dataStorageOnLogin.storeData(email, password, user, role, uuid)
 
-                    onNavigateHome() // navigate to home screen after register
+
+                    //Loading all data for homescreen
+                    PostButtonManager().getButtonsDatabase(
+                        localDataManager.readString("uuid")!!, onEvent, false).toMutableList()
+
+
+                    // navigate to home screen after register
+                    onNavigateHome()
                 }
             }
         }else {
+            //update error msg
             onEvent(TrendWaveEvent.ChangeRegisterErrorMessage("Check the terms of use below"))
         }
     }
