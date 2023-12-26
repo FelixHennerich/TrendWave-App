@@ -14,10 +14,21 @@ class LogoutManager(
 
     fun logout(): NException{
         try {
+            //Reset all TrendWaveState messages & values
             state.user = null
             state.posts = emptyList()
             state.userposts = null
             state.watchUserProfile = null
+            state.isSettingsSheetOpen = false
+            state.LoginErrorMessage = null
+            state.RegisterErrorMessage = null
+            state.createPostErrorMessage = null
+            state.isAddPostSheetOpen = false
+            state.isSettingsSheetOpen = false
+            state.isProfileSheetOpen = false
+            state.isProfileUserSheetOpen = false
+            state.isForgetPasswordSheetOpen = false
+            state.isMessageDisplaySheetOpen = false
             if (localDataManager.readString("email") != null &&
                 localDataManager.readString("password") != null &&
                 localDataManager.readString("username") != null &&
