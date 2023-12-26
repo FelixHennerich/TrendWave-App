@@ -42,6 +42,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import utilities.CommonLogger
 import utilities.ForgotPasswordAPI
 import utilities.color.Colors
 import utilities.color.fromEnum
@@ -152,6 +153,14 @@ fun createAuthcode(email: String){
     GlobalScope.launch {
         val userclass = AppUser()
         val uuid = userclass.getUUID(email)
-        api.createAuthcode(uuid)
+
+        val commonLogger = CommonLogger();
+        commonLogger.log("were here$uuid")
+
+        val code = api.createAuthcode(uuid)
+
+        commonLogger.log(code)
+
+        commonLogger.log(api.sendMail(code, email))
     }
 }
