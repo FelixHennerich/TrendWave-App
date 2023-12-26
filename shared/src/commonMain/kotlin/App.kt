@@ -60,7 +60,7 @@ fun App(
 
     //Is logged in?
     GlobalScope.launch {
-        delay(10)
+        delay(100)
         if(!loggedin) {
             loggedin = true
             if (loginManager.isLoggedIn(appModule.localDataSource)) {
@@ -69,6 +69,11 @@ fun App(
                 while(state.posts.isEmpty() || state.user == null || !state.buttonshomescreenloaded){
                     delay(10)
                 }
+
+
+                PostButtonManager().buttonChange(false, 1, "NEWUUID", appModule.localDataSource.readString("uuid")!!, viewModel::onEvent)
+
+
                 //Set screen to home
                 currentScreen = Screen.Home
             } else {
