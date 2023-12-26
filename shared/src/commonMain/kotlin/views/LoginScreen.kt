@@ -145,7 +145,7 @@ class LoginScreen {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "E-mail",
+                            text = "E-Mail",
                             modifier = Modifier.offset(y = -(2).dp, x = 3.dp),
                             color = Color.fromEnum(Colors.SENARY)
                         )
@@ -274,7 +274,11 @@ class LoginScreen {
                     fontWeight = FontWeight.Bold
                 )
             }
+
+            //Spacer
             Spacer(Modifier.height(20.dp))
+
+            //Register button
             TextButton(onClick = {
                 onNavigateRegister()
             }) {
@@ -286,6 +290,7 @@ class LoginScreen {
                 )
             }
         }
+
         SideSheet(
             visible = state.isForgetPasswordSheetOpen,
             modifier = Modifier.fillMaxSize(),

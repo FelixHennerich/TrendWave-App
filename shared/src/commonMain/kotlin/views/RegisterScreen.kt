@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -62,6 +64,8 @@ import managers.DataStorageManager
 import managers.DataStorageOnLogin
 import managers.exceptions.ExceptionHandler
 import managers.exceptions.NException
+import utilities.color.Colors
+import utilities.color.fromEnum
 import views.presentation.PostButtonManager
 
 class RegisterScreen {
@@ -96,12 +100,14 @@ class RegisterScreen {
             mutableStateOf(false)
         }
         val focusManager = LocalFocusManager.current
+        val cornerrad = 10.dp
+        var corner = RoundedCornerShape(cornerrad)
 
         Column(
             Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
-                .background(color = Color.White),
+                .background(color = Color.fromEnum(Colors.PRIMARY)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Logo of the APP
@@ -125,15 +131,19 @@ class RegisterScreen {
             }
             // -----------------
 
-
+            //Space
             Spacer(modifier = Modifier.height(40.dp))
+
+            //Register headline
             Text(
-                "REGISTER",
+                text = "REGISTER",
                 fontSize = 30.sp,
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
-                color = Color.Blue
+                color = Color.fromEnum(Colors.SENARY)
             )
+
+            //Email textfield
             TextField(
                 value = email,
                 placeholder = {
@@ -141,7 +151,9 @@ class RegisterScreen {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "E-Mail"
+                            text = "E-Mail",
+                            modifier = Modifier.offset(y = -(2).dp, x = 3.dp),
+                            color = Color.fromEnum(Colors.SENARY)
                         )
                     }
                 },
@@ -151,30 +163,39 @@ class RegisterScreen {
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Done,
                 ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                        submit(checkedConditionsState.value, state, email, password, user, birthday,
-                            onEvent, localDataManager, onNavigateHome)
-                    }
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
                     .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
-                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
-                shape = RoundedCornerShape(50),
+                    .background(
+                        color = Color.fromEnum(Colors.TERTIARY),
+                        shape = corner
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.fromEnum(Colors.SENARY),
+                        shape = corner
+                    ),
                 textStyle = TextStyle(
                     textAlign = TextAlign.Left,
-                    color = Color.Blue,
+                    color = Color.fromEnum(Colors.SENARY),
                     fontSize = 14.sp
                 ),
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
                 )
             )
+
+
             // Textfield for the password
             TextField(
                 value = password,
@@ -183,32 +204,41 @@ class RegisterScreen {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Password"
+                            text = "Password",
+                            modifier = Modifier.offset(y = -(3).dp, x = 3.dp),
+                            color = Color.fromEnum(Colors.SENARY)
                         )
                     }
                 },
                 onValueChange = { text -> password = text },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done,
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
                     .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
-                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
-                shape = RoundedCornerShape(50),
+                    .background(
+                        color = Color.fromEnum(Colors.TERTIARY),
+                        shape = corner
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.fromEnum(Colors.SENARY),
+                        shape = corner
+                    ),
                 textStyle = TextStyle(
                     textAlign = TextAlign.Left,
-                    color = Color.Blue,
+                    color = Color.fromEnum(Colors.SENARY),
                     fontSize = 14.sp
                 ),
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
-                ),
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(
-                    autoCorrect = false,
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -218,6 +248,9 @@ class RegisterScreen {
                     }
                 )
             )
+
+
+            //Username Textfield
             TextField(
                 value = user,
                 placeholder = {
@@ -225,15 +258,40 @@ class RegisterScreen {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Username"
+                            text = "Username",
+                            modifier = Modifier.offset(y = -(2).dp, x = 3.dp),
+                            color = Color.fromEnum(Colors.SENARY)
                         )
                     }
                 },
                 onValueChange = { text -> user = text },
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
-                    keyboardType = KeyboardType.Text,
+                    keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Done,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(66.dp)
+                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
+                    .background(
+                        color = Color.fromEnum(Colors.TERTIARY),
+                        shape = corner
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.fromEnum(Colors.SENARY),
+                        shape = corner
+                    ),
+                textStyle = TextStyle(
+                    textAlign = TextAlign.Left,
+                    color = Color.fromEnum(Colors.SENARY),
+                    fontSize = 14.sp
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -241,24 +299,10 @@ class RegisterScreen {
                         submit(checkedConditionsState.value, state, email, password, user, birthday,
                             onEvent, localDataManager, onNavigateHome)
                     }
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(66.dp)
-                    .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
-                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
-                shape = RoundedCornerShape(50),
-                textStyle = TextStyle(
-                    textAlign = TextAlign.Left,
-                    color = Color.Blue,
-                    fontSize = 14.sp
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
                 )
             )
+
+            //Birthday Textfield
             TextField(
                 value = birthday,
                 placeholder = {
@@ -266,7 +310,9 @@ class RegisterScreen {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Birthday dd.mm.yyyy"
+                            text = "Birthday dd.mm.yyyy",
+                            modifier = Modifier.offset(y = -(2).dp, x = 3.dp),
+                            color = Color.fromEnum(Colors.SENARY)
                         )
                     }
                 },
@@ -276,41 +322,57 @@ class RegisterScreen {
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Done,
                 ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                        submit(checkedConditionsState.value, state, email, password, user, birthday,
-                            onEvent, localDataManager, onNavigateHome)
-                    }
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(66.dp)
                     .padding(start = 64.dp, end = 64.dp, top = 8.dp, bottom = 8.dp)
-                    .border(1.dp, color = Color.Blue, shape = RoundedCornerShape(50)),
-                shape = RoundedCornerShape(50),
+                    .background(
+                        color = Color.fromEnum(Colors.TERTIARY),
+                        shape = corner
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.fromEnum(Colors.SENARY),
+                        shape = corner
+                    ),
                 textStyle = TextStyle(
                     textAlign = TextAlign.Left,
-                    color = Color.Blue,
+                    color = Color.fromEnum(Colors.SENARY),
                     fontSize = 14.sp
                 ),
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        submit(checkedConditionsState.value, state, email, password, user, birthday,
+                            onEvent, localDataManager, onNavigateHome)
+                    }
                 )
             )
-            Text(text = state.RegisterErrorMessage ?: "", color = Color.Red)
+
+            //Error Messages
+            Text(
+                text = state.RegisterErrorMessage ?: "",
+                color = Color.Red
+            )
+
+            //login button
             TextButton(onClick = {
                 onNavigateLogin()
             }) {
                 Text(
                     text = "Already have an account? Login",
-                    Modifier.padding(top = 8.dp, bottom = 8.dp),
+                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
                     fontSize = 14.sp,
-                    color = Color.Blue
+                    color = Color.fromEnum(Colors.SENARY)
                 )
             }
+
+
             Button(
                 onClick = {
                     focusManager.clearFocus()
@@ -321,48 +383,47 @@ class RegisterScreen {
                     .fillMaxWidth()
                     .height(66.dp)
                     .padding(start = 65.dp, end = 64.dp, top = 8.dp, bottom = 8.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-                shape = RoundedCornerShape(50)
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.fromEnum(Colors.QUATERNARY)),
+                shape = corner
             ) {
                 Text(
-                    text = "Submit",
-                    color = Color.White,
+                    text = "Create Account",
+                    color = Color.fromEnum(Colors.SENARY),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
+
+            //Spacer
             Spacer(Modifier.height(100.dp))
 
         }
 
 
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(color = Color.Transparent),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(700.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+        //Terms of service row
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 650.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box(
+                modifier = Modifier.border(2.dp, Color.fromEnum(Colors.SENARY), corner).size(25.dp)
             ) {
                 Checkbox(
                     checked = checkedConditionsState.value,
                     onCheckedChange = { checkedConditionsState.value = it },
-                    colors = CheckboxDefaults.colors(Color.Blue)
-                )
-
-                Text(
-                    text = "I accept the terms of use",
-                    fontSize = 14.sp,
-                    color = Color.Blue
+                    colors = CheckboxDefaults.colors(Color.Transparent),
                 )
             }
+
+            Text(
+                text = "I accept the terms of use",
+                fontSize = 14.sp,
+                color = Color.fromEnum(Colors.SENARY),
+                modifier = Modifier.padding(start = 10.dp)
+            )
         }
+
 
     }
 
