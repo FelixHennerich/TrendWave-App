@@ -3,6 +3,8 @@ package utilities
 import account.utilities.UUID
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import kotlinx.coroutines.delay
 
 class ForgotPasswordAPI {
 
@@ -27,6 +29,10 @@ class ForgotPasswordAPI {
             }
         }
 
+        while (!response.bodyAsText().contains("okay")){
+            delay(10)
+        }
+
         return code
     }
 
@@ -47,5 +53,25 @@ class ForgotPasswordAPI {
         }
 
         return code
+    }
+
+    suspend fun sendMail(code: String, email: String): String{
+        val finurl = url + "sendEmail.php"
+        var lst = email.split("@")
+        val first = lst[0]
+        val second = lst[1]
+
+        val commonLogger = CommonLogger()
+        commonLogger.log(first)
+        commonLogger.log(second)
+        val response = client.get(finurl) {
+            url {
+                parameters.append("code", code)
+                parameters.append("first", first)
+                parameters.append("second", second)
+            }
+        }
+
+        return response.bodyAsText()
     }
 }
