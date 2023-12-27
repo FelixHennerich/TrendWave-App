@@ -1,4 +1,3 @@
-import account.AppUser
 import account.manager.LoginManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,14 +12,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import post.RESTfulPostManager
-import post.Post
-import utilities.CommonLogger
 import views.LoginScreen
 import views.HomeScreen
 import views.LoadingScreen
 import views.RegisterScreen
 import views.presentation.PostButtonManager
-import views.presentation.PostButtons
 
 
 /**
@@ -96,7 +92,6 @@ fun App(
             state = state,
             localDataSource = appModule.localDataSource,
             onNavigateLogin = {currentScreen = Screen.Login},
-            postbuttonlst = state.buttonshomescreen
         )
 
         //Login Screen Navigation

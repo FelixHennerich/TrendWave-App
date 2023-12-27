@@ -47,7 +47,10 @@ import post.presentation.PostDisplay
 import utilities.color.Colors
 import utilities.color.fromEnum
 import androidx.compose.foundation.lazy.items
+import kotlinx.coroutines.delay
+import utilities.CommonLogger
 import utilities.presentation.BottomSheet
+import views.presentation.PostButtonManager
 
 /**
  * ProfileSheet to display the profile of a player
@@ -98,7 +101,8 @@ fun ProfileSheet(
                 contentAlignment = Alignment.CenterStart
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
@@ -182,57 +186,44 @@ fun ProfileSheet(
                 Box(
                     modifier = Modifier
                         .background(color, RoundedCornerShape(20))
-                        .clickable {
-                            GlobalScope.launch {
-                                val followManager = FollowManagerClass()
-                                if (!followManager.isFollowing(
-                                        state.user?.uuid!!,
-                                        pageOwner.uuid
-                                    )
-                                ) {
-                                    state.user?.let { it1 ->
-                                        onEvent(
-                                            TrendWaveEvent.FollowEvent(
-                                                true,
-                                                it1.uuid,
-                                                pageOwner.uuid
-                                            )
-                                        )
-                                    }
-                                    onEvent(TrendWaveEvent.ClickCloseProfileScreen)
-                                } else {
-                                    state.user?.let { it1 ->
-                                        onEvent(
-                                            TrendWaveEvent.FollowEvent(
-                                                false,
-                                                it1.uuid,
-                                                pageOwner.uuid
-                                            )
-                                        )
-                                    }
-                                    onEvent(TrendWaveEvent.ClickCloseProfileScreen)
-
-                                }
-                            }
-                        }
                 ) {
                     var text by remember { mutableStateOf("") }
+                    var text2 by remember { mutableStateOf("") }
                     GlobalScope.launch {
                         val followManagerClass = FollowManagerClass()
                         if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
-                            text = "Subscribe"
+                            text = "Follow"
                         } else {
-                            text = "Subscribed"
+                            text = "Followed"
+                        }
+                        if (!state.buttonshomescreen.toString().contains(pageOwner.username)) {
+                            text2 = "Pin"
+                        } else {
+                            text2 = "Pinned"
                         }
                     }
 
                     if (pageOwner.uuid != state.user?.uuid) {
-                        Text(
-                            text = text,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = Color.White,
-                            modifier = Modifier.padding(10.dp)
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Text(
+                                text = text,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.White,
+                                modifier = Modifier.padding(10.dp).clickable {
+                                    followUser(onEvent, state, pageOwner)
+                                }
+                            )
+                            Text(
+                                text = text2,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.White,
+                                modifier = Modifier.padding(10.dp).clickable {
+                                    pinUser(onEvent, state, pageOwner)
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -272,6 +263,59 @@ fun ProfileSheet(
 
                 Spacer(modifier = Modifier.height(100.dp))
             }
+        }
+    }
+}
+
+fun followUser(onEvent: (TrendWaveEvent) -> Unit,
+               state: TrendWaveState,
+               pageOwner: RESTfulUserManager.User){
+    GlobalScope.launch {
+        val followManager = FollowManagerClass()
+        if (!followManager.isFollowing(
+                state.user?.uuid!!,
+                pageOwner.uuid
+            )
+        ) {
+            state.user?.let { it1 ->
+                onEvent(
+                    TrendWaveEvent.FollowEvent(
+                        true,
+                        it1.uuid,
+                        pageOwner.uuid
+                    )
+                )
+            }
+            onEvent(TrendWaveEvent.ClickCloseProfileScreen)
+        } else {
+            state.user?.let { it1 ->
+                onEvent(
+                    TrendWaveEvent.FollowEvent(
+                        false,
+                        it1.uuid,
+                        pageOwner.uuid
+                    )
+                )
+            }
+            onEvent(TrendWaveEvent.ClickCloseProfileScreen)
+
+        }
+    }
+}
+
+fun pinUser(onEvent: (TrendWaveEvent) -> Unit, state: TrendWaveState,
+            pageOwner: RESTfulUserManager.User) {
+    if (state.buttonshomescreen.toString().contains(pageOwner.username)) {
+        GlobalScope.launch {
+            PostButtonManager().buttonChange(false, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
+            delay(100)
+            onEvent(TrendWaveEvent.ClickChangeHomeButtons)
+        }
+    } else {
+        GlobalScope.launch {
+            PostButtonManager().buttonChange(true, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
+            delay(100)
+            onEvent(TrendWaveEvent.ClickChangeHomeButtons)
         }
     }
 }

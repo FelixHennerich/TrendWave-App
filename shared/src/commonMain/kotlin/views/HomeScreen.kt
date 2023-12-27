@@ -76,13 +76,12 @@ class HomeScreen {
         state: TrendWaveState,
         localDataSource: DataStorageManager,
         onNavigateLogin: () -> Unit,
-        postbuttonlst: List<PostButtons>
     ) {
         var isDropInfoVisable by remember { mutableStateOf(false) }
         var blurEffect by remember { mutableStateOf(0.dp) }
         val cornerrad = 10.dp
         var corner = RoundedCornerShape(cornerrad)
-
+        val postbuttonlst = state.buttonshomescreen
 
         Scaffold(
             modifier = Modifier.clickable {
