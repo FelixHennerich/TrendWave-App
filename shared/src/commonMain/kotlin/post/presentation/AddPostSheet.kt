@@ -97,7 +97,8 @@ fun addPostSheet(
         ) {
             //Create new post box
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
@@ -112,7 +113,7 @@ fun addPostSheet(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.fromEnum(Colors.SENARY),
-                    modifier = Modifier.offset(y = 7.dp).padding(start = 15.dp)
+                    modifier = Modifier.padding(start = 15.dp)
                 )
             }
         }

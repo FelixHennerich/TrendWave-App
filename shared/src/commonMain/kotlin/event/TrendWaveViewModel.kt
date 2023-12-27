@@ -1,28 +1,21 @@
 package event
 
 
-import account.AppUser
-import account.RESTfulUserManager
-import account.image.ImageDataSource
-import account.manager.LoginManager
-import androidx.compose.runtime.collectAsState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import event.events.ApplicationStartEvent
 import event.events.FollowEvent
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import managers.DataStorageManager
 import post.RESTfulPostManager
-import utilities.CommonLogger
+import views.presentation.PostButtonManager
 
 class TrendWaveViewModel(
     private val localDataStorageManager: DataStorageManager,
-    private val restApi: RESTfulPostManager
+    private val restApi: RESTfulPostManager,
 ) : ViewModel() {
     private val _state = MutableStateFlow(TrendWaveState())
 
@@ -83,6 +76,12 @@ class TrendWaveViewModel(
                 _state.update { it.copy(
                     isProfileUserSheetOpen = true,
                     watchUserProfile = event.user
+                ) }
+            }
+            is TrendWaveEvent.ClickChangeHomeButtons -> {
+                _state.update { it.copy(
+                    isProfileUserSheetOpen = false,
+                    isProfileSheetOpen = false
                 ) }
             }
 
