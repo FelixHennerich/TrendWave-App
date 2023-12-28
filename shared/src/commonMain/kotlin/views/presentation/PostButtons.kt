@@ -45,7 +45,8 @@ data class PostButtons(
     val notclickable: Boolean,
     val smallicon: ImageVector,
     val primarybackground: Color,
-    val addbutton: Boolean
+    val addbutton: Boolean,
+    val id: String
 )
 /**
  * three buttons on home screen

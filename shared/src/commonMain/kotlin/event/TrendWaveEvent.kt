@@ -20,7 +20,7 @@ sealed interface TrendWaveEvent {
     object ClickProfileHomeButton: TrendWaveEvent
     object ClickChangeHomeButtons: TrendWaveEvent
     class ClickUserProfileViewButton(val user: RESTfulUserManager.User): TrendWaveEvent
-    class ClickPostMessageDisplay(val authorname: String, val posttext: String, val postdate: String, val postuuid: String): TrendWaveEvent
+    class ClickPostMessageDisplay(val authorname: String, val posttext: String, val postdate: String, val postid: String): TrendWaveEvent
 
 
 

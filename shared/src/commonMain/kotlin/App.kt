@@ -66,10 +66,6 @@ fun App(
                     delay(10)
                 }
 
-
-                PostButtonManager().buttonChange(false, 1, "NEWUUID", appModule.localDataSource.readString("uuid")!!, viewModel::onEvent)
-
-
                 //Set screen to home
                 currentScreen = Screen.Home
             } else {

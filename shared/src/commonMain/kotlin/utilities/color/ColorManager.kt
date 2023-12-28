@@ -36,6 +36,7 @@ fun Color.Companion.fromEnum(color: Colors): Color {
 
 
         Colors.GREEN -> Color(red = 50, green = 168, blue = 70)
+        Colors.HIGHLIGHT -> Color(red = 217, green = 216, blue = 217)
         else -> Color(red = 255,green = 255,blue = 255)
     }
 }

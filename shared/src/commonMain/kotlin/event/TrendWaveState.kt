@@ -18,7 +18,7 @@ data class TrendWaveState(
     var messageDisplayAuthorname: String = "",
     var messageDisplayMessageText: String = "",
     var messageDisplayPostDate: String = "",
-    var messageDisplayPostUUID: String = "",
+    var messageDisplayPostID: String = "",
     var posts: List<Post> = emptyList(),
     var userposts: List<Post>? = null, // TODO: ONLY FOR PROIFLE PAGE NOT FOR GENERAL USER PAGE
     var watchUserProfile: RESTfulUserManager.User? = null,

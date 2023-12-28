@@ -10,5 +10,6 @@ enum class Colors {
     SENARY,
 
 
-    GREEN
+    GREEN,
+    HIGHLIGHT
 }
