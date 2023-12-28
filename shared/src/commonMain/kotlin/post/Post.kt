@@ -7,4 +7,5 @@ data class Post(
     val username: String,
     val date: String,
     val text: String,
+    val theme: String,
 )

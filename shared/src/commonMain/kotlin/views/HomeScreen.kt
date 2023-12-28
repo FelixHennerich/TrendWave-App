@@ -323,6 +323,7 @@ class HomeScreen {
                         postuuid = post.uuid,
                         postdate = post.date,
                         postid = post.id,
+                        posttheme = post.theme,
                         localDataStorageManager = localDataSource,
                         onEvent = onEvent,
                         state = state,
@@ -356,7 +357,8 @@ class HomeScreen {
             modifier = Modifier.fillMaxSize(),
             authorname = state.messageDisplayAuthorname,
             posttext = state.messageDisplayMessageText,
-            postdate = state.messageDisplayPostDate
+            postdate = state.messageDisplayPostDate,
+            postuuid = state.messageDisplayPostUUID,
         )
 
         //Open Settings

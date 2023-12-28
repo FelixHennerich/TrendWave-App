@@ -34,6 +34,7 @@ fun MessageDisplay(
     authorname: String,
     posttext: String,
     postdate: String,
+    postuuid: String,
     onEvent: (TrendWaveEvent) -> Unit,
     corner: RoundedCornerShape
 ) {

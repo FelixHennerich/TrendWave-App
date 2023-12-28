@@ -267,6 +267,7 @@ fun ProfileSheet(
                             postuuid = post.uuid,
                             postdate = post.date,
                             postid = post.id,
+                            posttheme = post.theme,
                             localDataStorageManager = localDataSource,
                             onEvent = onEvent,
                             state = state,

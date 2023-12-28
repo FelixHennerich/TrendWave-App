@@ -103,6 +103,7 @@ class TrendWaveViewModel(
                     messageDisplayAuthorname = event.authorname,
                     messageDisplayMessageText = event.posttext,
                     messageDisplayPostDate = event.postdate,
+                    messageDisplayPostUUID = event.postuuid,
                     isMessageDisplaySheetOpen = true
                 ) }
             }

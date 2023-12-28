@@ -7,9 +7,12 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Message
 import event.TrendWaveEvent
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import post.RESTfulPostManager
 import utilities.CommonLogger
 import utilities.color.Colors
 import utilities.color.fromEnum
@@ -79,6 +82,28 @@ class PostButtonManager {
                     )
                 } else if (firstElement == "1") {
                     //Message
+                    val commonLogger = CommonLogger()
+                    commonLogger.log(subParts[1])
+                    val post = RESTfulPostManager().findPostById(subParts[1])
+                    commonLogger.log(post.toString())
+                    postbuttonlst += PostButtons(
+                        modifier = Modifier.padding(end = 10.dp),
+                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                        textcolor = Color.fromEnum(Colors.SENARY),
+                        imageVector = null,
+                        text = post.theme,
+                        onEvent = onEvent,
+                        event = TrendWaveEvent.ClickPostMessageDisplay(
+                            posttext = post.text,
+                            postdate = post.date,
+                            authorname = post.username,
+                            postuuid = post.id,
+                        ),
+                        notclickable = notClickable,
+                        smallicon = TablerIcons.Message,
+                        primarybackground = Color.fromEnum(Colors.PRIMARY),
+                        addbutton = false
+                    )
                 }
             }
         }

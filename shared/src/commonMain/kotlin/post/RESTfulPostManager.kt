@@ -6,6 +6,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
+import post.presentation.Thema
+import utilities.CommonLogger
 import utilities.textutils.DateUtil
 
 class RESTfulPostManager{
@@ -28,7 +30,14 @@ class RESTfulPostManager{
             }
         }
 
+
+        val commonLogger = CommonLogger()
+        commonLogger.log(response.bodyAsText())
+
+
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
+
+        commonLogger.log(entryLists.toString())
 
         return entryLists[0]
     }
@@ -84,7 +93,7 @@ class RESTfulPostManager{
      * @param text -> Post content text
      * @return finished Post
      */
-    suspend fun uploadPost(uuid: String, text: String): Post{
+    suspend fun uploadPost(uuid: String, text: String, theme: String): Post{
         val finurl = url + "postGetter.php"
         val postidmanager = UUID()
         val id = postidmanager.generate128BitUUID()
@@ -97,13 +106,14 @@ class RESTfulPostManager{
                 parameters.append("uuid", uuid)
                 parameters.append("date", date)
                 parameters.append("text", text)
+                parameters.append("theme", theme)
             }
         }
 
         val user = AppUser()
         val username = user.getUsername(uuid)
 
-        return Post(id,uuid,username,date,text)
+        return Post(id,uuid,username,date,text, theme)
     }
 
     /**
@@ -127,7 +137,7 @@ class RESTfulPostManager{
                     val parts = pair.split(":")
                     partlst.add(parts[1].removePrefix("\"").removeSuffix("\""))
                 }
-                entryLists.add(Post(partlst[0], partlst[1], user.getUsername(partlst[1]),partlst[2], partlst[3]))
+                entryLists.add(Post(partlst[0], partlst[1], user.getUsername(partlst[1]),partlst[2], partlst[3], partlst[4]))
             }
         }
 

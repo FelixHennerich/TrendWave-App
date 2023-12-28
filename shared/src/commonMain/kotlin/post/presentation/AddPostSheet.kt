@@ -196,7 +196,8 @@ fun addPostSheet(
                                 localDataSource.readString("uuid")?.let {
                                     val post = restapi.uploadPost(
                                         uuid = it,
-                                        text = post
+                                        text = post,
+                                        theme = thema.displayName
                                     )
                                     onEvent(TrendWaveEvent.LocalPostCreation(post))
                                 }
