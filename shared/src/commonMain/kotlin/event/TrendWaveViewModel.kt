@@ -61,7 +61,7 @@ class TrendWaveViewModel(
             //Profile Screen
             is TrendWaveEvent.ClickProfileHomeButton -> {
                 _state.update { it.copy(
-                    isProfileSheetOpen = true
+                    isProfileSheetOpen = true,
                 ) }
             }
             is TrendWaveEvent.ClickCloseProfileScreen -> {

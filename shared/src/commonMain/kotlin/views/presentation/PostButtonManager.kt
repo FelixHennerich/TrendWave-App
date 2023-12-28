@@ -53,16 +53,13 @@ class PostButtonManager {
         val postbuttonlst = emptyList<PostButtons>().toMutableList()
         val parts = lst.split("#")
 
-        val commonLogger = CommonLogger()
 
         for(part in parts) {
             val subParts = part.split("+")
-            commonLogger.log("here $part")
             if (subParts.isNotEmpty()) {
                 val firstElement = subParts[0]
                 if (firstElement == "0") {
                     //Account
-                    commonLogger.log(notClickable.toString())
                     postbuttonlst += PostButtons(
                         modifier = Modifier.padding(end = 10.dp),
                         backgroundcolor = Color.fromEnum(Colors.QUATERNARY),

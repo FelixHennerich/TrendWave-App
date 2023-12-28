@@ -1,5 +1,6 @@
 package account.presentation
 
+import account.AppUser
 import account.RESTfulUserManager
 import account.manager.FollowManagerClass
 import androidx.compose.foundation.background
@@ -68,7 +69,7 @@ fun ProfileSheet(
     localDataSource: DataStorageManager,
     onEvent: (TrendWaveEvent) -> Unit,
     state: TrendWaveState,
-    pageOwner: RESTfulUserManager.User,
+    pageOwneruuid: String,
 ) {
     BottomSheet(
         visible = isOpen,
@@ -77,191 +78,204 @@ fun ProfileSheet(
         padding = 0.dp
     ) {
         var posts by remember { mutableStateOf<List<Post>>(emptyList()) }
-
+        var pageOwner by remember { mutableStateOf(RESTfulUserManager.User("","","","","","","","","","","")) }
         GlobalScope.launch {
-            val restapi = RESTfulPostManager()
-            posts = restapi.getUserPosts(pageOwner.uuid)
+            pageOwner = AppUser().getUser(pageOwneruuid)
         }
-
-        Box(
-            modifier = Modifier.padding(top = 20.dp).background(Color.fromEnum(Colors.PRIMARY))
-                .fillMaxWidth()
-        ) {
-            Box(
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
-                    .fillMaxWidth().background(
-                        Color.fromEnum(Colors.QUATERNARY),
-                        RoundedCornerShape(
-                            topStart = 10.dp,
-                            topEnd = 10.dp,
-                            bottomEnd = 10.dp,
-                            bottomStart = 10.dp
-                        )
-                    ),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = "",
-                        tint = Color.fromEnum(Colors.SENARY),
-                        modifier = Modifier.padding(start = 10.dp).clickable {
-                            onEvent(TrendWaveEvent.ClickCloseProfileScreen)
-                        }
-                    )
-                    Text(
-                        text = "@",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.offset(y = -(3).dp).padding(start = 15.dp),
-                        color = Color.fromEnum(Colors.SENARY)
-                    )
-                    Text(
-                        text = pageOwner.username,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.offset(y = -(3).dp).padding(start = 3.dp),
-                        color = Color.fromEnum(Colors.SENARY)
-                    )
-                }
-            }
-
-            Box(
-                modifier = Modifier.fillMaxWidth().offset(y = 110.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    modifier = Modifier
-                        .background(Color.fromEnum(Colors.QUINARY), RoundedCornerShape(30.dp))
-                        .padding(50.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Person,
-                        contentDescription = "",
-                        modifier = Modifier.scale(3f),
-                        tint = Color.fromEnum(Colors.SENARY)
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier.offset(y = 180.dp).fillMaxWidth().padding(50.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Text(
-                    text = "Follower: ${pageOwner.follower}",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(15.dp),
-                    color = Color.fromEnum(Colors.SENARY)
-                )
-                Text(
-                    text = "Following: ${pageOwner.following}",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(15.dp),
-                    color = Color.fromEnum(Colors.SENARY)
-                )
-            }
-
-            var color by remember { mutableStateOf(Color.Transparent) }
+        if(pageOwner.uuid != "") {
             GlobalScope.launch {
-                val followManagerClass = FollowManagerClass()
-                if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid))
-                    color = Color.fromEnum(Colors.QUATERNARY)
-                else
-                    color = Color.fromEnum(Colors.QUINARY)
+                val restapi = RESTfulPostManager()
+                posts = restapi.getUserPosts(pageOwner.uuid)
+
             }
 
-            Column(
-                modifier = Modifier.fillMaxWidth().offset(y = 285.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier.padding(top = 20.dp).background(Color.fromEnum(Colors.PRIMARY))
+                    .fillMaxWidth()
             ) {
                 Box(
-                    modifier = Modifier
-                        .background(color, RoundedCornerShape(20))
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp).height(80.dp)
+                        .fillMaxWidth().background(
+                            Color.fromEnum(Colors.QUATERNARY),
+                            RoundedCornerShape(
+                                topStart = 10.dp,
+                                topEnd = 10.dp,
+                                bottomEnd = 10.dp,
+                                bottomStart = 10.dp
+                            )
+                        ),
+                    contentAlignment = Alignment.CenterStart
                 ) {
-                    var text by remember { mutableStateOf("") }
-                    var text2 by remember { mutableStateOf("") }
-                    GlobalScope.launch {
-                        val followManagerClass = FollowManagerClass()
-                        if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid)) {
-                            text = "Follow"
-                        } else {
-                            text = "Followed"
-                        }
-                        if (!state.buttonshomescreen.toString().contains(pageOwner.username)) {
-                            text2 = "Pin"
-                        } else {
-                            text2 = "Pinned"
-                        }
-                    }
-
-                    if (pageOwner.uuid != state.user?.uuid) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Text(
-                                text = text,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(10.dp).clickable {
-                                    followUser(onEvent, state, pageOwner)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "",
+                            tint = Color.fromEnum(Colors.SENARY),
+                            modifier = Modifier.padding(start = 10.dp).clickable {
+                                GlobalScope.launch {
+                                    delay(100)
+                                    onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                                 }
-                            )
-                            Text(
-                                text = text2,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(10.dp).clickable {
-                                    pinUser(onEvent, state, pageOwner)
-                                }
-                            )
-                        }
+                            }
+                        )
+                        Text(
+                            text = "@",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.offset(y = -(3).dp).padding(start = 15.dp),
+                            color = Color.fromEnum(Colors.SENARY)
+                        )
+                        Text(
+                            text = pageOwner.username,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.offset(y = -(3).dp).padding(start = 3.dp),
+                            color = Color.fromEnum(Colors.SENARY)
+                        )
                     }
                 }
-            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 340.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().offset(y = 110.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .background(Color.fromEnum(Colors.QUINARY), RoundedCornerShape(30.dp))
+                            .padding(50.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Person,
+                            contentDescription = "",
+                            modifier = Modifier.scale(3f),
+                            tint = Color.fromEnum(Colors.SENARY)
+                        )
+                    }
+                }
 
-                Text(
-                    text = "${pageOwner.username}'s activity",
-                    modifier = Modifier.padding(start = 10.dp),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.fromEnum(Colors.SENARY)
-                )
+                Row(
+                    modifier = Modifier.offset(y = 180.dp).fillMaxWidth().padding(50.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
 
-                for (post in posts) {
-                    PostDisplay(
-                        modifier = Modifier.fillMaxWidth(),
-                        backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
-                        textcolor = Color.fromEnum(Colors.SENARY),
-                        iconbackgroundcolor = Color.fromEnum(Colors.QUINARY),
-                        posttext = post.text,
-                        postuser = post.username,
-                        postuuid = post.uuid,
-                        postdate = post.date,
-                        postid = post.id,
-                        localDataStorageManager = localDataSource,
-                        onEvent = onEvent,
-                        state = state,
-                        notclickable = false,
+                ) {
+                    Text(
+                        text = "Follower: ${pageOwner.follower}",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp,
+                        modifier = Modifier.padding(15.dp),
+                        color = Color.fromEnum(Colors.SENARY)
+                    )
+                    Text(
+                        text = "Following: ${pageOwner.following}",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp,
+                        modifier = Modifier.padding(15.dp),
+                        color = Color.fromEnum(Colors.SENARY)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(100.dp))
+                var color by remember { mutableStateOf(Color.Transparent) }
+                GlobalScope.launch {
+                    val followManagerClass = FollowManagerClass()
+                    if (!followManagerClass.isFollowing(state.user?.uuid!!, pageOwner.uuid))
+                        color = Color.fromEnum(Colors.QUATERNARY)
+                    else
+                        color = Color.fromEnum(Colors.QUINARY)
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth().offset(y = 285.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(color, RoundedCornerShape(20))
+                    ) {
+                        var text by remember { mutableStateOf("") }
+                        var text2 by remember { mutableStateOf("") }
+                        GlobalScope.launch {
+                            val followManagerClass = FollowManagerClass()
+                            if (!followManagerClass.isFollowing(
+                                    state.user?.uuid!!,
+                                    pageOwner.uuid
+                                )
+                            ) {
+                                text = "Follow"
+                            } else {
+                                text = "Followed"
+                            }
+                            if (!state.buttonshomescreen.toString().contains(pageOwner.username)) {
+                                text2 = "Pin"
+                            } else {
+                                text2 = "Pinned"
+                            }
+                        }
+
+                        if (pageOwner.uuid != state.user?.uuid) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Text(
+                                    text = text,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = Color.White,
+                                    modifier = Modifier.padding(10.dp).clickable {
+                                        followUser(onEvent, state, pageOwner)
+                                    }
+                                )
+                                Text(
+                                    text = text2,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = Color.White,
+                                    modifier = Modifier.padding(10.dp).clickable {
+                                        pinUser(onEvent, state, pageOwner)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 340.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+
+                    Text(
+                        text = "${pageOwner.username}'s activity",
+                        modifier = Modifier.padding(start = 10.dp),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.fromEnum(Colors.SENARY)
+                    )
+
+                    for (post in posts) {
+                        PostDisplay(
+                            modifier = Modifier.fillMaxWidth(),
+                            backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
+                            textcolor = Color.fromEnum(Colors.SENARY),
+                            iconbackgroundcolor = Color.fromEnum(Colors.QUINARY),
+                            posttext = post.text,
+                            postuser = post.username,
+                            postuuid = post.uuid,
+                            postdate = post.date,
+                            postid = post.id,
+                            localDataStorageManager = localDataSource,
+                            onEvent = onEvent,
+                            state = state,
+                            notclickable = false,
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(100.dp))
+                }
             }
         }
     }
@@ -286,6 +300,7 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
+            delay(100)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
         } else {
             state.user?.let { it1 ->
@@ -297,6 +312,7 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
+            delay(100)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 
         }
