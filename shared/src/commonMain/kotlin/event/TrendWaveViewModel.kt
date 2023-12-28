@@ -61,7 +61,7 @@ class TrendWaveViewModel(
             //Profile Screen
             is TrendWaveEvent.ClickProfileHomeButton -> {
                 _state.update { it.copy(
-                    isProfileSheetOpen = true
+                    isProfileSheetOpen = true,
                 ) }
             }
             is TrendWaveEvent.ClickCloseProfileScreen -> {
@@ -103,6 +103,7 @@ class TrendWaveViewModel(
                     messageDisplayAuthorname = event.authorname,
                     messageDisplayMessageText = event.posttext,
                     messageDisplayPostDate = event.postdate,
+                    messageDisplayPostUUID = event.postuuid,
                     isMessageDisplaySheetOpen = true
                 ) }
             }

@@ -1,5 +1,6 @@
 package views
 
+import account.AppUser
 import account.presentation.ProfileSheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -98,60 +99,60 @@ class HomeScreen {
                 //
             },
             bottomBar = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                //BottomSheet for Profile, Settigs and Notifications
-                BottomSheet(
-                    visible = isDropInfoVisable,
-                    modifier = Modifier.fillMaxWidth().weight(1f).height(200.dp),
-                    backgroundcolor = Color.fromEnum(Colors.PRIMARY),
-                    padding = 0.dp
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                    //BottomSheet for Profile, Settigs and Notifications
+                    BottomSheet(
+                        visible = isDropInfoVisable,
+                        modifier = Modifier.fillMaxWidth().weight(1f).height(200.dp),
+                        backgroundcolor = Color.fromEnum(Colors.PRIMARY),
+                        padding = 0.dp
                     ) {
                         Box(
-                            modifier = Modifier.offset(y = 30.dp).padding(5.dp).clickable {
-                                onEvent(TrendWaveEvent.ClickProfileHomeButton)
-                            },
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = "Profile",
-                                fontSize = 20.sp,
-                                color = Color.fromEnum(Colors.SENARY)
-                            )
-                        }
+                            Box(
+                                modifier = Modifier.offset(y = 30.dp).padding(5.dp).clickable {
+                                    onEvent(TrendWaveEvent.ClickProfileHomeButton)
+                                },
+                            ) {
+                                Text(
+                                    text = "Profile",
+                                    fontSize = 20.sp,
+                                    color = Color.fromEnum(Colors.SENARY)
+                                )
+                            }
 
-                        Box(
-                            modifier = Modifier.offset(y = 80.dp).padding(5.dp).clickable {
-                                onEvent(TrendWaveEvent.ClickSettingsScreen)
-                            },
-                        ) {
-                            Text(
-                                text = "Settings",
-                                fontSize = 20.sp,
-                                color = Color.fromEnum(Colors.SENARY)
-                            )
-                        }
-                        Box(
-                            modifier = Modifier.offset(y = 130.dp).padding(5.dp).clickable {
-                                //TODO
-                            },
-                        ) {
-                            Text(
-                                text = "Notifications",
-                                fontSize = 20.sp,
-                                color = Color.fromEnum(Colors.SENARY)
-                            )
+                            Box(
+                                modifier = Modifier.offset(y = 80.dp).padding(5.dp).clickable {
+                                    onEvent(TrendWaveEvent.ClickSettingsScreen)
+                                },
+                            ) {
+                                Text(
+                                    text = "Settings",
+                                    fontSize = 20.sp,
+                                    color = Color.fromEnum(Colors.SENARY)
+                                )
+                            }
+                            Box(
+                                modifier = Modifier.offset(y = 130.dp).padding(5.dp).clickable {
+                                    //TODO
+                                },
+                            ) {
+                                Text(
+                                    text = "Notifications",
+                                    fontSize = 20.sp,
+                                    color = Color.fromEnum(Colors.SENARY)
+                                )
+                            }
                         }
                     }
-                }
 
-            }
-        }) {
+                }
+            }) {
             //Normal Screen
             LazyColumn(
                 modifier = Modifier.blur(blurEffect).background(Color.fromEnum(Colors.PRIMARY))
@@ -281,7 +282,7 @@ class HomeScreen {
 
                         val commonLogger = CommonLogger()
                         commonLogger.log(postbuttonlst.toString())
-                        items(postbuttonlst){ entry ->
+                        items(postbuttonlst) { entry ->
                             PostButton(
                                 modifier = entry.modifier,
                                 backgroundcolor = entry.backgroundcolor,
@@ -322,6 +323,7 @@ class HomeScreen {
                         postuuid = post.uuid,
                         postdate = post.date,
                         postid = post.id,
+                        posttheme = post.theme,
                         localDataStorageManager = localDataSource,
                         onEvent = onEvent,
                         state = state,
@@ -355,7 +357,8 @@ class HomeScreen {
             modifier = Modifier.fillMaxSize(),
             authorname = state.messageDisplayAuthorname,
             posttext = state.messageDisplayMessageText,
-            postdate = state.messageDisplayPostDate
+            postdate = state.messageDisplayPostDate,
+            postuuid = state.messageDisplayPostUUID,
         )
 
         //Open Settings
@@ -375,7 +378,7 @@ class HomeScreen {
                 onEvent = onEvent,
                 state = state,
                 localDataSource = localDataSource,
-                pageOwner = state.user!!
+                pageOwneruuid = state.user!!.uuid
             )
         }
 
@@ -386,7 +389,7 @@ class HomeScreen {
                 onEvent = onEvent,
                 state = state,
                 localDataSource = localDataSource,
-                pageOwner = state.watchUserProfile!!
+                pageOwneruuid = state.watchUserProfile!!.uuid
             )
         }
     }

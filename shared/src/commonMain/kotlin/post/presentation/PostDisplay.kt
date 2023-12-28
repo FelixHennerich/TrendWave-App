@@ -63,6 +63,7 @@ fun PostDisplay(
     postuser: String,
     postdate: String,
     postuuid: String,
+    posttheme: String,
     postid: String,
     localDataStorageManager: DataStorageManager,
     onEvent: (TrendWaveEvent) -> Unit,
@@ -146,7 +147,7 @@ fun PostDisplay(
                                     RESTfulPostManager().deletePost(postid)
                                     onEvent(
                                         TrendWaveEvent.PostDeletionButton(
-                                            Post(postid, postuuid, postuser, postdate, posttext),
+                                            Post(postid, postuuid, postuser, postdate, posttext, posttheme),
                                             state.posts
                                         )
                                     )
@@ -176,7 +177,7 @@ fun PostDisplay(
         Text(
             text = posttext,
             modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 10.dp).clickable {
-                onEvent(TrendWaveEvent.ClickPostMessageDisplay(postuser, posttext, postdate))
+                onEvent(TrendWaveEvent.ClickPostMessageDisplay(postuser, posttext, postdate, postuuid))
             },
             color = textcolor,
         )
