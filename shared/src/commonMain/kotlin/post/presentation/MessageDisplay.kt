@@ -33,6 +33,7 @@ import event.TrendWaveEvent
 import event.TrendWaveState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import utilities.CommonLogger
 import utilities.color.Colors
@@ -101,7 +102,6 @@ fun MessageDisplay(
                         modifier = Modifier.padding(end = 30.dp).clickable {
                             GlobalScope.launch {
                                 //Is button already in homebuttonlist?
-                                onEvent(TrendWaveEvent.ClickCloseMessageDisplay)
                                 val add = !(PostButtonManager().isIDinHomeButtonList(state, postid))
                                 PostButtonManager().buttonChange(
                                     add = add,
@@ -110,6 +110,8 @@ fun MessageDisplay(
                                     user = state.user!!.uuid,
                                     onEvent = onEvent
                                 )
+                                delay(50)
+                                onEvent(TrendWaveEvent.ClickCloseMessageDisplay)
                             }
                         }
                     )
