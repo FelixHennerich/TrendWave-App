@@ -48,6 +48,8 @@ import post.presentation.PostDisplay
 import utilities.color.Colors
 import utilities.color.fromEnum
 import androidx.compose.foundation.lazy.items
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Paperclip
 import kotlinx.coroutines.delay
 import utilities.CommonLogger
 import utilities.presentation.BottomSheet
@@ -116,7 +118,7 @@ fun ProfileSheet(
                             tint = Color.fromEnum(Colors.SENARY),
                             modifier = Modifier.padding(start = 10.dp).clickable {
                                 GlobalScope.launch {
-                                    delay(100)
+                                    delay(50)
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                                 }
                             }
@@ -135,6 +137,21 @@ fun ProfileSheet(
                             modifier = Modifier.offset(y = -(3).dp).padding(start = 3.dp),
                             color = Color.fromEnum(Colors.SENARY)
                         )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
+                            Icon(
+                                imageVector = FeatherIcons.Paperclip,
+                                contentDescription = "",
+                                tint = Color.fromEnum(Colors.SENARY),
+                                modifier = Modifier.padding(end = 30.dp).clickable {
+                                    GlobalScope.launch {
+                                        pinUser(onEvent, state, pageOwner)
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
 
@@ -197,7 +214,6 @@ fun ProfileSheet(
                             .background(color, RoundedCornerShape(20))
                     ) {
                         var text by remember { mutableStateOf("") }
-                        var text2 by remember { mutableStateOf("") }
                         GlobalScope.launch {
                             val followManagerClass = FollowManagerClass()
                             if (!followManagerClass.isFollowing(
@@ -208,11 +224,6 @@ fun ProfileSheet(
                                 text = "Follow"
                             } else {
                                 text = "Followed"
-                            }
-                            if (!state.buttonshomescreen.toString().contains(pageOwner.username)) {
-                                text2 = "Pin"
-                            } else {
-                                text2 = "Pinned"
                             }
                         }
 
@@ -226,14 +237,6 @@ fun ProfileSheet(
                                     color = Color.White,
                                     modifier = Modifier.padding(10.dp).clickable {
                                         followUser(onEvent, state, pageOwner)
-                                    }
-                                )
-                                Text(
-                                    text = text2,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = Color.White,
-                                    modifier = Modifier.padding(10.dp).clickable {
-                                        pinUser(onEvent, state, pageOwner)
                                     }
                                 )
                             }
@@ -301,7 +304,7 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
-            delay(100)
+            delay(50)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
         } else {
             state.user?.let { it1 ->
@@ -313,7 +316,7 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
-            delay(100)
+            delay(50)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 
         }
@@ -325,13 +328,13 @@ fun pinUser(onEvent: (TrendWaveEvent) -> Unit, state: TrendWaveState,
     if (state.buttonshomescreen.toString().contains(pageOwner.username)) {
         GlobalScope.launch {
             PostButtonManager().buttonChange(false, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
-            delay(100)
+            delay(50)
             onEvent(TrendWaveEvent.ClickChangeHomeButtons)
         }
     } else {
         GlobalScope.launch {
             PostButtonManager().buttonChange(true, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
-            delay(100)
+            delay(50)
             onEvent(TrendWaveEvent.ClickChangeHomeButtons)
         }
     }

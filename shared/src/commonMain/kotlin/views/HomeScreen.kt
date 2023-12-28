@@ -280,8 +280,6 @@ class HomeScreen {
                         }
 
 
-                        val commonLogger = CommonLogger()
-                        commonLogger.log(postbuttonlst.toString())
                         items(postbuttonlst) { entry ->
                             PostButton(
                                 modifier = entry.modifier,
@@ -358,7 +356,8 @@ class HomeScreen {
             authorname = state.messageDisplayAuthorname,
             posttext = state.messageDisplayMessageText,
             postdate = state.messageDisplayPostDate,
-            postuuid = state.messageDisplayPostUUID,
+            postid = state.messageDisplayPostID,
+            state = state,
         )
 
         //Open Settings

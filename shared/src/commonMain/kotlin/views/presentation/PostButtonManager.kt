@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Message
 import event.TrendWaveEvent
+import event.TrendWaveState
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import post.RESTfulPostManager
@@ -78,14 +79,12 @@ class PostButtonManager {
                         notclickable = notClickable,
                         smallicon = Icons.Rounded.Person,
                         primarybackground = Color.fromEnum(Colors.PRIMARY),
-                        addbutton = false
+                        addbutton = false,
+                        id = subParts[1]
                     )
                 } else if (firstElement == "1") {
                     //Message
-                    val commonLogger = CommonLogger()
-                    commonLogger.log(subParts[1])
                     val post = RESTfulPostManager().findPostById(subParts[1])
-                    commonLogger.log(post.toString())
                     postbuttonlst += PostButtons(
                         modifier = Modifier.padding(end = 10.dp),
                         backgroundcolor = Color.fromEnum(Colors.QUATERNARY),
@@ -97,12 +96,13 @@ class PostButtonManager {
                             posttext = post.text,
                             postdate = post.date,
                             authorname = post.username,
-                            postuuid = post.id,
+                            postid = post.id,
                         ),
                         notclickable = notClickable,
                         smallicon = TablerIcons.Message,
                         primarybackground = Color.fromEnum(Colors.PRIMARY),
-                        addbutton = false
+                        addbutton = false,
+                        id = subParts[1]
                     )
                 }
             }
@@ -120,6 +120,10 @@ class PostButtonManager {
         onEvent(TrendWaveEvent.DeleteLocalHomeButtons)
     }
 
+    fun isIDinHomeButtonList(state: TrendWaveState,id: String): Boolean{
+        return state.buttonshomescreen.toString().contains(id)
+    }
+
 
     /**
      * Change buttons in database or local storage
@@ -135,8 +139,10 @@ class PostButtonManager {
         val finurl = url + "userGetter.php"
         if(add){
             //add button to string
+            val commonLogger = CommonLogger()
+            commonLogger.log(homeButtons)
             val newbuttons = addNewButton(type, uuid, homeButtons)
-
+            commonLogger.log(newbuttons)
 
             //Update in database
             client.get(finurl) {

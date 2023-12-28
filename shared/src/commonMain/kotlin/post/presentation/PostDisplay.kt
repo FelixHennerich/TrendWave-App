@@ -177,7 +177,7 @@ fun PostDisplay(
         Text(
             text = posttext,
             modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 10.dp).clickable {
-                onEvent(TrendWaveEvent.ClickPostMessageDisplay(postuser, posttext, postdate, postuuid))
+                onEvent(TrendWaveEvent.ClickPostMessageDisplay(postuser, posttext, postdate, postid))
             },
             color = textcolor,
         )

@@ -3,7 +3,11 @@ package views.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -41,7 +45,8 @@ data class PostButtons(
     val notclickable: Boolean,
     val smallicon: ImageVector,
     val primarybackground: Color,
-    val addbutton: Boolean
+    val addbutton: Boolean,
+    val id: String
 )
 /**
  * three buttons on home screen
@@ -106,10 +111,25 @@ fun PostButton(
                     tint = textcolor
                 )
             }else if(text != null){
-                Text(
-                    text = text,
-                    color = textcolor,
-                )
+                var lst = emptyList<String>().toMutableList()
+                if(text.contains(" ")){
+                    lst = text.split(" ").toMutableList()
+                }else {
+                    lst += text
+                }
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column() {
+                        for (entry in lst) {
+                            Text(
+                                text = entry,
+                                color = textcolor,
+                            )
+                        }
+                    }
+                }
             }
         }
         var iconcolor by remember { mutableStateOf(textcolor) }
