@@ -13,7 +13,7 @@ import utilities.textutils.DateUtil
 class RESTfulPostManager{
 
     private val client = HttpClient()
-    private val url = "http://85.215.41.146/php/RESTfulAPI/"
+    private val url = "https://felix.henneri.ch/php/RESTfulAPI/"
 
 
     /**

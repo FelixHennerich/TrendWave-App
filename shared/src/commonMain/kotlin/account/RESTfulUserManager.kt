@@ -9,7 +9,7 @@ import utilities.CommonLogger
 class RESTfulUserManager {
 
     private val client = HttpClient()
-    private val url = "http://85.215.41.146/php/RESTfulAPI/"
+    private val url = "https://felix.henneri.ch/php/RESTfulAPI/"
 
     data class User(
         val uuid: String,
