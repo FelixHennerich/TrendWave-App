@@ -8,6 +8,7 @@ import dev.icerock.moko.mvvm.compose.viewModelFactory
 import di.AppModule
 import event.TrendWaveEvent
 import event.TrendWaveViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,6 +26,7 @@ import views.presentation.PostButtonManager
  *
  * @param appModule -> iOS or Android AppMoudle for ImageDataSources
  */
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun App(
     appModule: AppModule
@@ -52,6 +54,7 @@ fun App(
 
     //Application start event
     viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
+
 
 
     //Is logged in?

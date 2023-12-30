@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 class AppUser: UserInterface {
 
-    private val url: String
-        get() = "https://cross-cultural-auto.000webhostapp.com/php/MySQLBridge/connectGet.php"
     val restApi = RESTfulUserManager()
     val state = State.getState()
 
