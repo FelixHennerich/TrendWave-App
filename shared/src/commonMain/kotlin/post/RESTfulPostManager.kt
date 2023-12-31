@@ -31,13 +31,11 @@ class RESTfulPostManager{
         }
 
 
-        val commonLogger = CommonLogger()
-        commonLogger.log(response.bodyAsText())
 
 
         val entryLists = jsonStringToEntryLists(response.bodyAsText())
 
-        commonLogger.log(entryLists.toString())
+
 
         return entryLists[0]
     }
