@@ -50,7 +50,6 @@ import utilities.color.fromEnum
 import androidx.compose.foundation.lazy.items
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.Paperclip
-import kotlinx.coroutines.delay
 import utilities.CommonLogger
 import utilities.presentation.BottomSheet
 import views.presentation.PostButtonManager
@@ -118,7 +117,6 @@ fun ProfileSheet(
                             tint = Color.fromEnum(Colors.SENARY),
                             modifier = Modifier.padding(start = 10.dp).clickable {
                                 GlobalScope.launch {
-                                    delay(50)
                                     onEvent(TrendWaveEvent.ClickCloseProfileScreen)
                                 }
                             }
@@ -304,7 +302,6 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
-            delay(50)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
         } else {
             state.user?.let { it1 ->
@@ -316,7 +313,6 @@ fun followUser(onEvent: (TrendWaveEvent) -> Unit,
                     )
                 )
             }
-            delay(50)
             onEvent(TrendWaveEvent.ClickCloseProfileScreen)
 
         }
@@ -328,13 +324,11 @@ fun pinUser(onEvent: (TrendWaveEvent) -> Unit, state: TrendWaveState,
     if (state.buttonshomescreen.toString().contains(pageOwner.username)) {
         GlobalScope.launch {
             PostButtonManager().buttonChange(false, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
-            delay(50)
             onEvent(TrendWaveEvent.ClickChangeHomeButtons)
         }
     } else {
         GlobalScope.launch {
             PostButtonManager().buttonChange(true, 0, pageOwner.uuid, state.user!!.uuid, onEvent)
-            delay(50)
             onEvent(TrendWaveEvent.ClickChangeHomeButtons)
         }
     }
