@@ -54,7 +54,6 @@ import utilities.CommonLogger
 import utilities.presentation.BottomSheet
 import views.presentation.PostButtonManager
 
-
 /**
  * ProfileSheet to display the profile of a player
  *
