@@ -9,7 +9,7 @@ internal object MonthCalc {
      * @return Number month
      */
     fun numberOfMonth(month: String): String {
-        var num: String = ""
+        var num = ""
         when(month){
             "JAN", "Januar", "januar", "jan", "JANUARY"         -> num = "01"
             "FEB", "Februar", "februar", "feb", "FEBRUARY"      -> num = "02"

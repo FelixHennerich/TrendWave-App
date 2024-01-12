@@ -37,7 +37,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("media.kamel:kamel-image:0.7.1") // Image API
                 implementation("io.ktor:ktor-client-core:2.3.3") // Image API
-                
+
+
 
                 //Moko Dependency
 
