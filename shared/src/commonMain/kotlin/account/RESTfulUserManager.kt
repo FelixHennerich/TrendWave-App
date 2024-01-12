@@ -62,6 +62,7 @@ class RESTfulUserManager {
         return entryLists[0]
     }
 
+
     /**
      * Find a single Post by its username
      *
