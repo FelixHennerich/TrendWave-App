@@ -38,8 +38,6 @@ kotlin {
                 implementation("media.kamel:kamel-image:0.7.1") // Image API
                 implementation("io.ktor:ktor-client-core:2.3.3") // Image API
 
-
-
                 //Moko Dependency
 
                 implementation("dev.icerock.moko:mvvm-core:0.16.1")
