@@ -5,5 +5,4 @@ enum class RoleType {
     DEVELOPER,
     SUPPORTER,
     MEMBER
-
 }
