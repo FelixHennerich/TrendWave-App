@@ -31,7 +31,6 @@ import views.presentation.PostButtonManager
 fun App(
     appModule: AppModule
 ){
-
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Loading) }
     var loggedin by remember { mutableStateOf(false) }
     val loginScreenTT = LoginScreen()
