@@ -55,7 +55,6 @@ fun App(
     viewModel.onEvent(TrendWaveEvent.ApplicationStartEvent)
 
 
-
     //Is logged in?
     GlobalScope.launch {
         delay(100)
